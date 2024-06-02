@@ -44,6 +44,8 @@ describe("<CreateResearchContextDialog/>", () => {
       fireEvent.click(button);
     });
 
+    await waitFor(() => expect(mock).toHaveBeenCalledTimes(1));
+    // expect(mock).toHaveBeenCalledWith();
     // Check if mockButtonAction has been called
     await waitFor(() => expect(mockFunction).toHaveBeenCalledTimes(1));
 
