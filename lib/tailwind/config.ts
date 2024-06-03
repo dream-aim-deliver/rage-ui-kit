@@ -6,7 +6,6 @@ const content = [
 
 const theme = {
   extend: {
- 
     container: {
       center: true,
       padding: "2rem",
