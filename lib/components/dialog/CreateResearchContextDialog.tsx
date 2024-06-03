@@ -64,7 +64,6 @@ export const CreateResearchContextDialog = ({
   onSubmit,
   ...props
 }: CreateResearchContextDialogProps) => {
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,9 +77,7 @@ export const CreateResearchContextDialog = ({
   };
 
   return (
-
     <ShadcnDialog {...props}>
-
       <DialogTrigger asChild>
         <Button variant="default" size="icon" label={<PlusCircle />} />
       </DialogTrigger>
