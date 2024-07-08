@@ -72,9 +72,12 @@ export const CreateConversationDialog = ({
 
       <DialogContent
         className={cn(
+          "flex flex-col items-center justify-between gap-medium",
           "sm:max-w-md",
+          "w-full",
+          "p-4",
           "bg-neutral-100 dark:bg-neutral-800",
-          "text-black dark:text-white",
+          "text-black dark:text-white"
         )}
       >
         <DialogClose asChild className="absolute top-2 right-2" />
@@ -88,7 +91,7 @@ export const CreateConversationDialog = ({
 
         <ShadcnForm {...form}>
           <form onSubmit={form.handleSubmit(onSubmitWrapper)}>
-            <div className={cn("mt-small mb-small")}>
+            <div className="flex flex-col items-stretch justify-between gap-medium">
               <FormField
                 control={form.control}
                 name="conversationTitle"
@@ -104,7 +107,7 @@ export const CreateConversationDialog = ({
                             ? "border-error-500"
                             : "border-neutral-300",
                         )}
-                        placeholder="Enter a title for the conversation"
+                        placeholder="Enter a title"
                         {...field}
                       />
                     </FormControl>
