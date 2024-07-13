@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { Send } from "lucide-react";
+import { SendHorizontal } from "lucide-react";
 import { cn } from "@/utils/utils";
 
 export interface SendMessageProps {
@@ -32,7 +32,7 @@ export const SendMessage = (props: SendMessageProps) => {
   return (
     <div className="relative flex flex-row items-center justify-between gap-2">
       <Textarea
-        className="dark:text-white"
+        className="dark:text-white dark:bg-gray-700"
         value={content}
         onChange={handleContentChange}
         onKeyDown={handleKeyPress}
@@ -41,15 +41,16 @@ export const SendMessage = (props: SendMessageProps) => {
         className={cn(
           "flex flex-col items-center",
           "rounded-full p-2",
-          "self-end",
-          "bg-brand-500 hover:bg-brand-800 active:bg-slate-950",
-          "hover:text-white"
+          "self-middle",
+          "bg-brand-600 hover:bg-brand-800 active:bg-brand-900",
+          "hover:text-white",
+          "shadow-lg"
         )}
         onClick={handleSend}
       >
-        <Send size={16} />
+        <SendHorizontal size={16} color="white"/>
       </div>
-      <textarea />
+      
     </div>
   );
 };
