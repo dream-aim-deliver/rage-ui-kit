@@ -17,7 +17,7 @@ export interface MessageProps {
 
 export const Message = (props: MessageProps) => {
     return (
-        <div className="flex flex-row items-center justify-between gap-2 bg=red">
+        <div className="flex flex-row items-center justify-between gap-2">
             <Card>
                 <CardContent>
                     <p>Card Content</p>
