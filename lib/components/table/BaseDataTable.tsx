@@ -10,6 +10,9 @@ import {
   getSortedRowModel,
   ColumnFiltersState,
   getFilteredRowModel,
+  FilterFn,
+  SortingFn,
+  sortingFns,
 } from "@tanstack/react-table"
 
 import {
@@ -32,19 +35,61 @@ import { ArrowBigLeft, ArrowBigRight, ChevronFirst, ChevronLast, } from "lucide-
 import { useState } from "react";
 import React from "react";
 import { Input } from "@/components/ui/input";
+import { compareItems, RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 
 
+declare module '@tanstack/react-table' {
+  //add fuzzy filter to the filterFns
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo
+  }
+}
 
+// Custom fuzzy filter function that will apply ranking info to rows (using match-sorter utils)
+export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+
+  // 1. Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value)
+
+  // 2. Store the itemRank info
+  addMeta({
+    itemRank,
+  })
+
+  // 3. Return if the item should be filtered in/out
+  return itemRank.passed
+}
+
+// Custom fuzzy sort function that will sort by rank if the row has ranking information
+export const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+  let dir = 0
+
+  // 1. Only sort by rank if the column has ranking information
+  if (rowA.columnFiltersMeta[columnId]) {
+    dir = compareItems(
+      rowA.columnFiltersMeta[columnId]?.itemRank!,
+      rowB.columnFiltersMeta[columnId]?.itemRank!
+    )
+  }
+
+  // 2. Provide an alphanumeric fallback for when the item ranks are equal
+  return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir
+}
 
 
 export interface BaseDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  filterable?: boolean
 }
 
 export function BaseDataTable<TData, TValue>({
   columns,
   data,
+  filterable = false,
   ...props
 }: BaseDataTableProps<TData, TValue>) {
 
@@ -52,19 +97,29 @@ export function BaseDataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
+  const [globalFilter, setGlobalFilter] = React.useState('')
+  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data,
     columns,
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+    globalFilterFn: 'fuzzy',
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
+      globalFilter,
+      rowSelection
     }
   })
 
@@ -76,6 +131,15 @@ export function BaseDataTable<TData, TValue>({
   return (
 
     <div className={cn("flex flex-col gap-y-4")}>
+
+      <div>
+        <Input
+          placeholder="Search all columns..."
+          value={globalFilter ?? ''}
+          onChange={event => setGlobalFilter(event.target.value)}
+          className={cn("p-2 font-lg shadow border border-block")}
+        />
+      </div>
 
       <div className={cn("rounded-md border")}>
         <ShadcnTable {...props}>
