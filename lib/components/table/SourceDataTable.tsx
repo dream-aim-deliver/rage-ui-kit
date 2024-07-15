@@ -1,12 +1,12 @@
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { z } from 'zod';
-import { BaseDataTable, } from './BaseDataTable';
+import { BaseDataTable, fuzzyFilter, fuzzySort, } from './BaseDataTable';
 import { SourceDataTableActionsDropdown } from '../dropdown/SourceDataTableActionsDropdown';
 import { ArrowUpDown } from 'lucide-react';
-import { Button } from '@/components/button/Button';
 import { Button as ShadcnButton } from '@/ui/button';
 import { cn } from '@/utils/utils';
 import React from 'react';
+import { Checkbox } from '@/ui/checkbox';
 
 
 const SourceDataSchema = z.object({
@@ -39,19 +39,43 @@ const sortableHeader = (header: string, column: Column<SourceData>) => {
 
 const columns: ColumnDef<SourceData>[] = [
     {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={
+                    table.getIsAllPageRowsSelected() ||
+                    (table.getIsSomePageRowsSelected() && "indeterminate")
+                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+        ),
+    },
+    {
         accessorKey: "id",
-        header: ({ column }) => { return sortableHeader("ID", column) }
+        header: ({ column }) => { return sortableHeader("ID", column) },
     },
     {
         accessorKey: "name",
-        header: ({ column }) => { return sortableHeader("Name", column) }
+        header: ({ column }) => { return sortableHeader("Name", column) },
+        sortingFn: fuzzySort,
     },
     {
         accessorKey: "relative_path",
         header: ({ column }) => { return sortableHeader("Relative Path", column) },
         cell: props => {
-        const value = props.getValue()
-        return <div className="whitespace-nowrap">{value as React.ReactNode}</div> }
+            const value = props.getValue()
+            return <div className="whitespace-nowrap">{value as React.ReactNode}</div>
+        },
+        filterFn: fuzzyFilter,
+        sortingFn: fuzzySort,
     },
     {
         accessorKey: "type",
