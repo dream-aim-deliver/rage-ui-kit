@@ -75,12 +75,12 @@ export const CreateConversationDialog = ({
           "flex flex-col items-center justify-between gap-medium",
           "sm:max-w-md",
           "w-full",
-          "p-4",
+          "py-8",
           "bg-neutral-100 dark:bg-neutral-800",
-          "text-black dark:text-white"
+          "text-black dark:text-white",
         )}
       >
-        <DialogClose asChild className="absolute top-2 right-2" />
+        <DialogClose asChild />
 
         <DialogHeader>
           <DialogTitle>New conversation</DialogTitle>
@@ -91,7 +91,7 @@ export const CreateConversationDialog = ({
 
         <ShadcnForm {...form}>
           <form onSubmit={form.handleSubmit(onSubmitWrapper)}>
-            <div className="flex flex-col items-stretch justify-between gap-medium">
+            <div className="flex flex-col items-stretch gap-medium">
               <FormField
                 control={form.control}
                 name="conversationTitle"
@@ -103,11 +103,14 @@ export const CreateConversationDialog = ({
                       <ShadcnInput
                         className={cn(
                           "text-neutral-900",
+                          "w-full",
+                          "lg:w-80",
+                          "md:w-80",
                           form.formState.errors.conversationTitle
                             ? "border-error-500"
                             : "border-neutral-300",
                         )}
-                        placeholder="Enter a title"
+                        placeholder="Enter a title to start a conversation"
                         {...field}
                       />
                     </FormControl>
@@ -118,9 +121,9 @@ export const CreateConversationDialog = ({
               />
             </div>
 
-            <div className={cn("text-center")}>
+            <div className={cn("text-center mt-medium")}>
               <Button
-                className="mt-large"
+                className=""
                 variant="default"
                 size="default"
                 label="Create new conversation"

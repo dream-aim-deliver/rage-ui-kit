@@ -76,8 +76,11 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
           "sm:max-w-md",
           "w-full",
           "p-4",
+          "px-7",
           "bg-neutral-100 dark:bg-neutral-800",
-          "text-black dark:text-white"
+          "text-black dark:text-white",
+          "border",
+          "rounded-lg",
         )}
       >
         <CardHeader>
@@ -99,7 +102,7 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                           "text-neutral-900",
                           form.formState.errors.userName
                             ? "border-error-500"
-                            : "border-neutral-300"
+                            : "border-neutral-300",
                         )}
                         placeholder="Enter your username"
                         {...field}
@@ -123,7 +126,7 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                           "rounded-lg",
                           form.formState.errors.userPassword
                             ? "border-error-500"
-                            : "border-neutral-300"
+                            : "border-neutral-300",
                         )}
                       >
                         <ShadcnInput
@@ -133,6 +136,8 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                             "focus:outline-none",
                             "focus:ring-0",
                             "ring-0",
+                            "focus-visible:ring-0",
+                            "focus-visible:outline-none",
                           )}
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
@@ -145,7 +150,8 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                             "",
                             "text-black dark:text-black",
                             "bg-none",
-                            "border-none"
+                            "border-none",
+                            "pr-1",
                           )}
                         >
                           {showPassword ? (
@@ -160,13 +166,15 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
                   </FormItem>
                 )}
               />
-              <Button
-                className=""
-                variant="default"
-                size="default"
-                label="Login"
-                type="submit"
-              />
+              <div className={cn("text-center")}>
+                <Button
+                  className=""
+                  variant="default"
+                  size="default"
+                  label="Login"
+                  type="submit"
+                />
+              </div>
             </div>
           </form>
         </ShadcnForm>

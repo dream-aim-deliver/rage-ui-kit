@@ -25,7 +25,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { PiIcon, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 /**
  * Interface representing the input values for the onSubmit function.
@@ -81,19 +81,17 @@ export const CreateResearchContextDialog = ({
   return (
     <ShadcnDialog {...props}>
       <DialogTrigger asChild>
-        <Button
-          variant="default"
-          size="icon"
-          label={<PlusCircle />} // Carla: find a good icon
-        />
+        <Button variant="default" size="icon" label={<PlusCircle />} />
       </DialogTrigger>
 
       <DialogContent
         className={cn(
+          "flex flex-col items-center justify-between gap-large",
           "sm:max-w-md",
-          "flex flex-col items-center justify-between gap-4",
+          "w-full",
+          "py-8",
           "bg-neutral-100 dark:bg-neutral-800",
-          "text-black dark:text-white"
+          "text-black dark:text-white",
         )}
       >
         <DialogClose asChild />
@@ -107,20 +105,24 @@ export const CreateResearchContextDialog = ({
 
         <ShadcnForm {...form}>
           <form onSubmit={form.handleSubmit(onSubmitWrapper)}>
-            <div className="flex flex-col gap-medium">
+            <div className="flex flex-col items-center gap-medium">
               <FormField
                 control={form.control}
                 name="researchContextName"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className={cn("xl:ml-9")}>
                     <FormLabel>Name *</FormLabel>
                     <FormControl>
                       <ShadcnInput
                         className={cn(
                           "text-neutral-900",
+                          "lg:w-80",
+                          "md:w-80",
+                          "sm:items-center",
+
                           form.formState.errors.researchContextName
                             ? "border-error-500"
-                            : "border-neutral-300"
+                            : "border-neutral-300",
                         )}
                         placeholder="Enter a name for the research context"
                         {...field}
@@ -130,35 +132,41 @@ export const CreateResearchContextDialog = ({
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="researchContextDescription"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className={cn("xl:ml-9")}>
                     <FormLabel>Description *</FormLabel>
                     <FormControl>
                       <ShadcnInput
                         className={cn(
                           "text-neutral-900 ",
+                          "lg:w-80",
+                          "md:w-80",
+
                           form.formState.errors.researchContextDescription
                             ? "border-error-500"
-                            : "border-neutral-300"
+                            : "border-neutral-300",
                         )}
                         placeholder="Enter a description for the research context"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className={cn("text-error-500")} />
+                    <FormMessage className={cn("text-error-500 ")} />
                   </FormItem>
                 )}
               />
-              <Button
-                className="mt-large"
-                variant="default"
-                size="default"
-                label="Create new research context"
-                type="submit"
-              />
+              <div className={cn("text-center")}>
+                <Button
+                  className=""
+                  variant="default"
+                  size="default"
+                  label="Create new research context"
+                  type="submit"
+                />
+              </div>
             </div>
           </form>
         </ShadcnForm>
