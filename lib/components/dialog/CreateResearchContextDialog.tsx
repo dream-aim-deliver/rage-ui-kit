@@ -50,12 +50,10 @@ export interface CreateResearchContextDialogProps {
  */
 const formSchema = z.object({
   researchContextName: z.string().min(6, {
-    message:
-      "Research context name is required and must be at least 6 characters long",
+    message: "Name must be at least 6 characters long.",
   }),
   researchContextDescription: z.string().min(10, {
-    message:
-      "Research context description is required and must be at least 10 characters long",
+    message: "Description must be at least 10 characters long.",
   }),
 });
 

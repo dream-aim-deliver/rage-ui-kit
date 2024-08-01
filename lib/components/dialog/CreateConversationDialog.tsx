@@ -42,7 +42,7 @@ const formSchema = z.object({
     .string()
     .transform((val) => val.trim()) // Remove leading and trailing whitespace
     .refine((val) => val.length >= 6, {
-      message: "The title is required and must be at least 6 characters long",
+      message: "The title must be at least 6 characters long.",
     }),
 });
 

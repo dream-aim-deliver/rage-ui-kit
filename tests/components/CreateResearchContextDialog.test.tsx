@@ -83,7 +83,7 @@ describe("<CreateResearchContextDialog/>", () => {
     // Check if mockButtonAction has been called
     await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
 
-    const errorMessages = screen.queryAllByText(/is required/i);
+    const errorMessages = screen.queryAllByText(/characters long/i);
     expect(errorMessages).toHaveLength(2);
 
     // Test for empty "Description"
@@ -95,7 +95,7 @@ describe("<CreateResearchContextDialog/>", () => {
     });
 
     await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
-    const errorMessages2 = screen.queryAllByText(/is required/i);
+    const errorMessages2 = screen.queryAllByText(/characters long/i);
     expect(errorMessages2).toHaveLength(1);
 
     // Test for empty "Name"
@@ -109,7 +109,7 @@ describe("<CreateResearchContextDialog/>", () => {
     });
 
     await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
-    const errorMessages3 = screen.queryAllByText(/is required/i);
+    const errorMessages3 = screen.queryAllByText(/characters long/i);
     expect(errorMessages3).toHaveLength(1);
   });
 });
