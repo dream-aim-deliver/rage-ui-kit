@@ -28,6 +28,10 @@ export default defineConfig({
         find: /^@\/utils\/(.*)/,
         replacement: path.resolve(__dirname, "lib/utils/$1"),
       },
+      {
+        find: /^@\/lib\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/$1"),
+      },
     ],
   },
   test: {
@@ -47,6 +51,10 @@ export default defineConfig({
       {
         find: /^@\/utils\/(.*)/,
         replacement: path.resolve(__dirname, "lib/utils/$1"),
+      },
+      {
+        find: /^@\/lib\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/$1"),
       },
     ],
     clearMocks: true,

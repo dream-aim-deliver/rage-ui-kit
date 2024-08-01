@@ -28,6 +28,8 @@ const theme = {
       "accordion-up": "accordion-up 0.2s ease-out",
     },
     colors: {
+      black: "#000",
+      white: "#fff",
       brand: {
         100: "#e0f2fe",
         200: "#bae6fd",
@@ -60,6 +62,27 @@ const theme = {
         800: "#1e293b",
         900: "#0f172a",
       },
+      error: {
+        100: "#ffe5e5",
+        200: "#ffcccc",
+        300: "#ff9999",
+        400: "#ff6666",
+        500: "#ef4444",
+        600: "#e62626",
+        700: "#cc1f1f",
+        800: "#b31919",
+        900: "#991313",
+      },
+    },
+    spacing: {
+      smallest: "0.125rem",
+      smaller: "0.25rem",
+      small: "0.5rem",
+      medium: "1rem",
+      large: "1.5rem",
+      larger: "2rem",
+      largest: "3rem",
+      px: "1px",
     },
   },
 };

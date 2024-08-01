@@ -8,8 +8,8 @@ const preview: Preview = {
       darkClass: "dark",
       lightClass: "light",
       stylePreview: true,
-      dark: { ...themes.dark, appBg: "black" },
-      light: { ...themes.normal, appBg: "#f7fafc" },
+      dark: { ...themes.dark, appBg: "black", textColor: "white", textInverseColor: "black"},
+      light: { ...themes.normal, appBg: "#f7fafc", textColor: "#1a202c", textInverseColor: "#f7fafc"},
     },
     controls: {
       matchers: {

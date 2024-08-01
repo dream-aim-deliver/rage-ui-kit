@@ -21,6 +21,10 @@ export interface ButtonProps {
    */
   label: string | React.ReactNode;
   /**
+   * Button type. Can be "button", "submit", or "reset"
+   */
+  type?: "button" | "submit" | "reset";
+  /**
    * Optional click handler
    */
   onClick?: () => void;
@@ -37,11 +41,12 @@ export interface ButtonProps {
 export const Button = ({
   variant = "default",
   size = "default",
+  type = "button",
   label,
   ...props
 }: ButtonProps) => {
   return (
-    <ShadcnButton variant={variant} size={size} {...props}>
+    <ShadcnButton variant={variant} size={size} type={type} {...props}>
       {label}
     </ShadcnButton>
   );
