@@ -74,7 +74,7 @@ describe("<CreateConversationDialog/>", () => {
     // Check if mockButtonAction has been called
     await waitFor(() => expect(mockFunction).not.toHaveBeenCalled());
 
-    const errorMessages = screen.queryAllByText(/is required/i);
+    const errorMessages = screen.queryAllByText(/characters long/i);
     expect(errorMessages).toHaveLength(1);
 
     // Test for empty "Title"
