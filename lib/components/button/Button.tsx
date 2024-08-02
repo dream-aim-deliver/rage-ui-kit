@@ -37,6 +37,11 @@ export interface ButtonProps {
    * Optional tailwindcss classes
    */
   className?: string;
+
+  /**
+   * Optional title attribute
+   */
+  title?: string;
 }
 
 /**
