@@ -1,61 +1,87 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import {
-    SourceDataAGGrid,
-    SourceDataRow,
+  SourceDataAGGrid,
+  SourceDataRow,
 } from "@/components/table/SourceDataAGGrid";
 
 const meta: Meta = {
-    title: "AGGrid/SourceData",
-    component: SourceDataAGGrid,
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
+  title: "AGGrid/SourceData",
+  component: SourceDataAGGrid,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
 } satisfies Meta<typeof SourceDataAGGrid>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 function randomChoice<T>(list: T[]): T {
-    const randomIndex = Math.floor(Math.random() * list.length);
-    return list[randomIndex];
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
 }
 
 const thousand = Array.from({ length: 1000 }, (_, i) => i + 1);
 
+function getRandomDate(start: Date, end: Date): Date {
+  const startTimestamp = start.getTime();
+  const endTimestamp = end.getTime();
+  const randomTimestamp =
+    startTimestamp + Math.random() * (endTimestamp - startTimestamp);
+  return new Date(randomTimestamp);
+}
+
 const dataGenerator = () => {
-    const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
-    const statuses = [
-        "created",
-        "available",
-        "unavailable",
-        "inconsistent_dataset",
-    ];
-    const extensions = ["txt", "csv", "json", "xml"];
-    const ext = randomChoice(extensions);
-    const piece_number = randomChoice(thousand);
+  const topics = [
+    "wildfires",
+    "earthquakes",
+    "floods",
+    "hurricanes",
+    "tornadoes",
+  ];
+  const file_number = randomChoice(thousand);
+  const extensions = ["txt", "csv", "json", "xml"];
+  const ext = randomChoice(extensions);
+  const relative_path = `/client_${randomChoice<number>(thousand)}/${randomChoice<string>(topics)}/file_${file_number}.${ext}`;
 
-    const datum: SourceDataRow = {
-        id: randomChoice(thousand),
-        name: `Piece ${piece_number}`,
-        relative_path: `/client${randomChoice<number>(thousand)}/topic${randomChoice<string>(alphabet)}/piece_${piece_number}.${ext}`,
-        type: ext,
-        protocol: "S3",
-        status: randomChoice(statuses),
-    };
+  const statuses = [
+    "created",
+    "available",
+    "unavailable",
+    "inconsistent_dataset",
+  ];
 
-    return datum;
+  const startDate_c = new Date(2024, 0, 1);
+  const endDate_c = new Date(2024, 1, 1);
+  const created_at = getRandomDate(startDate_c, endDate_c).toISOString();
+
+  const startDate_u = new Date(2024, 1, 2);
+  const endDate_u = new Date();
+  const updated_at = getRandomDate(startDate_u, endDate_u).toISOString();
+
+  const datum: SourceDataRow = {
+    id: randomChoice(thousand),
+    name: `File ${file_number}`,
+    relative_path: relative_path,
+    type: ext,
+    protocol: "S3",
+    status: randomChoice(statuses),
+    created_at: created_at,
+    updated_at: updated_at,
+  };
+
+  return datum;
 };
 
 export const SmallTable: Story = {
-    args: {
-        rowData: Array.from({ length: 5 }, dataGenerator),
-    },
+  args: {
+    rowData: Array.from({ length: 5 }, dataGenerator),
+  },
 };
 
 export const LargeTable: Story = {
-    args: {
-        rowData: Array.from({ length: 106 }, dataGenerator),
-    },
+  args: {
+    rowData: Array.from({ length: 106 }, dataGenerator),
+  },
 };
