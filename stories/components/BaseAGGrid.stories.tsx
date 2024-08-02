@@ -5,7 +5,7 @@ import { BaseAGGrid } from "@/components/table/BaseAGGrid";
 import { useState } from "react";
 
 const meta: Meta = {
-  title: "AGGrid/Base",
+  title: "Components/AGGrid/Base",
   component: BaseAGGrid,
   parameters: {
     layout: "centered",
