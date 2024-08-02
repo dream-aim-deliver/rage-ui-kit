@@ -6,7 +6,7 @@ import {
 } from "@/components/table/SourceDataAGGrid";
 
 const meta: Meta = {
-  title: "AGGrid/SourceData",
+  title: "Components/AGGrid/SourceData",
   component: SourceDataAGGrid,
   parameters: {
     layout: "centered",
@@ -83,5 +83,17 @@ export const SmallTable: Story = {
 export const LargeTable: Story = {
   args: {
     rowData: Array.from({ length: 106 }, dataGenerator),
+  },
+};
+
+export const WithAlertSelectionAction: Story = {
+  args: {
+    rowData: Array.from({ length: 106 }, dataGenerator),
+    rowSelectionProps: {
+        rowSelectionAction: (selectedRows: SourceDataRow[]) => {
+        alert("Selected rows:\n" + selectedRows.map(row => JSON.stringify(row)).join('\n'));
+        },
+        rowSelectionActionLabel: "Alert Selected Rows",
+        },
   },
 };

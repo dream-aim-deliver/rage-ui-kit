@@ -5,7 +5,7 @@ import {
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "DataTable/SourceData",
+  title: "Components/DataTable/SourceData",
   component: SourceDataTable,
   parameters: {
     layout: "centered",

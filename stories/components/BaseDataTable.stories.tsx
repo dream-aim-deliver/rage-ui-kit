@@ -15,7 +15,7 @@ type PaymentExample = {
 };
 
 const meta: Meta<BaseDataTableProps<PaymentExample, unknown>> = {
-  title: "DataTable/Base",
+  title: "Components/DataTable/Base",
   component: BaseDataTable,
   parameters: {
     layout: "centered",

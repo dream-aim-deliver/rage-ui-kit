@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BaseAGGrid } from "./BaseAGGrid";
+import { BaseAGGrid, RowSelectionProps } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
 
@@ -16,11 +16,16 @@ const SourceDataRowSchema = z.object({
 
 export type SourceDataRow = z.infer<typeof SourceDataRowSchema>;
 
+
 export interface SourceDataAGGridProps {
   rowData: SourceDataRow[];
+  rowSelectionProps?: RowSelectionProps<SourceDataRow>;
 }
 
-export function SourceDataAGGrid({ rowData }: SourceDataAGGridProps) {
+export function SourceDataAGGrid({ 
+    rowData,
+    rowSelectionProps,
+}: SourceDataAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
       headerCheckboxSelection: true,
@@ -71,7 +76,7 @@ export function SourceDataAGGrid({ rowData }: SourceDataAGGridProps) {
 
   return (
     <div>
-      <BaseAGGrid rowData={rowData} columnDefs={columnDefs} />
+      <BaseAGGrid rowData={rowData} columnDefs={columnDefs} rowSelectionProps={rowSelectionProps} />
     </div>
   );
 }
