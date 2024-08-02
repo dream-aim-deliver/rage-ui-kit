@@ -2,18 +2,18 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button as ShadcnButton } from "@/components/button/index";
 
 import {
-  SourceDataAGGrid,
-  SourceDataRow,
-} from "@/components/table/SourceDataAGGrid";
+  ConversationAGGrid,
+  ConversationRow,
+} from "@/components/table/ConversationAGGrid";
 
 const meta: Meta = {
-  title: "Components/AGGrid/SourceData",
-  component: SourceDataAGGrid,
+  title: "Components/AGGrid/Conversation",
+  component: ConversationAGGrid,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof SourceDataAGGrid>;
+} satisfies Meta<typeof ConversationAGGrid>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -41,17 +41,8 @@ const dataGenerator = () => {
     "hurricanes",
     "tornadoes",
   ];
-  const file_number = randomChoice(thousand);
-  const extensions = ["txt", "csv", "json", "xml"];
-  const ext = randomChoice(extensions);
-  const relative_path = `/client_${randomChoice<number>(thousand)}/${randomChoice<string>(topics)}/file_${file_number}.${ext}`;
-
-  const statuses = [
-    "created",
-    "available",
-    "unavailable",
-    "inconsistent_dataset",
-  ];
+  const random_topic = randomChoice(topics);
+  const conv_number = randomChoice(thousand);
 
   const startDate_c = new Date(2024, 0, 1);
   const endDate_c = new Date(2024, 1, 1);
@@ -61,13 +52,9 @@ const dataGenerator = () => {
   const endDate_u = new Date();
   const updated_at = getRandomDate(startDate_u, endDate_u).toISOString();
 
-  const datum: SourceDataRow = {
+  const datum: ConversationRow = {
     id: randomChoice(thousand),
-    name: `File ${file_number}`,
-    relative_path: relative_path,
-    type: ext,
-    protocol: "S3",
-    status: randomChoice(statuses),
+    title: `Conversation number ${conv_number}, about ${random_topic}`,
     created_at: created_at,
     updated_at: updated_at,
   };
@@ -98,9 +85,9 @@ const alertRawButton = ({ onClick }: { onClick: () => void }) => {
   );
 };
 
-const alertRawCallBack = (selectedRows: SourceDataRow[]) => {
+const alertRawCallBack = (selectedRows: ConversationRow[]) => {
   alert(
-    "Selected rows:\n\n" +
+    "Dump of the selected rows:\n\n" +
       selectedRows.map((row) => JSON.stringify(row)).join("\n\n"),
   );
 };
@@ -108,18 +95,18 @@ const alertRawCallBack = (selectedRows: SourceDataRow[]) => {
 const alertButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <ShadcnButton
-      label={"Alert selected file names"}
+      label={"Alert selected titles"}
       variant="default"
       onClick={onClick}
-      title="Alert the file names of the selected rows"
+      title="Alert the titles of the selected rows"
     />
   );
 };
 
-const alertCallBack = (selectedRows: SourceDataRow[]) => {
+const alertCallBack = (selectedRows: ConversationRow[]) => {
   alert(
-    "Selected file names:\n\n- " +
-      selectedRows.map((row) => row.name).join("\n- "),
+    "Titles of the selected conversaitons:\n\n- " +
+      selectedRows.map((row) => row.title).join("\n- "),
   );
 };
 

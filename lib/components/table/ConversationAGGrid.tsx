@@ -3,28 +3,24 @@ import { BaseAGGrid, componentWithCallBack } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
 
-const SourceDataRowSchema = z.object({
+const ConversationRowSchema = z.object({
   id: z.number(),
-  name: z.string(),
-  relative_path: z.string(),
-  type: z.string(),
-  protocol: z.string(),
-  status: z.string(),
+  title: z.string(),
   created_at: z.string(),
   updated_at: z.string(),
 });
 
-export type SourceDataRow = z.infer<typeof SourceDataRowSchema>;
+export type ConversationRow = z.infer<typeof ConversationRowSchema>;
 
-export interface SourceDataAGGridProps {
-  rowData: SourceDataRow[];
-  buttonsWithCallBack?: componentWithCallBack<SourceDataRow>[];
+export interface ConversationAGGridProps {
+  rowData: ConversationRow[];
+  buttonsWithCallBack?: componentWithCallBack<ConversationRow>[];
 }
 
-export function SourceDataAGGrid({
+export function ConversationAGGrid({
   rowData,
   buttonsWithCallBack,
-}: SourceDataAGGridProps) {
+}: ConversationAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
       headerCheckboxSelection: true,
@@ -44,24 +40,8 @@ export function SourceDataAGGrid({
       },
     },
     {
-      headerName: "Name",
-      field: "name",
-    },
-    {
-      headerName: "Relative Path",
-      field: "relative_path",
-    },
-    {
-      headerName: "Type",
-      field: "type",
-    },
-    {
-      headerName: "Protocol",
-      field: "protocol",
-    },
-    {
-      headerName: "Status",
-      field: "status",
+      headerName: "Title",
+      field: "title",
     },
     {
       headerName: "Created At",
