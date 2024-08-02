@@ -1,8 +1,8 @@
-import { ColDef, GridApi, GridReadyEvent } from "ag-grid-community";
+import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 
 export interface BaseAGGridProps<TRowData> {
     rowData: TRowData[];
@@ -13,7 +13,9 @@ export function BaseAGGrid<TRowData>({
     rowData,
     columnDefs,
 }: BaseAGGridProps<TRowData>) {
-    const [gridApi, setGridApi] = useState<GridApi<TRowData> | null>(null);
+
+    const gridRef = useRef<AgGridReact<TRowData>>(null);
+
 
     // AG Grid set up:
     const defaultColDef = useMemo(() => {
@@ -35,15 +37,11 @@ export function BaseAGGrid<TRowData>({
     }, []);
 
     function clearColumnFilters() {
-        if (gridApi) {
-            gridApi.setFilterModel(null);
-        }
+        gridRef.current!.api.setFilterModel(null);
     }
 
     // AG Grid Quick Filter set up:
     // to enable a fuzzy search bar
-    const gridRef = useRef<AgGridReact>(null);
-
     const onFilterTextBoxChanged = useCallback(() => {
         gridRef.current!.api.setGridOption(
             "quickFilterText",
@@ -84,9 +82,6 @@ export function BaseAGGrid<TRowData>({
                     paginationPageSize={10}
                     paginationPageSizeSelector={[10, 25, 50]}
                     ref={gridRef}
-                    onGridReady={(event: GridReadyEvent<TRowData>) => {
-                        setGridApi(event.api);
-                    }}
                 />
             </div>
         </div>
