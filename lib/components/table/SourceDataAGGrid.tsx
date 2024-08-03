@@ -14,13 +14,26 @@ const SourceDataRowSchema = z.object({
   updated_at: z.string(),
 });
 
+/**
+ * SourceDataRow is a type that represents the structure of the data that will be displayed in the AG Grid.
+ */
 export type SourceDataRow = z.infer<typeof SourceDataRowSchema>;
 
+/**
+ * SourceDataAGGridProps is an interface that defines the props for the SourceDataAGGrid component.
+ * @param rowData: the data to be displayed in the AG Grid. Must be an array of SourceDataRow objects.
+ * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
+ */
 export interface SourceDataAGGridProps {
   rowData: SourceDataRow[];
   buttonsWithCallBack?: componentWithCallBack<SourceDataRow>[];
 }
 
+/**
+ * SourceDataAGGrid is a react component that displays a table of source data in an AG Grid.
+ * @param rowData: the data to be displayed in the AG Grid. Must be an array of SourceDataRow objects.
+ * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
+ */
 export function SourceDataAGGrid({
   rowData,
   buttonsWithCallBack,
@@ -56,10 +69,6 @@ export function SourceDataAGGrid({
       field: "type",
     },
     {
-      headerName: "Protocol",
-      field: "protocol",
-    },
-    {
       headerName: "Status",
       field: "status",
     },
@@ -71,11 +80,17 @@ export function SourceDataAGGrid({
       headerName: "Updated At",
       field: "updated_at",
     },
+    {
+      headerName: "Protocol",
+      field: "protocol",
+    },
   ]);
 
   return (
     <div>
       <BaseAGGrid
+        maxGridHeight={760}
+        gridWidth={1000}
         rowData={rowData}
         columnDefs={columnDefs}
         componentsWithCallBack={buttonsWithCallBack}

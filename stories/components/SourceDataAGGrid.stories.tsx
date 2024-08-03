@@ -44,7 +44,7 @@ const dataGenerator = () => {
   const file_number = randomChoice(thousand);
   const extensions = ["txt", "csv", "json", "xml"];
   const ext = randomChoice(extensions);
-  const relative_path = `/client_${randomChoice<number>(thousand)}/${randomChoice<string>(topics)}/file_${file_number}.${ext}`;
+  const relative_path = `/sda/${randomChoice<number>(thousand)}/${randomChoice<string>(topics)}/file_${file_number}.${ext}`;
 
   const statuses = [
     "created",
