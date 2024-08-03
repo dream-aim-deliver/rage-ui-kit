@@ -10,13 +10,26 @@ const ConversationRowSchema = z.object({
   updated_at: z.string(),
 });
 
+/**
+ * ConversationRow is a type that represents the structure of the data that will be displayed in the AG Grid.
+ */
 export type ConversationRow = z.infer<typeof ConversationRowSchema>;
 
+/**
+ * ConversationAGGridProps is an interface that defines the props for the ConversationAGGrid component.
+ * @param rowData: the data to be displayed in the AG Grid. Must be an array of ConversationRow objects.
+ * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
+ */
 export interface ConversationAGGridProps {
   rowData: ConversationRow[];
   buttonsWithCallBack?: componentWithCallBack<ConversationRow>[];
 }
 
+/**
+ * ConversationAGGrid is a react component that displays a table of conversations in an AG Grid.
+ * @param rowData: the data to be displayed in the AG Grid. Must be an array of ConversationRow objects.
+ * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
+ */
 export function ConversationAGGrid({
   rowData,
   buttonsWithCallBack,
@@ -56,6 +69,8 @@ export function ConversationAGGrid({
   return (
     <div>
       <BaseAGGrid
+        maxGridHeight={760}
+        gridWidth={730}
         rowData={rowData}
         columnDefs={columnDefs}
         componentsWithCallBack={buttonsWithCallBack}
