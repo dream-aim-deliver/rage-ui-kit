@@ -17,6 +17,10 @@ export interface ButtonProps {
    */
   size?: "sm" | "default" | "lg" | "icon";
   /**
+   * Is the button disabled?
+   */
+  disabled?: boolean;
+  /**
    * Button contents. Can be a string or a React node (e.g. an icon)
    */
   label: string | React.ReactNode;
@@ -33,6 +37,11 @@ export interface ButtonProps {
    * Optional tailwindcss classes
    */
   className?: string;
+
+  /**
+   * Optional title attribute
+   */
+  title?: string;
 }
 
 /**
