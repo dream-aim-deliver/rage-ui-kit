@@ -8,7 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { cn } from "@/utils/utils";
 import ImageComponent from "@/components/conversation/image-component";
 
-enum ROLEViewModel {
+export enum ROLEViewModel {
   USER = "user",
   AGENT = "agent",
 }

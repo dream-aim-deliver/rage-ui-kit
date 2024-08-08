@@ -1,5 +1,5 @@
 import { useState, FormEvent, KeyboardEvent } from "react";
-import { PrimaryButton } from "@/components/ui/primary-button";
+import { PrimaryAction, PrimaryButton } from "@/components/ui/primary-button";
 import { cn } from "@/utils/utils";
 
 export const SendMessageBox = ({
@@ -63,7 +63,11 @@ export const SendMessageBox = ({
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <PrimaryButton text="" action="send" onClick={buttonSubmit} />
+      <PrimaryButton
+        text=""
+        action={PrimaryAction.SEND}
+        onClick={buttonSubmit}
+      />
       <div className="w-1"></div>
     </form>
   );
