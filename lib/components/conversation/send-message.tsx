@@ -1,56 +1,74 @@
-import React, { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { SendHorizontal } from "lucide-react";
+import { useState, FormEvent, KeyboardEvent } from "react";
+import { PrimaryAction, PrimaryButton } from "@/components/ui/primary-button";
 import { cn } from "@/utils/utils";
 
-export interface SendMessageProps {
-  onSend: (content: string) => void;
-}
+export const SendMessageBox = ({
+  className = "",
+  onSendMessage = (message: string): void => {
+    console.log(
+      `GENERAL:: ERROR "Message won't be sent!! Override in parent component"  : ${message}`,
+    );
+  },
+}) => {
+  const [message, setMessage] = useState("");
 
-export const SendMessage = (props: SendMessageProps) => {
-  const [content, setContent] = useState<string>("");
-  const handleSend = () => {
-    props.onSend(content);
-    setContent("");
-  };
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setContent(e.target.value);
+    onSendMessage(message);
+    setMessage("");
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevent the default action to avoid a line break in the textarea
-      handleSend();
-      setContent("");
-    } else if (e.key === "a" && (e.ctrlKey || e.metaKey)) {
-      // Check for Ctrl+A or Cmd+A for selecting all text
-      e.preventDefault(); // Prevent the browser's select all action
-      e.currentTarget.select(); // Select all text in the textarea
+  const buttonSubmit = () => {
+    onSendMessage(message);
+    setMessage("");
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && e.shiftKey) {
+      e.preventDefault();
+      const cursorPosition = e.currentTarget.selectionStart;
+      setMessage(
+        message.slice(0, cursorPosition) + "\n" + message.slice(cursorPosition),
+      );
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      buttonSubmit();
     }
   };
+
   return (
-    <div className="relative flex flex-row items-center justify-between gap-2">
-      <Textarea
-        className="dark:text-white dark:bg-gray-700"
-        value={content}
-        onChange={handleContentChange}
-        onKeyDown={handleKeyPress}
-      />
-      <div
+    <form
+      onSubmit={onSubmit}
+      className={cn(
+        "shadow-lg",
+        "bg-neutral-100 dark:bg-neutral-800",
+        "flex items-center",
+        "justify-center",
+        "space-x-4",
+        className,
+      )}
+    >
+      <textarea
         className={cn(
-          "flex flex-col items-center",
-          "rounded-full p-2",
-          "self-middle",
-          "bg-brand-600 hover:bg-brand-800 active:bg-brand-900",
-          "hover:text-white",
-          "shadow-lg"
+          "text-gray-900 dark:text-white",
+          "dark:bg-neutral-900",
+          "rounded-xl",
+          "order-none",
+          "focus:outline-none",
+          "m-2",
+          "p-2",
+          "flex-grow",
         )}
-        onClick={handleSend}
-      >
-        <SendHorizontal size={16} color="white"/>
-      </div>
-      
-    </div>
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
+      <PrimaryButton
+        text=""
+        action={PrimaryAction.SEND}
+        onClick={buttonSubmit}
+      />
+      <div className="w-1"></div>
+    </form>
   );
 };
