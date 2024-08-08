@@ -1,15 +1,18 @@
 import { SendHorizonalIcon } from "lucide-react";
 import { cn } from "@/utils/utils";
 
+export enum PrimaryAction {
+  SEND = "SEND",
+}
 export type PrimaryButtonViewModel = {
   text?: string;
   url?: string;
-  action: "send";
+  action: PrimaryAction;
   onClick?: () => void;
 };
 export const PrimaryButton = ({
   text = "Primary Button",
-  action = "send",
+  action = PrimaryAction.SEND,
   onClick = () => {},
 }: PrimaryButtonViewModel) => {
   return (
@@ -26,7 +29,7 @@ export const PrimaryButton = ({
         )}
         onClick={onClick}
       >
-        {action === "send" && <SendHorizonalIcon />}
+        {action === PrimaryAction.SEND && <SendHorizonalIcon />}
         {text}
       </button>
     </div>
