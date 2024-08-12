@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ColDef, SizeColumnsToContentStrategy } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -92,6 +93,7 @@ export interface BaseAGGridProps<TRowData> {
   maxGridHeight?: number;
   gridWidth?: number | string;
   componentsWithCallBack?: componentWithCallBack<TRowData>[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AGGridProps?: any;
 }
 
@@ -170,19 +172,16 @@ export function BaseAGGrid<TRowData>({
 
   return (
     <div id="base-ag-grid" className={cn("flex flex-col")}>
-
       <div
         id="table-top"
         className={cn(
           "flex flex-col gap-medium bg-neutral-800  p-medium rounded-md",
         )}
       >
-
         <div
           id="table-top-button-group"
           className={cn("flex flex-row justify-center gap-medium")}
         >
-
           <div id="spinner" className={cn("flex w-small")}>
             {isLoading && <Spinner />}
           </div>
@@ -250,7 +249,7 @@ export function BaseAGGrid<TRowData>({
           paginationPageSize={13}
           paginationPageSizeSelector={[13, 25, 50, 100]}
           ref={gridRef}
-         // autoSizeStrategy={autoSizeStrategy}
+          // autoSizeStrategy={autoSizeStrategy}
 
           {...AGGridProps}
         />

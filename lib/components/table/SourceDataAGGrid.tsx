@@ -5,8 +5,8 @@ import { useState } from "react";
 
 const SourceDataRowSchema = z.object({
   id: z.string(),
-  type: z.literal('remote').default("remote").optional(),
-  provider: z.literal('kernel#s3').default("kernel#s3").optional(),
+  type: z.literal("remote").default("remote").optional(),
+  provider: z.literal("kernel#s3").default("kernel#s3").optional(),
   name: z.string(),
   relativePath: z.string(),
   createdAt: z.string(),
@@ -26,6 +26,7 @@ export interface SourceDataAGGridProps {
   isLoading: boolean;
   rowData: SourceDataRow[];
   buttonsWithCallBack?: componentWithCallBack<SourceDataRow>[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: any;
 }
 
@@ -38,7 +39,7 @@ export function SourceDataAGGrid({
   isLoading,
   rowData,
   buttonsWithCallBack,
-  props
+  props,
 }: SourceDataAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
@@ -75,8 +76,6 @@ export function SourceDataAGGrid({
       flex: 4,
     },
   ]);
-
-
 
   return (
     <div>
