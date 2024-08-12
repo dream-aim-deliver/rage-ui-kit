@@ -16,6 +16,7 @@ import { Label as ShadcnLabel } from "@/ui/label";
 
 import { cn } from "@/lib/utils/utils";
 import { FilterX } from "lucide-react";
+import { Spinner } from "../spinner";
 
 /**
  * RowSelectionAction is a generic type that defines the structure of the functions that will be called when a component in the custom header of the AG Grid is clicked.
@@ -85,11 +86,13 @@ export type componentWithCallBack<TRowData> = {
  * @param componentsWithCallBack: an array of objects containing a reactComponent and a callbackFunction
  */
 export interface BaseAGGridProps<TRowData> {
+  isLoading: boolean;
   rowData: TRowData[];
   columnDefs: ColDef[];
   maxGridHeight?: number;
-  gridWidth?: number;
+  gridWidth?: number | string;
   componentsWithCallBack?: componentWithCallBack<TRowData>[];
+  AGGridProps?: any;
 }
 
 /**
@@ -106,11 +109,13 @@ export interface BaseAGGridProps<TRowData> {
  * @returns a BaseAGGrid component
  */
 export function BaseAGGrid<TRowData>({
+  isLoading,
   rowData,
   columnDefs,
   maxGridHeight = 760,
   gridWidth = 1000,
   componentsWithCallBack: buttonsWithCallBack,
+  AGGridProps,
 }: BaseAGGridProps<TRowData>) {
   const gridRef = useRef<AgGridReact<TRowData>>(null);
 
@@ -165,16 +170,23 @@ export function BaseAGGrid<TRowData>({
 
   return (
     <div id="base-ag-grid" className={cn("flex flex-col")}>
+
       <div
         id="table-top"
         className={cn(
           "flex flex-col gap-medium bg-neutral-800  p-medium rounded-md",
         )}
       >
+
         <div
           id="table-top-button-group"
           className={cn("flex flex-row justify-center gap-medium")}
         >
+
+          <div id="spinner" className={cn("flex w-small")}>
+            {isLoading && <Spinner />}
+          </div>
+
           <div
             id="table-top-prop-buttons"
             className={cn("flex flex-grow justify-center gap-small")}
@@ -231,7 +243,6 @@ export function BaseAGGrid<TRowData>({
         <AgGridReact
           rowData={rowData}
           columnDefs={columnDefs}
-          autoSizeStrategy={autoSizeStrategy}
           defaultColDef={defaultColDef}
           rowSelection="multiple"
           suppressRowClickSelection={true}
@@ -239,6 +250,9 @@ export function BaseAGGrid<TRowData>({
           paginationPageSize={13}
           paginationPageSizeSelector={[13, 25, 50, 100]}
           ref={gridRef}
+         // autoSizeStrategy={autoSizeStrategy}
+
+          {...AGGridProps}
         />
       </div>
     </div>

@@ -62,14 +62,10 @@ const dataGenerator = () => {
   const updated_at = getRandomDate(startDate_u, endDate_u).toISOString();
 
   const datum: SourceDataRow = {
-    id: randomChoice(thousand),
-    name: `File ${file_number}`,
-    relative_path: relative_path,
-    type: ext,
-    protocol: "S3",
-    status: randomChoice(statuses),
-    created_at: created_at,
-    updated_at: updated_at,
+    id: randomChoice(thousand).toString(),
+    name: `File names can be long ${file_number}`,
+    relativePath: relative_path,
+    createdAt: created_at,
   };
 
   return datum;
