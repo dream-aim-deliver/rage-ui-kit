@@ -319,7 +319,9 @@ const QuickStartExampleComponent = () => {
     },
   ]);
 
-  return <BaseAGGrid rowData={rowData} columnDefs={columnDefs} />;
+  return (
+    <BaseAGGrid rowData={rowData} columnDefs={columnDefs} isLoading={false} />
+  );
 };
 
 export const QuickStartExample: Story = {
