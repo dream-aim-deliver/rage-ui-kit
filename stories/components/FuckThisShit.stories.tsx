@@ -74,7 +74,8 @@ export const WithAlertSelectionButtons: Story = {
     download: {
       isDownloading: false,
       progress: 40,
-      onDownload: (selectedRows) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onDownload: (selectedRows: any) => {
         console.log(selectedRows);
       },
     },
