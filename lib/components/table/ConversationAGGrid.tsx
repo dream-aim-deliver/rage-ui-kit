@@ -69,6 +69,7 @@ export function ConversationAGGrid({
   return (
     <div>
       <BaseAGGrid
+        isLoading={false} // TODO: Implement loading state
         maxGridHeight={760}
         gridWidth={730}
         rowData={rowData}

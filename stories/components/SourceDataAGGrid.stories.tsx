@@ -46,20 +46,20 @@ const dataGenerator = () => {
   const ext = randomChoice(extensions);
   const relative_path = `/sda/${randomChoice<number>(thousand)}/${randomChoice<string>(topics)}/file_${file_number}.${ext}`;
 
-  const statuses = [
-    "created",
-    "available",
-    "unavailable",
-    "inconsistent_dataset",
-  ];
+  // const statuses = [
+  //   "created",
+  //   "available",
+  //   "unavailable",
+  //   "inconsistent_dataset",
+  // ];
 
   const startDate_c = new Date(2024, 0, 1);
   const endDate_c = new Date(2024, 1, 1);
   const created_at = getRandomDate(startDate_c, endDate_c).toISOString();
 
-  const startDate_u = new Date(2024, 1, 2);
-  const endDate_u = new Date();
-  const updated_at = getRandomDate(startDate_u, endDate_u).toISOString();
+  // const startDate_u = new Date(2024, 1, 2);
+  // const endDate_u = new Date();
+  // const updated_at = getRandomDate(startDate_u, endDate_u).toISOString();
 
   const datum: SourceDataRow = {
     id: randomChoice(thousand).toString(),
