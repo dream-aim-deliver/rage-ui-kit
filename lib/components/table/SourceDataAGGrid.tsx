@@ -4,14 +4,12 @@ import { ColDef } from "ag-grid-community";
 import { useState } from "react";
 
 const SourceDataRowSchema = z.object({
-  id: z.number(),
+  id: z.string(),
+  type: z.literal('remote').default("remote").optional(),
+  provider: z.literal('kernel#s3').default("kernel#s3").optional(),
   name: z.string(),
-  relative_path: z.string(),
-  type: z.string(),
-  protocol: z.string(),
-  status: z.string(),
-  created_at: z.string(),
-  updated_at: z.string(),
+  relativePath: z.string(),
+  createdAt: z.string(),
 });
 
 /**
@@ -25,8 +23,10 @@ export type SourceDataRow = z.infer<typeof SourceDataRowSchema>;
  * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
  */
 export interface SourceDataAGGridProps {
+  isLoading: boolean;
   rowData: SourceDataRow[];
   buttonsWithCallBack?: componentWithCallBack<SourceDataRow>[];
+  props?: any;
 }
 
 /**
@@ -35,8 +35,10 @@ export interface SourceDataAGGridProps {
  * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
  */
 export function SourceDataAGGrid({
+  isLoading,
   rowData,
   buttonsWithCallBack,
+  props
 }: SourceDataAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
@@ -45,6 +47,7 @@ export function SourceDataAGGrid({
       checkboxSelection: true,
       headerName: "ID",
       field: "id",
+      flex: 2,
       filter: "agNumberColumnFilter",
       filterParams: {
         filterOptions: [
@@ -59,41 +62,32 @@ export function SourceDataAGGrid({
     {
       headerName: "Name",
       field: "name",
+      flex: 4,
     },
     {
       headerName: "Relative Path",
-      field: "relative_path",
-    },
-    {
-      headerName: "Type",
-      field: "type",
-    },
-    {
-      headerName: "Status",
-      field: "status",
+      field: "relativePath",
+      flex: 8,
     },
     {
       headerName: "Created At",
-      field: "created_at",
-    },
-    {
-      headerName: "Updated At",
-      field: "updated_at",
-    },
-    {
-      headerName: "Protocol",
-      field: "protocol",
+      field: "createdAt",
+      flex: 4,
     },
   ]);
+
+
 
   return (
     <div>
       <BaseAGGrid
+        isLoading={isLoading}
         maxGridHeight={760}
-        gridWidth={1000}
+        gridWidth={900}
         rowData={rowData}
         columnDefs={columnDefs}
         componentsWithCallBack={buttonsWithCallBack}
+        {...props}
       />
     </div>
   );
