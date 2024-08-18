@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ColDef, SizeColumnsToContentStrategy } from "ag-grid-community";
-import { AgGridReact } from "ag-grid-react";
+import { ColDef } from "ag-grid-community";
+import { AgGridReact, AgGridReactProps } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import "./ag-theme-sda.css";
 import React, {
@@ -24,15 +23,6 @@ import { Spinner } from "../spinner";
  * @param TRowData: the type of the data to be displayed in the AG Grid
  * @param selectedRows: the data of the visually selected rows
  * @returns an unknown value
- * @example
- * ```tsx
- * const alertRawCallBack = (selectedRows: SourceDataRow[]) => {
- *  alert(
- *    "Selected rows:\n\n" +
- *    selectedRows.map((row) => JSON.stringify(row)).join("\n\n"),
- *  );
- * };
- * ```
  */
 export type RowSelectionAction<TRowData> = (
   selectedRows: TRowData[],
@@ -44,37 +34,15 @@ export type RowSelectionAction<TRowData> = (
  * @param reactComponent: a react component that will be rendered in the custom header of the AG Grid
  * @param callbackFunction: a function that will be called when the reactComponent is clicked
  * @returns an object containing a reactComponent and a callbackFunction
- * @example
- * ```tsx
- * const alertRawButton = ({ onClick }: { onClick: () => void }) => {
- *  return (
- *   <ShadcnButton
- *      label={"Alert raw data"}
- *      variant="default"
- *      onClick={onClick}
- *      title="Alert the raw data of the selected rows"
- *    />
- *  );
- * };
- *
- * const alertRawCallBack = (selectedRows: SourceDataRow[]) => {
- *  alert(
- *    "Selected rows:\n\n" +
- *    selectedRows.map((row) => JSON.stringify(row)).join("\n\n"),
- *  );
- * };
- *
- * const buttonsWithCallBack: componentWithCallBack<TRowData>[] = [
- *  {
- *   reactComponent: alertRawButton,
- *   callbackFunction: alertRawCallBack,
- * },
- * ];
- * ```
  */
 export type componentWithCallBack<TRowData> = {
   reactComponent: React.ComponentType<{ onClick: () => void }>;
   callbackFunction: RowSelectionAction<TRowData>;
+};
+
+export type errorOverlayProps = {
+  errorStatus: boolean;
+  overlayText: string;
 };
 
 /**
@@ -93,8 +61,12 @@ export interface BaseAGGridProps<TRowData> {
   maxGridHeight?: number;
   gridWidth?: number | string;
   componentsWithCallBack?: componentWithCallBack<TRowData>[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AGGridProps?: any;
+  additionalComponentsLeft?: React.ReactNode[];
+  additionalComponentsCenter?: React.ReactNode[];
+  additionalComponentsRight?: React.ReactNode[];
+  errorOverlayProps?: errorOverlayProps;
+  overlayTextOnNoRows?: string;
+  AGGridProps?: AgGridReactProps;
 }
 
 /**
@@ -117,7 +89,14 @@ export function BaseAGGrid<TRowData>({
   maxGridHeight = 760,
   gridWidth = 1000,
   componentsWithCallBack: buttonsWithCallBack,
-  AGGridProps,
+  additionalComponentsLeft,
+  additionalComponentsCenter,
+  additionalComponentsRight,
+  errorOverlayProps = {
+    errorStatus: false,
+    overlayText: "",
+  },
+  ...AGGridProps
 }: BaseAGGridProps<TRowData>) {
   const gridRef = useRef<AgGridReact<TRowData>>(null);
 
@@ -165,9 +144,23 @@ export function BaseAGGrid<TRowData>({
     );
   }, []);
 
-  const autoSizeStrategy: SizeColumnsToContentStrategy = {
-    type: "fitCellContents",
-    skipHeader: true,
+  /**
+   * Made to override the default noRowsOverlayComponent of AG Grid, as it was showing an out-of-place message.
+   */
+  const noRowsOverlayComponent: () => JSX.Element = () => <div> </div>;
+
+  const errorOverlayComponent = () => {
+    return (
+      <div className={cn("overflow-auto h-full")}>
+        <p
+          className={cn(
+            "text-white bg-error-800 rounded-md p-large font-bold text-sm",
+          )}
+        >
+          {errorOverlayProps.overlayText}
+        </p>
+      </div>
+    );
   };
 
   return (
@@ -182,8 +175,15 @@ export function BaseAGGrid<TRowData>({
           id="table-top-button-group"
           className={cn("flex flex-row justify-center gap-medium")}
         >
-          <div id="spinner" className={cn("flex w-small")}>
+          <div
+            id="spinner"
+            className={cn("flex w-small gap-small mr-medium items-center")}
+          >
             {isLoading && <Spinner />}
+          </div>
+
+          <div id="additional-components-left" className={cn("flex gap-small")}>
+            {additionalComponentsLeft}
           </div>
 
           <div
@@ -204,12 +204,16 @@ export function BaseAGGrid<TRowData>({
                   />
                 ),
               )}
+
+            {additionalComponentsCenter}
           </div>
 
           <div
             id="table-top-controls"
             className={cn("flex items-center gap-small")}
           >
+            {additionalComponentsRight}
+
             <ShadcnButton
               onClick={clearColumnFilters}
               label={<FilterX />}
@@ -234,26 +238,48 @@ export function BaseAGGrid<TRowData>({
         </div>
       </div>
 
-      <div
-        id="ag-grid-inner-component"
-        className={cn("ag-theme-sda")}
-        style={{ height: gridHeight, width: gridWidth }}
-      >
-        <AgGridReact
-          rowData={rowData}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          rowSelection="multiple"
-          suppressRowClickSelection={true}
-          pagination={true}
-          paginationPageSize={13}
-          paginationPageSizeSelector={[13, 25, 50, 100]}
-          ref={gridRef}
-          // autoSizeStrategy={autoSizeStrategy}
-
-          {...AGGridProps}
-        />
-      </div>
+      {!errorOverlayProps.errorStatus ? (
+        <div
+          id="ag-grid-inner-component"
+          className={cn("ag-theme-sda")}
+          style={{ height: gridHeight, width: gridWidth }}
+        >
+          <AgGridReact
+            loading={isLoading}
+            rowData={rowData}
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            rowSelection="multiple"
+            suppressRowClickSelection={true}
+            pagination={true}
+            paginationPageSize={13}
+            paginationPageSizeSelector={[13, 25, 50, 100]}
+            noRowsOverlayComponent={noRowsOverlayComponent}
+            ref={gridRef}
+            {...AGGridProps}
+          />
+        </div>
+      ) : (
+        <div
+          id="ag-grid-inner-component"
+          className={cn("ag-theme-sda h-screen")}
+          style={{ height: 760, width: gridWidth }}
+        >
+          <AgGridReact
+            rowData={[]}
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            rowSelection="multiple"
+            suppressRowClickSelection={true}
+            pagination={true}
+            paginationPageSize={13}
+            paginationPageSizeSelector={[13, 25, 50, 100]}
+            noRowsOverlayComponent={errorOverlayComponent}
+            ref={gridRef}
+            {...AGGridProps}
+          />
+        </div>
+      )}
     </div>
   );
 }
