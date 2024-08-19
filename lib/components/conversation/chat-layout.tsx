@@ -9,7 +9,7 @@ export type ChatPageViewModel = {
   onSendMessage: (message: string) => void;
 };
 
-export enum ROLEViewModel {
+enum ROLEViewModel {
   USER = "user",
   AGENT = "agent",
 }
@@ -33,7 +33,7 @@ export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
     setPrevMessagesLength(messages.length);
   };
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, prevMessagesLength]);
   return (
     <div className={cn("h-screen bg-gradient-to-r from-blue-500 to-green-500")}>
       <div className={cn("flex-grow flex flex-col justify-between")}>
