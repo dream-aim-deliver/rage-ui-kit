@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { ChatPage, ROLEViewModel } from "@/components/conversation/chat-layout";
+import { ChatPage } from "@/components/conversation/chat-layout";
 
 const meta = {
   title: "Pages/Chat",
@@ -65,34 +65,34 @@ export const ChatCapabilities: Story = {
   args: {
     messages: [
       {
-        role: ROLEViewModel.USER,
+        role: "user",
         content: "Hello, can you render formatted text?",
         timestamp: 1,
         type: "text",
         isLoading: false,
       },
       {
-        role: ROLEViewModel.AGENT,
+        role: "agent",
         content: "Hello, yes. \n Let me give you an example:",
         timestamp: 2,
         type: "text",
         isLoading: false,
       },
       {
-        role: ROLEViewModel.AGENT,
+        role: "agent",
         timestamp: 3,
         type: "text",
         content: markdownWithCode,
       },
       {
-        role: ROLEViewModel.USER,
+        role: "user",
         content: "Well done!",
         timestamp: 4,
         type: "text",
         isLoading: false,
       },
       {
-        role: ROLEViewModel.AGENT,
+        role: "agent",
         content: mermaidData,
         timestamp: 5,
         type: "text",

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { PrimaryAction, PrimaryButton } from "@/components/ui/primary-button";
+import { PrimaryButton } from "@/components/ui/primary-button";
 
 const meta = {
   title: "Building Blocks/Primary Button",
@@ -14,7 +14,7 @@ export const Add: Story = {
   args: {
     text: "New",
     url: "#",
-    action: PrimaryAction.SEND,
+    action: "send",
   },
 };
 
@@ -22,6 +22,6 @@ export const Send: Story = {
   args: {
     text: "Send",
     url: "#",
-    action: PrimaryAction.SEND,
+    action: "send",
   },
 };
