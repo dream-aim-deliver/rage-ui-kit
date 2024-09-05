@@ -8,13 +8,8 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { cn } from "@/utils/utils";
 import ImageComponent from "@/components/conversation/image-component";
 
-export enum ROLEViewModel {
-  USER = "user",
-  AGENT = "agent",
-}
-
 export type MessageViewModel = {
-  role: ROLEViewModel;
+  role: "user" | "agent";
   content: string;
   type: "text" | "image";
   timestamp: number;
@@ -30,18 +25,16 @@ export interface MessageProps {
 }
 
 export const ConversationMessage = ({
-  role = ROLEViewModel.USER,
+  role = "user",
   timestamp = 1698983503,
   type = "text",
   content,
 }: MessageViewModel) => {
   const date = new Date(timestamp);
   const formattedDate = date.toLocaleString();
-  const avatarLetter = role === ROLEViewModel.USER ? "U" : "A";
+  const avatarLetter = role === "user" ? "U" : "A";
   const avatarColor =
-    role === ROLEViewModel.USER
-      ? "bg-blue-500"
-      : "bg-neutral-800 dark:bg-neutral-950";
+    role === "user" ? "bg-blue-500" : "bg-neutral-800 dark:bg-neutral-950";
   const isLoading = content === undefined || content === null || content === "";
   const CachedContentBlock = useMemo(() => {
     if (type === "image") {
@@ -80,10 +73,10 @@ export const ConversationMessage = ({
   return (
     <div
       className={cn(
-        `flex space-x-4 p-4 bg-transparent rounded-xl ${role === ROLEViewModel.USER ? "justify-end" : ""}`,
+        `flex space-x-4 p-4 bg-transparent rounded-xl ${role === "user" ? "justify-end" : ""}`,
       )}
     >
-      {role !== ROLEViewModel.USER && (
+      {role !== "user" && (
         <div className={cn("self-end")}>
           <Avatar
             className={cn(
@@ -102,7 +95,7 @@ export const ConversationMessage = ({
           "max-w-lg",
           "rounded-xl p-4",
           "animate-opacity",
-          role === ROLEViewModel.USER
+          role === "user"
             ? "bg-blue-400 text-white"
             : "bg-neutral-300 text-black",
         )}
@@ -137,13 +130,13 @@ export const ConversationMessage = ({
             "border-t-[10px] border-t-transparent",
             "border-r-[10px] border-r-transparent",
             "border-l-[10px]",
-            role === ROLEViewModel.USER
+            role === "user"
               ? "border-l-blue-400 right-[-10px]"
               : "border-l-gray-300 left-[-10px] transform scale-x-[-1]",
           )}
         ></div>
       </div>
-      {role === ROLEViewModel.USER && (
+      {role === "user" && (
         <div className={cn("self-end text-black")}>
           <Avatar
             className={cn(

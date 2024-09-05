@@ -9,13 +9,8 @@ export type ChatPageViewModel = {
   onSendMessage: (message: string) => void;
 };
 
-export enum ROLEViewModel {
-  USER = "user",
-  AGENT = "agent",
-}
-
 export type MessageViewModel = {
-  role: ROLEViewModel;
+  role: "user" | "agent";
   content: string;
   type: "text" | "image";
   timestamp: number;
@@ -33,6 +28,7 @@ export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
     setPrevMessagesLength(messages.length);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [messages]);
   return (
     <div className={cn("h-screen bg-gradient-to-r from-blue-500 to-green-500")}>
