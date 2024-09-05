@@ -63,7 +63,6 @@ function hello() {
 
 export const ChatCapabilities: Story = {
   args: {
-    title: "Conversation/1",
     messages: [
       {
         role: ROLEViewModel.USER,

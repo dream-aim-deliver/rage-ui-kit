@@ -14,7 +14,7 @@ export const Add: Story = {
   args: {
     text: "New",
     url: "#",
-    action: PrimaryAction.ADD,
+    action: PrimaryAction.SEND,
   },
 };
 
