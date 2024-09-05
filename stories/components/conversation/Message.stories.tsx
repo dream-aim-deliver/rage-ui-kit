@@ -1,7 +1,4 @@
-import {
-  ConversationMessage,
-  ROLEViewModel,
-} from "@/components/conversation/message";
+import { ConversationMessage } from "@/components/conversation/message";
 import type { Meta, StoryObj } from "@storybook/react";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -61,7 +58,7 @@ sequenceDiagram
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const UserMessage: Story = {
   args: {
-    role: ROLEViewModel.USER,
+    role: "user",
     content: "holi boli",
     type: "text",
     timestamp: Date.now(),
@@ -70,7 +67,7 @@ export const UserMessage: Story = {
 
 export const ImageMessage: Story = {
   args: {
-    role: ROLEViewModel.AGENT,
+    role: "user",
     type: "image",
     content: imageData,
     timestamp: Date.now(),
@@ -79,7 +76,7 @@ export const ImageMessage: Story = {
 
 export const MermaidDiagramMessage: Story = {
   args: {
-    role: ROLEViewModel.AGENT,
+    role: "user",
     type: "text",
     content: mermaidData,
     timestamp: Date.now(),
