@@ -1,1 +1,1 @@
-export { SiteHeader, type SiteHeaderProps } from "./SiteHeader";
+export  {Header}  from "./SiteHeader";
