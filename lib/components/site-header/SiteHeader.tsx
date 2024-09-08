@@ -1,36 +1,131 @@
-"use client";
+import React from 'react';
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+} from "@/ui/header";
+import { cn } from "@/utils/utils";
+import { ChevronDown, Menu, X, Satellite, SatelliteIcon } from "lucide-react"; // Import icons for mobile menu toggle
 
-import { LogOut } from "lucide-react";
-import * as React from "react";
-import { Button } from "../..";
+export const Header=()=> {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false); // State to manage mobile menu
 
-export interface SiteHeaderProps {
-  title: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}
-export function SiteHeader(props: SiteHeaderProps) {
+  const handleItemClick = (item: string) => {
+    alert(`You clicked on ${item}`);
+  };
+
   return (
-    <div
-      id="site-header"
-      className="w-full flex flex-col lg:flex-row items-center justify-start gap-4"
-    >
-      <div
-        id="site-header-icon-and-title"
-        className="flex flex-col items-center lg:flex-row gap-4 font-bold text-primary-light dark:text-text-primary-dark"
-      >
-        <div className="flex items-center gap-2">{props.icon}</div>
-        {props.title}
+    <header className={cn("bg-neutral-100 text-neutral-800 dark:bg-neutral-800 shadow-lg")}>
+      <div className={cn("container mx-auto flex items-center justify-between py-4 px-8")}>
+        <div className="flex items-center gap-2">
+          <SatelliteIcon className={cn("text-black size-10 dark:text-white")}/>
+          {/* Logo */}
+          <a href="/" className={cn("text-xl font-bold text-black dark:text-white")}>
+            SDA
+          </a>
+        </div>
+        
+        {/* Mobile Menu Button */}
+        <button
+          className="block lg:hidden text-neutral-800 dark:text-white relative z-50 ml-auto"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        <NavigationMenu>
+          {/* Desktop Menu */}
+          <NavigationMenuList className={cn("hidden lg:flex space-x-8 text-black dark:text-white")}>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/"
+                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                onClick={() => handleItemClick("Home")}
+              >
+                Home
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/"
+                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                onClick={() => handleItemClick("Source")}
+              >
+                Source
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/"
+                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                onClick={() => handleItemClick("Research Context")}
+              >
+                Research Context
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/"
+                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                onClick={() => handleItemClick("Documentation")}
+              >
+                Documentation
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+
+          {/* Mobile Menu */}
+          <div
+            className={cn(
+              "lg:hidden shadow-lg fixed top-0 right-0 max-w-sm bg-neutral-100 dark:bg-neutral-800 transition-transform transform ease-in-out duration-300 w-full z-50",
+              isMenuOpen ? "translate-x-0" : "translate-x-full"
+            )}
+          >
+            <NavigationMenuList className="flex flex-col p-4 space-y-4 text-black dark:text-white">
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href="/"
+                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                  onClick={() => handleItemClick("Home")}
+                >
+                  Home
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href="/"
+                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                  onClick={() => handleItemClick("Source")}
+                >
+                  Source
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href="/"
+                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                  onClick={() => handleItemClick("Research Context")}
+                >
+                  Research Context
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href="/"
+                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                  onClick={() => handleItemClick("Documentation")}
+                >
+                  Documentation
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </div>
+
+          <NavigationMenuIndicator />
+        </NavigationMenu>
       </div>
-      <div
-        id="site-header-children"
-        className="flex flex-grow items-center justify-end"
-      >
-        {props.children}
-      </div>
-      <div id="site-header-tail" className="">
-        <Button variant="outline" label={<LogOut />} size="icon"></Button>
-      </div>
-    </div>
+    </header>
   );
 }

@@ -1,23 +1,33 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Satellite } from "lucide-react";
-import { SiteHeader } from "@/components/site-header";
+import Header from "@/components//site-header/SiteHeader";
+import { action } from "@storybook/addon-actions";
+
+export const TestPage = ()=> {
+  return(
+    <div>
+      <Header></Header> Holi Boli. 4got 2 tell u 
+    </div>
+  )
+}
 
 const meta = {
-  title: "Components/SiteHeader",
-  component: SiteHeader,
+  title: "Components/Header/SiteHeader",
+  component: TestPage,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
-} satisfies Meta<typeof SiteHeader>;
+  tags: ["autodocs"],
+} satisfies Meta<typeof TestPage>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: {},
+};
+
+export const WithClickActions: Story = {
   args: {
-    title: "Site Title",
-    icon: <Satellite />,
-    children: "Children",
+    onItemClick: action("onItemClick"),
   },
 };
