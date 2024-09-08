@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Header from "@/components//site-header/SiteHeader";
+import { Header } from "@/components//site-header/SiteHeader";
 import { action } from "@storybook/addon-actions";
 
-export const TestPage = ()=> {
-  return(
+export const TestPage = () => {
+  return (
     <div>
-      <Header></Header> Holi Boli. 4got 2 tell u 
+      <Header></Header> Holi Boli. 4got 2 tell u
     </div>
-  )
-}
+  );
+};
 
 const meta = {
   title: "Components/Header/SiteHeader",
