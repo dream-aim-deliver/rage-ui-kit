@@ -9,7 +9,16 @@ import {
 import { cn } from "@/utils/utils";
 import { Menu, X, SatelliteIcon } from "lucide-react"; // Import icons for mobile menu toggle
 
-export const Header = () => {
+export interface HeaderProps {
+  user: {
+  name: string | undefined
+  }
+  callbacks: {
+  logout: () => void
+  }
+  }
+  
+export const Header = (props: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false); // State to manage mobile menu
 
   const handleItemClick = (item: string) => {
@@ -24,15 +33,15 @@ export const Header = () => {
     >
       <div
         className={cn(
-          "container mx-auto flex items-center justify-between py-4 px-8",
+          "w-screen px-4 flex items-center justify-between py-4",
         )}
       >
         <div className="flex items-center gap-2">
-          <SatelliteIcon className={cn("text-black size-10 dark:text-white")} />
+          <SatelliteIcon className={cn("text-neutral-800 size-10 dark:text-white")} />
           {/* Logo */}
           <a
             href="/"
-            className={cn("text-xl font-bold text-black dark:text-white")}
+            className={cn("text-xl font-bold text-neutral-800 dark:text-white")}
           >
             SDA
           </a>
@@ -51,12 +60,14 @@ export const Header = () => {
         </button>
 
         <NavigationMenu>
+
+          
           {/* Desktop Menu */}
           <NavigationMenuList
             role="menubar"
             id="desktop-menu"
             className={cn(
-              "hidden lg:flex space-x-8 text-black dark:text-white",
+              "hidden lg:flex space-x-9 text-neutral-800 dark:text-white  ",
             )}
           >
             <NavigationMenuItem>
