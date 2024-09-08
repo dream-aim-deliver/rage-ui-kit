@@ -1,1 +1,1 @@
-export  {Header}  from "./SiteHeader";
+export { Header } from "./SiteHeader";
