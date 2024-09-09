@@ -29,6 +29,8 @@ export type ConversationRow = z.infer<typeof ConversationRowSchema>;
 export interface ConversationAGGridProps {
   rowData: ConversationRow[];
   isLoading: boolean;
+  newConversationIsEnabled: boolean;
+  newConversationDialogIsOpen?: boolean;
   handleGoToConversation: (id: number) => void;
   handleNewConversation: (conversationTitle: string) => void;
   errorOverlayProps?: {
@@ -61,6 +63,8 @@ const GoToConversationButton = (params: GoToConversationButtonParams) => {
 };
 
 const NewConversationComponent = (
+  isEnabled: boolean,
+  isOpen: boolean = true,
   handleNewConversation: (title: string) => void,
 ) => {
   // Wrapper to pass it as a buttonAction to the dialog
@@ -68,7 +72,7 @@ const NewConversationComponent = (
     handleNewConversation(inputValues.conversationTitle);
   };
 
-  return <CreateConversationDialog buttonAction={newConversationAction} />;
+  return <CreateConversationDialog isEnabled={isEnabled} isOpen={isOpen} buttonAction={newConversationAction} />;
 };
 
 /**
@@ -114,7 +118,7 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
         rowData={props.rowData}
         columnDefs={columnDefs}
         additionalComponentsLeft={[
-          NewConversationComponent(props.handleNewConversation),
+          NewConversationComponent(props.newConversationIsEnabled, props.newConversationDialogIsOpen, props.handleNewConversation),
         ]}
         errorOverlayProps={props.errorOverlayProps}
         // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work

@@ -60,6 +60,7 @@ export const LoadingWithNoData: Story = {
   args: {
     rowData: [],
     isLoading: true,
+    newConversationEnabled: false,
   },
 };
 
@@ -67,6 +68,7 @@ export const ErrorState: Story = {
   args: {
     rowData: [],
     isLoading: false,
+    newConversationEnabled: true,
     errorOverlayProps: {
       errorStatus: true,
       overlayText:
@@ -79,6 +81,7 @@ export const WithAlertFunctions: Story = {
   args: {
     rowData: Array.from({ length: 106 }, dataGenerator),
     isLoading: false,
+    newConversationEnabled: true,
     handleGoToConversation: (id: number) => {
       alert(`Navigating to conversation ${id}`);
     },

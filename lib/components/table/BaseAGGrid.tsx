@@ -272,7 +272,7 @@ export function BaseAGGrid<TRowData>({
         <div
           id="ag-grid-inner-component"
           className={cn("ag-theme-sda h-screen overflow-auto")}
-          style={{ height: "80vh", width: "80vw" }}
+          style={{ height: "80vh", width: "100vw" }}
         >
           <AgGridReact
             loading={isLoading}
@@ -294,7 +294,7 @@ export function BaseAGGrid<TRowData>({
         <div
           id="ag-grid-inner-component"
           className={cn("ag-theme-sda h-screen overflow-auto")}
-          style={{ height: "80vh", width: "80vw" }}
+          style={{ height: "80vh", width: "100vw" }}
         >
           <AgGridReact
             rowData={[]}
