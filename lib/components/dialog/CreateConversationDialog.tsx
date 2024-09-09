@@ -25,12 +25,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { PenSquare } from "lucide-react";
+import { useState } from "react";
 
 export interface buttonActionInputValues {
   conversationTitle: string;
 }
 
 export interface CreateConversationDialogProps {
+  isEnabled: boolean;
+  isOpen?: boolean;
   buttonAction: (inputValues: buttonActionInputValues) => void;
 }
 
@@ -50,9 +53,12 @@ const formSchema = z.object({
  * Create a new conversation dialog
  */
 export const CreateConversationDialog = ({
+  isEnabled,
+  isOpen = false,
   buttonAction,
   ...props
 }: CreateConversationDialogProps) => {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,10 +70,13 @@ export const CreateConversationDialog = ({
     buttonAction(values);
   };
 
+
+  const [isDialogOpen, setIsDialogOpen] = useState(isOpen);
+
   return (
-    <ShadcnDialog {...props}>
+    <ShadcnDialog open={isDialogOpen} {...props}>
       <DialogTrigger asChild>
-        <Button variant="default" size="icon" label={<PenSquare />} />
+        <Button variant="default" size="icon" label={<PenSquare />} disabled={!isEnabled} onClick={() => setIsDialogOpen(true)} />
       </DialogTrigger>
 
       <DialogContent
@@ -80,7 +89,9 @@ export const CreateConversationDialog = ({
           "text-black dark:text-white",
         )}
       >
-        <DialogClose asChild />
+        <div onClick={() => setIsDialogOpen(false)}>
+          <DialogClose asChild />
+        </div>
 
         <DialogHeader>
           <DialogTitle>New conversation</DialogTitle>
