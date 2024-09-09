@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button as ShadcnButton } from "@/components/button/index";
 
 import {
   SourceDataAGGrid,
@@ -46,20 +45,9 @@ const dataGenerator = () => {
   const ext = randomChoice(extensions);
   const relative_path = `/sda/${randomChoice<number>(thousand)}/${randomChoice<string>(topics)}/file_${file_number}.${ext}`;
 
-  // const statuses = [
-  //   "created",
-  //   "available",
-  //   "unavailable",
-  //   "inconsistent_dataset",
-  // ];
-
   const startDate_c = new Date(2024, 0, 1);
   const endDate_c = new Date(2024, 1, 1);
   const created_at = getRandomDate(startDate_c, endDate_c).toISOString();
-
-  // const startDate_u = new Date(2024, 1, 2);
-  // const endDate_u = new Date();
-  // const updated_at = getRandomDate(startDate_u, endDate_u).toISOString();
 
   const datum: SourceDataRow = {
     id: randomChoice(thousand).toString(),
@@ -71,66 +59,34 @@ const dataGenerator = () => {
   return datum;
 };
 
-export const SmallTable: Story = {
+export const LoadingWithNoData: Story = {
   args: {
-    rowData: Array.from({ length: 5 }, dataGenerator),
+    rowData: [],
+    isLoading: true,
   },
 };
 
-export const LargeTable: Story = {
+export const ErrorState: Story = {
   args: {
-    rowData: Array.from({ length: 106 }, dataGenerator),
+    rowData: [],
+    isLoading: false,
+    errorOverlayProps: {
+      errorStatus: true,
+      overlayText:
+        "An error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus.an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus.",
+    },
   },
 };
 
-const alertRawButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <ShadcnButton
-      label={"Alert raw data"}
-      variant="default"
-      onClick={onClick}
-      title="Alert the raw data of the selected rows"
-    />
-  );
-};
-
-const alertRawCallBack = (selectedRows: SourceDataRow[]) => {
-  alert(
-    "Selected rows:\n\n" +
-      selectedRows.map((row) => JSON.stringify(row)).join("\n\n"),
-  );
-};
-
-const alertButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <ShadcnButton
-      label={"Alert selected file names"}
-      variant="default"
-      onClick={onClick}
-      title="Alert the file names of the selected rows"
-    />
-  );
-};
-
-const alertCallBack = (selectedRows: SourceDataRow[]) => {
-  alert(
-    "Selected file names:\n\n- " +
-      selectedRows.map((row) => row.name).join("\n- "),
-  );
-};
-
-export const WithAlertSelectionButtons: Story = {
+export const WithAlertFunctions: Story = {
   args: {
     rowData: Array.from({ length: 106 }, dataGenerator),
-    buttonsWithCallBack: [
-      {
-        reactComponent: alertRawButton,
-        callbackFunction: alertRawCallBack,
-      },
-      {
-        reactComponent: alertButton,
-        callbackFunction: alertCallBack,
-      },
-    ],
+    isLoading: false,
+    handleDownloadSourceData: (relativePath: string) => {
+      alert(`Downloading source data '${relativePath}'`);
+    },
+    handleUploadSourceData: () => {
+      alert(`Uploading source data...`);
+    },
   },
 };
