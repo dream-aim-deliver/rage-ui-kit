@@ -79,7 +79,7 @@ export const WithAlertFunctions: Story = {
   args: {
     rowData: Array.from({ length: 106 }, dataGenerator),
     isLoading: false,
-    goToConversation: (id: number) => {
+    handleGoToConversation: (id: number) => {
       alert(`Navigating to conversation ${id}`);
     },
     handleNewConversation: (title: string) => {
