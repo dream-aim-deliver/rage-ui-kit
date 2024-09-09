@@ -90,3 +90,17 @@ export const WithAlertFunctions: Story = {
     },
   },
 };
+
+export const WithUploading: Story = {
+  args: {
+    rowData: Array.from({ length: 106 }, dataGenerator),
+    isLoading: false,
+    isUploading: true,
+    handleDownloadSourceData: (relativePath: string) => {
+      alert(`Downloading source data '${relativePath}'`);
+    },
+    handleUploadSourceData: () => {
+      alert(`Uploading source data...`);
+    },
+  },
+};

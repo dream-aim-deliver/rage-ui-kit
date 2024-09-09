@@ -26,6 +26,7 @@ export type SourceDataRow = z.infer<typeof SourceDataRowSchema>;
 export interface SourceDataAGGridProps {
   rowData: SourceDataRow[];
   isLoading: boolean;
+  isUploading: boolean;
   handleDownloadSourceData: (relativePath: string) => void;
   handleUploadSourceData: () => void;
   errorOverlayProps?: {
@@ -53,14 +54,26 @@ const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
   );
 };
 
-const UploadSourceDataComponent = (handleUploadSourceData: () => void) => {
-  return (
-    <ShadcnButton
-      label={"Upload"}
-      variant="default"
-      onClick={handleUploadSourceData}
-    />
-  );
+interface UploadSourceDataButtonParams {
+  handleUploadSourceData: () => void;
+  isUploading: boolean;
+}
+
+const UploadSourceDataComponent = (isUploading: boolean, handleUploadSourceData: () => void) => {
+
+  if (isUploading) {
+    return (
+      <ShadcnButton label={"Uploading..."} variant="default" disabled={true} />
+    );
+  } else {
+    return (
+      <ShadcnButton
+        label={"Upload"}
+        variant="default"
+        onClick={handleUploadSourceData}
+      />
+    );
+  }
 };
 
 /**
@@ -114,7 +127,7 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
         rowData={props.rowData}
         columnDefs={columnDefs}
         additionalComponentsLeft={[
-          UploadSourceDataComponent(props.handleUploadSourceData),
+          UploadSourceDataComponent(props.isUploading, props.handleUploadSourceData)
         ]}
         errorOverlayProps={props.errorOverlayProps}
         // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
