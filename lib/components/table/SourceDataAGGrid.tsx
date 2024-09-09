@@ -1,13 +1,13 @@
 "use client";
 import { z } from "zod";
-import { BaseAGGrid, componentWithCallBack } from "./BaseAGGrid";
+import { BaseAGGrid } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
 
+import { Button as ShadcnButton } from "@/components/button/index";
+
 const SourceDataRowSchema = z.object({
   id: z.string(),
-  type: z.literal("remote").default("remote").optional(),
-  provider: z.literal("kernel#s3").default("kernel#s3").optional(),
   name: z.string(),
   relativePath: z.string(),
   createdAt: z.string(),
@@ -24,70 +24,101 @@ export type SourceDataRow = z.infer<typeof SourceDataRowSchema>;
  * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
  */
 export interface SourceDataAGGridProps {
-  isLoading: boolean;
   rowData: SourceDataRow[];
-  buttonsWithCallBack?: componentWithCallBack<SourceDataRow>[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props?: any;
+  isLoading: boolean;
+  handleDownloadSourceData: (relativePath: string) => void;
+  handleUploadSourceData: () => void;
+  errorOverlayProps?: {
+    errorStatus: boolean;
+    overlayText: string;
+  };
 }
+
+interface DownloadSourceDataButtonParams {
+  context: {
+    handleDownloadSourceData: (relativePath: string) => void;
+  };
+  data: {
+    relativePath: string;
+  };
+}
+
+const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
+  const handleClick = () => {
+    params.context.handleDownloadSourceData(params.data.relativePath);
+  };
+
+  return (
+    <ShadcnButton label={"Download"} variant="default" onClick={handleClick} />
+  );
+};
+
+const UploadSourceDataComponent = (handleUploadSourceData: () => void) => {
+  return (
+    <ShadcnButton
+      label={"Upload"}
+      variant="default"
+      onClick={handleUploadSourceData}
+    />
+  );
+};
 
 /**
  * SourceDataAGGrid is a react component that displays a table of source data in an AG Grid.
  * @param rowData: the data to be displayed in the AG Grid. Must be an array of SourceDataRow objects.
- * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
+ * @param handleDownloadSourceData: a function that is called when the download button is clicked.
+ * @param handleUploadSourceData: a function that is called when the upload button is clicked.
+ * @param isLoading: a boolean that indicates whether the data is still loading.
+ * @param errorOverlayProps: an object that contains the error status and overlay text.
+ * @returns a react component that displays a table of source data in an AG Grid.
  */
-export function SourceDataAGGrid({
-  isLoading,
-  rowData,
-  buttonsWithCallBack,
-  props,
-}: SourceDataAGGridProps) {
+export function SourceDataAGGrid(props: SourceDataAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
-      headerCheckboxSelection: true,
-      headerCheckboxSelectionFilteredOnly: true, // only selects filtered rows, when filtering
-      checkboxSelection: true,
       headerName: "ID",
+      filter: false,
       field: "id",
-      flex: 2,
-      filter: "agNumberColumnFilter",
-      filterParams: {
-        filterOptions: [
-          "equals",
-          "lessThan",
-          "greaterThan",
-          "inRange",
-          "notEqual",
-        ],
-      },
+      flex: 0.3,
     },
     {
       headerName: "Name",
       field: "name",
-      flex: 4,
+      flex: 1.5,
     },
     {
       headerName: "Relative Path",
       field: "relativePath",
-      flex: 8,
+      flex: 2,
     },
     {
       headerName: "Created At",
       field: "createdAt",
-      flex: 4,
+      flex: 1,
+    },
+    {
+      headerName: "",
+      filter: false,
+      flex: 0.5,
+      cellRenderer: DownloadSourceDataButton,
     },
   ]);
+
+  const gridContext = {
+    handleDownloadSourceData: props.handleDownloadSourceData,
+  };
 
   return (
     <div>
       <BaseAGGrid
-        isLoading={isLoading}
-        maxGridHeight={760}
-        gridWidth={900}
-        rowData={rowData}
+        isLoading={props.isLoading}
+        rowData={props.rowData}
         columnDefs={columnDefs}
-        componentsWithCallBack={buttonsWithCallBack}
-        {...props}
+        additionalComponentsLeft={[
+          UploadSourceDataComponent(props.handleUploadSourceData),
+        ]}
+        errorOverlayProps={props.errorOverlayProps}
+        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
+        context={gridContext}
       />
     </div>
   );

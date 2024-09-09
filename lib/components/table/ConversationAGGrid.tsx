@@ -29,7 +29,7 @@ export type ConversationRow = z.infer<typeof ConversationRowSchema>;
 export interface ConversationAGGridProps {
   rowData: ConversationRow[];
   isLoading: boolean;
-  goToConversation: (id: number) => void;
+  handleGoToConversation: (id: number) => void;
   handleNewConversation: (conversationTitle: string) => void;
   errorOverlayProps?: {
     errorStatus: boolean;
@@ -37,18 +37,18 @@ export interface ConversationAGGridProps {
   };
 }
 
-interface goToConversationButtonParams {
+interface GoToConversationButtonParams {
   context: {
-    goToConversation: (id: string) => void;
+    handleGoToConversation: (id: string) => void;
   };
   data: {
     id: string;
   };
 }
 
-const goToConversationButton = (params: goToConversationButtonParams) => {
+const GoToConversationButton = (params: GoToConversationButtonParams) => {
   const handleClick = () => {
-    params.context.goToConversation(params.data.id);
+    params.context.handleGoToConversation(params.data.id);
   };
 
   return (
@@ -60,7 +60,7 @@ const goToConversationButton = (params: goToConversationButtonParams) => {
   );
 };
 
-const newConversationComponent = (
+const NewConversationComponent = (
   handleNewConversation: (title: string) => void,
 ) => {
   // Wrapper to pass it as a buttonAction to the dialog
@@ -74,7 +74,10 @@ const newConversationComponent = (
 /**
  * ConversationAGGrid is a react component that displays a table of conversations in an AG Grid.
  * @param rowData: the data to be displayed in the AG Grid. Must be an array of ConversationRow objects.
- * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
+ * @param isLoading: a boolean that indicates whether the data is still loading.
+ * @param handleGoToConversation: a function that is called when the "Go to conversation" button is clicked.
+ * @param handleNewConversation: a function that is called when the "New conversation" button is clicked.
+ * @param errorOverlayProps: an object that contains the error status and overlay text.
  */
 export function ConversationAGGrid(props: ConversationAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
@@ -98,11 +101,11 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
       headerName: "",
       filter: false,
       flex: 1,
-      cellRenderer: goToConversationButton,
+      cellRenderer: GoToConversationButton,
     },
   ]);
 
-  const gridContext = { goToConversation: props.goToConversation };
+  const gridContext = { handleGoToConversation: props.handleGoToConversation };
 
   return (
     <div>
@@ -111,7 +114,7 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
         rowData={props.rowData}
         columnDefs={columnDefs}
         additionalComponentsLeft={[
-          newConversationComponent(props.handleNewConversation),
+          NewConversationComponent(props.handleNewConversation),
         ]}
         errorOverlayProps={props.errorOverlayProps}
         // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
