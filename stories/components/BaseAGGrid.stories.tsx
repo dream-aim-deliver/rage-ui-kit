@@ -1,3 +1,4 @@
+"use client";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ColDef } from "ag-grid-community";
 

@@ -94,6 +94,9 @@ const theme = {
       largest: "3rem",
       px: "1px",
     },
+    fontFamily: {
+      plex: ["IBM Plex Sans"],
+    },
   },
 };
 

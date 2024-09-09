@@ -19,7 +19,8 @@
     "**/*.css"
   ],
   "exports": {
-    "./css": "./dist/style.css",
+    "./theme.css": "./dist/static/css/theme.css",
+    "./ag-theme-sda.css": "./dist/ag-theme-sda.css",
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.js"
@@ -28,7 +29,7 @@
   },
   "scripts": {
     "app": "vite",
-    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "build": "tsc --p ./tsconfig-build.json && vite build && python3 patch-directives.py",
     "build:watch": "tsc --p ./tsconfig-build.json && vite build --watch",
     "build:docs": "typedoc --out docs lib/index.ts",
     "build:storybook": "storybook build",
@@ -94,6 +95,7 @@
     "vite": "^5.0.8",
     "vite-plugin-dts": "^4.1.0",
     "vite-plugin-lib-inject-css": "^1.3.0",
+    "vite-plugin-static-copy": "^1.0.6",
     "vitest": "^1.2.2"
   },
   "dependencies": {

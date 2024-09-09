@@ -1,8 +1,9 @@
+"use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ColDef, SizeColumnsToContentStrategy } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import "./ag-theme-sda.css";
+// import "./ag-theme-sda.css";
 import React, {
   useCallback,
   useEffect,
@@ -171,11 +172,14 @@ export function BaseAGGrid<TRowData>({
   };
 
   return (
-    <div id="base-ag-grid" className={cn("flex flex-col")}>
+    <div
+      id="base-ag-grid"
+      className={cn("flex flex-col h-full w-full bg-neutral-800")}
+    >
       <div
         id="table-top"
         className={cn(
-          "flex flex-col gap-medium bg-neutral-800  p-medium rounded-md",
+          "flex flex-col gap-medium  bg-neutral-800  p-medium rounded-md",
         )}
       >
         <div
@@ -237,7 +241,7 @@ export function BaseAGGrid<TRowData>({
       <div
         id="ag-grid-inner-component"
         className={cn("ag-theme-sda")}
-        style={{ height: gridHeight, width: gridWidth }}
+        style={{ height: "80vh", width: "80hh" }}
       >
         <AgGridReact
           rowData={rowData}

@@ -1,3 +1,4 @@
+"use client";
 import { useState, FormEvent, KeyboardEvent } from "react";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { cn } from "@/utils/utils";
