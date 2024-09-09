@@ -1,59 +1,70 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ToastComponent } from "@/components/toast/ToastComponent";
-import { action } from "@storybook/addon-actions";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { ToastAction } from "@/components/ui/toast";
 
+const ToastTrigger = (props: {
+  type: "success" | "info" | "warning" | null | undefined | "error";
+}) => {
+  const { toast } = useToast();
+  console.log(props.type);
+  return (
+    <Button
+      variant="outline"
+      onClick={() => {
+        toast({
+          variant: props.type,
+          title: "Scheduled: Catch up ",
+          description: "Friday, February 10, 2023 at 5:57 PM",
+          action: (
+            <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+          ),
+        });
+      }}
+    >
+      Add to calendar
+    </Button>
+  );
+};
 const meta = {
-  title: "Components/Toast/ToastComponent", // Title for the component
-  component: ToastComponent,
+  title: "Components/Toast", // Title for the component
+  component: ToastTrigger,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof ToastComponent>;
+} satisfies Meta<typeof ToastTrigger>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // ToastComponent with type "success"
-export const SuccessToast: Story = {
+export const Success: Story = {
   args: {
-    id: "toast-success",
-    title: "Success",
-    description: "This is a success message.",
     type: "success",
-    onClose: action("onClose"),
   },
 };
 
-// ToastComponent with type "error"
-export const ErrorToast: Story = {
+export const Error: Story = {
   args: {
-    id: "toast-error",
-    title: "Error",
-    description: "An error occurred.",
     type: "error",
-    onClose: action("onClose"),
   },
 };
 
-// ToastComponent with type "info"
-export const InfoToast: Story = {
+export const Warning: Story = {
   args: {
-    id: "toast-info",
-    title: "Info",
-    description: "This is an informational message.",
-    type: "info",
-    onClose: action("onClose"),
-  },
-};
-
-// ToastComponent with type "warning"
-export const WarningToast: Story = {
-  args: {
-    id: "toast-warning",
-    title: "Warning",
-    description: "This is a warning message.",
     type: "warning",
-    onClose: action("onClose"),
+  },
+};
+
+export const Info: Story = {
+  args: {
+    type: "info",
+  },
+};
+
+export const Default: Story = {
+  args: {
+    type: null,
   },
 };
