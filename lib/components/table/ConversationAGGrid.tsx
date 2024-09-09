@@ -1,6 +1,6 @@
 "use client";
 import { z } from "zod";
-import { BaseAGGrid, errorOverlayProps } from "./BaseAGGrid";
+import { BaseAGGrid } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
 
@@ -31,7 +31,10 @@ export interface ConversationAGGridProps {
   isLoading: boolean;
   goToConversation: (id: number) => void;
   handleNewConversation: (conversationTitle: string) => void;
-  errorOverlayProps?: errorOverlayProps;
+  errorOverlayProps?: {
+    errorStatus: boolean;
+    overlayText: string;
+  };
 }
 
 interface goToConversationButtonParams {
@@ -57,6 +60,17 @@ const goToConversationButton = (params: goToConversationButtonParams) => {
   );
 };
 
+const newConversationComponent = (
+  handleNewConversation: (title: string) => void,
+) => {
+  // Wrapper to pass it as a buttonAction to the dialog
+  const newConversationAction = (inputValues: buttonActionInputValues) => {
+    handleNewConversation(inputValues.conversationTitle);
+  };
+
+  return <CreateConversationDialog buttonAction={newConversationAction} />;
+};
+
 /**
  * ConversationAGGrid is a react component that displays a table of conversations in an AG Grid.
  * @param rowData: the data to be displayed in the AG Grid. Must be an array of ConversationRow objects.
@@ -68,7 +82,7 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
       headerName: "ID",
       filter: false,
       field: "id",
-      flex: 1,
+      flex: 0.6,
     },
     {
       headerName: "Title",
@@ -78,28 +92,17 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
     {
       headerName: "Created At",
       field: "created_at",
-      flex: 3,
+      flex: 2,
     },
     {
       headerName: "",
       filter: false,
-      flex: 2,
+      flex: 1,
       cellRenderer: goToConversationButton,
     },
   ]);
 
   const gridContext = { goToConversation: props.goToConversation };
-
-  const newConversationComponent = (
-    handleNewConversation: (title: string) => void,
-  ) => {
-    // Wrapper to pass it as a buttonAction to the dialog
-    const newConversationAction = (inputValues: buttonActionInputValues) => {
-      handleNewConversation(inputValues.conversationTitle);
-    };
-
-    return <CreateConversationDialog buttonAction={newConversationAction} />;
-  };
 
   return (
     <div>
@@ -110,9 +113,7 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
         additionalComponentsLeft={[
           newConversationComponent(props.handleNewConversation),
         ]}
-        errorOverlayProps={
-          props.errorOverlayProps || { errorStatus: false, overlayText: "" }
-        }
+        errorOverlayProps={props.errorOverlayProps}
         // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
         context={gridContext}
       />

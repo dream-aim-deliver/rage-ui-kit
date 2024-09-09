@@ -72,29 +72,6 @@ export type componentWithCallBack<TRowData> = {
   callbackFunction: RowSelectionAction<TRowData>;
 };
 
-export type errorOverlayProps = {
-  errorStatus: boolean;
-  overlayText: string;
-};
-
-// Made to override the default noRowsOverlayComponent of AG Grid, as it was showing an message out of place
-const noRowsOverlayComponent: () => JSX.Element = () => <div></div>;
-
-// Custom error overlay component for the error state of the AG Grid
-const errorOverlayComponent = (props: errorOverlayProps) => {
-  return (
-    <div className={cn("overflow-auto h-full")}>
-      <p
-        className={cn(
-          "text-white bg-error-800 rounded-md p-large font-bold text-sm",
-        )}
-      >
-        {props.overlayText}
-      </p>
-    </div>
-  );
-};
-
 /**
  * BaseAGGridProps is a generic interface that defines the props for the BaseAGGrid component.
  * @param isLoading: a boolean that indicates whether the data is being loaded
@@ -117,7 +94,10 @@ export interface BaseAGGridProps<TRowData> {
   additionalComponentsLeft?: React.ReactNode[];
   additionalComponentsCenter?: React.ReactNode[];
   additionalComponentsRight?: React.ReactNode[];
-  errorOverlayProps?: errorOverlayProps;
+  errorOverlayProps?: {
+    errorStatus: boolean;
+    overlayText: string;
+  };
   overlayTextOnNoRows?: string;
   AGGridProps?: AgGridReactProps;
 }
@@ -189,6 +169,26 @@ export function BaseAGGrid<TRowData>({
     );
   }, []);
 
+  // Made to override the default noRowsOverlayComponent of AG Grid, as it was showing a message out of place
+  const NoRowsOverlayComponent: () => JSX.Element = () => <div></div>;
+
+  // Custom error overlay component for the error state of the AG Grid
+  const ErrorOverlayComponent = () => {
+    return (
+      <div>
+        <div className={cn("overflow-auto h-fulll w-full")}>
+          <p
+            className={cn(
+              "text-white bg-error-800 rounded-md p-large font-bold text-sm",
+            )}
+          >
+            {errorOverlayProps.overlayText}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
       id="base-ag-grid"
@@ -204,7 +204,10 @@ export function BaseAGGrid<TRowData>({
           id="table-top-button-group"
           className={cn("flex flex-row justify-center gap-medium")}
         >
-          <div id="spinner" className={cn("flex w-small")}>
+          <div
+            id="spinner"
+            className={cn("flex w-small gap-small mr-medium items-center")}
+          >
             {isLoading && <Spinner />}
           </div>
 
@@ -268,7 +271,7 @@ export function BaseAGGrid<TRowData>({
         // Success state
         <div
           id="ag-grid-inner-component"
-          className={cn("ag-theme-sda")}
+          className={cn("ag-theme-sda h-screen overflow-auto")}
           style={{ height: "80vh", width: "80vw" }}
         >
           <AgGridReact
@@ -281,7 +284,7 @@ export function BaseAGGrid<TRowData>({
             pagination={true}
             paginationPageSize={13}
             paginationPageSizeSelector={[13, 25, 50, 100]}
-            noRowsOverlayComponent={noRowsOverlayComponent}
+            noRowsOverlayComponent={NoRowsOverlayComponent}
             ref={gridRef}
             {...AGGridProps}
           />
@@ -290,7 +293,7 @@ export function BaseAGGrid<TRowData>({
         // Error state
         <div
           id="ag-grid-inner-component"
-          className={cn("ag-theme-sda h-screen")}
+          className={cn("ag-theme-sda h-screen overflow-auto")}
           style={{ height: "80vh", width: "80vw" }}
         >
           <AgGridReact
@@ -302,7 +305,7 @@ export function BaseAGGrid<TRowData>({
             pagination={true}
             paginationPageSize={13}
             paginationPageSizeSelector={[13, 25, 50, 100]}
-            noRowsOverlayComponent={errorOverlayComponent}
+            noRowsOverlayComponent={ErrorOverlayComponent}
             ref={gridRef}
             {...AGGridProps}
           />
