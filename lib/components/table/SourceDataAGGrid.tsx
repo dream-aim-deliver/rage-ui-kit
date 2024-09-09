@@ -1,3 +1,4 @@
+"use client";
 import { z } from "zod";
 import { BaseAGGrid, componentWithCallBack } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";

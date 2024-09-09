@@ -7,6 +7,7 @@ import { extname, relative } from "path";
 import { fileURLToPath } from "node:url";
 import { peerDependencies } from "./package.json";
 import preserveDirectives from "rollup-plugin-preserve-directives";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -92,7 +93,18 @@ export default defineConfig({
     },
   },
 
-  plugins: [dts({ include: ["lib"] }), react()],
+  plugins: [
+    dts({ include: ["lib"] }),
+    react(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: path.resolve(__dirname, "lib/tailwind/theme.css"),
+          dest: path.resolve(__dirname, "dist/static/css"),
+        },
+      ],
+    }),
+  ],
   build: {
     copyPublicDir: true,
     lib: {
