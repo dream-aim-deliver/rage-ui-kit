@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button as ShadcnButton } from "@/components/button/index";
 
 import {
   ConversationAGGrid,
@@ -48,80 +47,44 @@ const dataGenerator = () => {
   const endDate_c = new Date(2024, 1, 1);
   const created_at = getRandomDate(startDate_c, endDate_c).toISOString();
 
-  const startDate_u = new Date(2024, 1, 2);
-  const endDate_u = new Date();
-  const updated_at = getRandomDate(startDate_u, endDate_u).toISOString();
-
   const datum: ConversationRow = {
     id: randomChoice(thousand),
     title: `Conversation number ${conv_number}, about ${random_topic}`,
     created_at: created_at,
-    updated_at: updated_at,
   };
 
   return datum;
 };
 
-export const SmallTable: Story = {
+export const LoadingWithNoData: Story = {
   args: {
-    rowData: Array.from({ length: 5 }, dataGenerator),
+    rowData: [],
+    isLoading: true,
   },
 };
 
-export const LargeTable: Story = {
+export const ErrorState: Story = {
   args: {
-    rowData: Array.from({ length: 106 }, dataGenerator),
+    rowData: [],
+    isLoading: false,
+    errorOverlayProps: {
+      errorStatus: true,
+      overlayText:
+        "An error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus.an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus. an error occurred while fetching the data: lorem ipsum dolor sit amet, consectetur adipiscing elit. nullam nec purus. nullam nec purus. nullam nec purus.",
+    },
   },
 };
 
-const alertRawButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <ShadcnButton
-      label={"Alert raw data"}
-      variant="default"
-      onClick={onClick}
-      title="Alert the raw data of the selected rows"
-    />
-  );
-};
-
-const alertRawCallBack = (selectedRows: ConversationRow[]) => {
-  alert(
-    "Dump of the selected rows:\n\n" +
-      selectedRows.map((row) => JSON.stringify(row)).join("\n\n"),
-  );
-};
-
-const alertButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <ShadcnButton
-      label={"Alert selected titles"}
-      variant="default"
-      onClick={onClick}
-      title="Alert the titles of the selected rows"
-    />
-  );
-};
-
-const alertCallBack = (selectedRows: ConversationRow[]) => {
-  alert(
-    "Titles of the selected conversaitons:\n\n- " +
-      selectedRows.map((row) => row.title).join("\n- "),
-  );
-};
-
-export const WithAlertSelectionButtons: Story = {
+export const WithAlertFunctions: Story = {
   args: {
     rowData: Array.from({ length: 106 }, dataGenerator),
-    buttonsWithCallBack: [
-      {
-        reactComponent: alertRawButton,
-        callbackFunction: alertRawCallBack,
-      },
-      {
-        reactComponent: alertButton,
-        callbackFunction: alertCallBack,
-      },
-    ],
+    isLoading: false,
+    goToConversation: (id: number) => {
+      alert(`Navigating to conversation ${id}`);
+    },
+    handleNewConversation: (title: string) => {
+      alert(`Creating new conversation with title: ${title}
+      This feature is not implemented yet.`);
+    },
   },
 };

@@ -115,8 +115,6 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       rowData={props.rowData}
       columnDefs={columnDefs}
       componentsWithCallBack={buttonsWithCallBack}
-      maxGridHeight={760}
-      gridWidth={900}
     />
   );
 }
