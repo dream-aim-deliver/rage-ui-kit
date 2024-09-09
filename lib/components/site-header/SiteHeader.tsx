@@ -2,28 +2,17 @@ import React from "react";
 import {
   NavigationMenu,
   NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuIndicator,
 } from "@/ui/header";
 import { cn } from "@/utils/utils";
 import { Menu, X, SatelliteIcon } from "lucide-react"; // Import icons for mobile menu toggle
 
 export interface HeaderProps {
-  user: {
-  name: string | undefined
-  }
-  callbacks: {
-  logout: () => void
-  }
-  }
-  
+  children?: React.ReactNode;
+}
+
 export const Header = (props: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false); // State to manage mobile menu
-
-  const handleItemClick = (item: string) => {
-    alert(`You clicked on ${item}`);
-  };
 
   return (
     <header
@@ -32,12 +21,12 @@ export const Header = (props: HeaderProps) => {
       )}
     >
       <div
-        className={cn(
-          "w-screen px-4 flex items-center justify-between py-4",
-        )}
+        className={cn("w-screen px-4 flex items-center justify-between py-4")}
       >
         <div className="flex items-center gap-2">
-          <SatelliteIcon className={cn("text-neutral-800 size-10 dark:text-white")} />
+          <SatelliteIcon
+            className={cn("text-neutral-800 size-10 dark:text-white")}
+          />
           {/* Logo */}
           <a
             href="/"
@@ -60,8 +49,6 @@ export const Header = (props: HeaderProps) => {
         </button>
 
         <NavigationMenu>
-
-          
           {/* Desktop Menu */}
           <NavigationMenuList
             role="menubar"
@@ -70,42 +57,7 @@ export const Header = (props: HeaderProps) => {
               "hidden lg:flex space-x-9 text-neutral-800 dark:text-white  ",
             )}
           >
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                href="/"
-                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                onClick={() => handleItemClick("Home")}
-              >
-                Home
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                href="/"
-                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                onClick={() => handleItemClick("Source")}
-              >
-                Source
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                href="/"
-                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                onClick={() => handleItemClick("Research Context")}
-              >
-                Research Context
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink
-                href="/"
-                className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                onClick={() => handleItemClick("Documentation")}
-              >
-                Documentation
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+            {props.children}
           </NavigationMenuList>
 
           {/* Mobile Menu */}
@@ -118,42 +70,7 @@ export const Header = (props: HeaderProps) => {
             )}
           >
             <NavigationMenuList className="flex flex-col p-4 space-y-4 text-black dark:text-white">
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/"
-                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                  onClick={() => handleItemClick("Home")}
-                >
-                  Home
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/"
-                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                  onClick={() => handleItemClick("Source")}
-                >
-                  Source
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/"
-                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                  onClick={() => handleItemClick("Research Context")}
-                >
-                  Research Context
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  href="/"
-                  className="relative after:absolute after:left-0 after:top-5 after:w-0 after:h-1 after:bg-neutral-700 dark:after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                  onClick={() => handleItemClick("Documentation")}
-                >
-                  Documentation
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+              {props.children}
             </NavigationMenuList>
           </div>
 
