@@ -54,13 +54,10 @@ const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
   );
 };
 
-interface UploadSourceDataButtonParams {
-  handleUploadSourceData: () => void;
-  isUploading: boolean;
-}
-
-const UploadSourceDataComponent = (isUploading: boolean, handleUploadSourceData: () => void) => {
-
+const UploadSourceDataComponent = (
+  isUploading: boolean,
+  handleUploadSourceData: () => void,
+) => {
   if (isUploading) {
     return (
       <ShadcnButton label={"Uploading..."} variant="default" disabled={true} />
@@ -127,7 +124,10 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
         rowData={props.rowData}
         columnDefs={columnDefs}
         additionalComponentsLeft={[
-          UploadSourceDataComponent(props.isUploading, props.handleUploadSourceData)
+          UploadSourceDataComponent(
+            props.isUploading,
+            props.handleUploadSourceData,
+          ),
         ]}
         errorOverlayProps={props.errorOverlayProps}
         // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
