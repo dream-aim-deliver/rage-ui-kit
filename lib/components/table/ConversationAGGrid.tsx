@@ -1,14 +1,19 @@
 "use client";
 import { z } from "zod";
-import { BaseAGGrid, componentWithCallBack } from "./BaseAGGrid";
+import { BaseAGGrid, errorOverlayProps } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
+
+import { Button as ShadcnButton } from "@/components/button/index";
+import {
+  buttonActionInputValues,
+  CreateConversationDialog,
+} from "../dialog/CreateConversationDialog";
 
 const ConversationRowSchema = z.object({
   id: z.number(),
   title: z.string(),
   created_at: z.string(),
-  updated_at: z.string(),
 });
 
 /**
@@ -23,59 +28,93 @@ export type ConversationRow = z.infer<typeof ConversationRowSchema>;
  */
 export interface ConversationAGGridProps {
   rowData: ConversationRow[];
-  buttonsWithCallBack?: componentWithCallBack<ConversationRow>[];
+  isLoading: boolean;
+  goToConversation: (id: number) => void;
+  handleNewConversation: (conversationTitle: string) => void;
+  errorOverlayProps?: errorOverlayProps;
 }
+
+interface goToConversationButtonParams {
+  context: {
+    goToConversation: (id: string) => void;
+  };
+  data: {
+    id: string;
+  };
+}
+
+const goToConversationButton = (params: goToConversationButtonParams) => {
+  const handleClick = () => {
+    params.context.goToConversation(params.data.id);
+  };
+
+  return (
+    <ShadcnButton
+      label={"Start chat"}
+      variant="default"
+      onClick={handleClick}
+    />
+  );
+};
 
 /**
  * ConversationAGGrid is a react component that displays a table of conversations in an AG Grid.
  * @param rowData: the data to be displayed in the AG Grid. Must be an array of ConversationRow objects.
  * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
  */
-export function ConversationAGGrid({
-  rowData,
-  buttonsWithCallBack,
-}: ConversationAGGridProps) {
+export function ConversationAGGrid(props: ConversationAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
-      headerCheckboxSelection: true,
-      headerCheckboxSelectionFilteredOnly: true, // only selects filtered rows, when filtering
-      checkboxSelection: true,
       headerName: "ID",
+      filter: false,
       field: "id",
-      filter: "agNumberColumnFilter",
-      filterParams: {
-        filterOptions: [
-          "equals",
-          "lessThan",
-          "greaterThan",
-          "inRange",
-          "notEqual",
-        ],
-      },
+      flex: 1,
     },
     {
       headerName: "Title",
       field: "title",
+      flex: 5,
     },
     {
       headerName: "Created At",
       field: "created_at",
+      flex: 3,
     },
     {
-      headerName: "Updated At",
-      field: "updated_at",
+      headerName: "",
+      filter: false,
+      flex: 2,
+      cellRenderer: goToConversationButton,
     },
   ]);
+
+  const gridContext = { goToConversation: props.goToConversation };
+
+  const newConversationComponent = (
+    handleNewConversation: (title: string) => void,
+  ) => {
+    // Wrapper to pass it as a buttonAction to the dialog
+    const newConversationAction = (inputValues: buttonActionInputValues) => {
+      handleNewConversation(inputValues.conversationTitle);
+    };
+
+    return <CreateConversationDialog buttonAction={newConversationAction} />;
+  };
 
   return (
     <div>
       <BaseAGGrid
-        isLoading={false} // TODO: Implement loading state
-        maxGridHeight={760}
-        gridWidth={730}
-        rowData={rowData}
+        isLoading={props.isLoading}
+        rowData={props.rowData}
         columnDefs={columnDefs}
-        componentsWithCallBack={buttonsWithCallBack}
+        additionalComponentsLeft={[
+          newConversationComponent(props.handleNewConversation),
+        ]}
+        errorOverlayProps={
+          props.errorOverlayProps || { errorStatus: false, overlayText: "" }
+        }
+        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
+        context={gridContext}
       />
     </div>
   );
