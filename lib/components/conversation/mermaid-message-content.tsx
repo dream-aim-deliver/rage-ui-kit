@@ -1,3 +1,4 @@
+"use client";
 import mermaid from "mermaid";
 import { ReactNode, useEffect } from "react";
 
