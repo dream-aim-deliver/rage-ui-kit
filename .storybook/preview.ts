@@ -1,7 +1,8 @@
 import type { Preview } from "@storybook/react";
 import { themes } from "@storybook/theming";
-
 import "../lib/tailwind/theme.css";
+import { Toaster } from "@/lib/components/ui/toaster";
+
 const preview: Preview = {
   parameters: {
     darkMode: {
@@ -18,6 +19,14 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <>
+        <Story />
+        <Toaster />
+      </>
+    ),
+  ],
 };
 
 export default preview;
