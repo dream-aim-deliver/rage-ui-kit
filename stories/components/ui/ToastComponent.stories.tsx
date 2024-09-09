@@ -15,14 +15,14 @@ const ToastTrigger = (props: {
         toast({
           variant: props.type,
           title: "Scheduled: Catch up ",
-          description: "Friday, February 10, 2023 at 5:57 PM",
+          description: "",
           action: (
             <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
           ),
         });
       }}
     >
-      Add to calendar
+      Show toast
     </Button>
   );
 };
