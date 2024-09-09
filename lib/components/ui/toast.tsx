@@ -33,13 +33,10 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: "border bg-background text-foreground",
-        error:
-          "border-red-500 bg-red-500 dark:border-red-800 dark:bg-red-800 text-white",
-        warning:
-          "border-yellow-500 bg-yellow-500 dark:border-yellow-600 dark:bg-yellow-600 text-black",
-        success:
-          "border-neutral-600 bg-neutral-600 dark:border-neutral-800 dark:bg-neutral-800 text-white",
-        info: "border-neutral-600 bg-neutral-600 dark:border-neutral-800 dark:bg-neutral-800 text-white",
+        error: "border-accent-error bg-accent-error text-white",
+        warning: "border-accent-warning bg-accent-warning text-black",
+        success: "border-accent-success bg-accent-success text-white",
+        info: "border-accent-info bg-accent-info text-white",
       },
       animation: {
         enter: "animate-toast-enter",
