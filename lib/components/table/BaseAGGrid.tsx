@@ -241,7 +241,7 @@ export function BaseAGGrid<TRowData>({
       <div
         id="ag-grid-inner-component"
         className={cn("ag-theme-sda")}
-        style={{ height: "80vh", width: "80hh" }}
+        style={{ height: "80vh", width: "80vw" }}
       >
         <AgGridReact
           rowData={rowData}
