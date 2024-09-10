@@ -1,11 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import {
-  CreateResearchContextDialog,
-  onSubmitInputValues,
-} from "@/components/dialog/CreateResearchContextDialog";
-
-import { action } from "@storybook/addon-actions";
+import { CreateResearchContextDialog } from "@/components/dialog/CreateResearchContextDialog";
 
 const meta = {
   title: "Components/Dialogs/CreateResearchContext",
@@ -19,19 +14,68 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const EmptyAction: Story = {
+export const Success: Story = {
   args: {
-    onSubmit: action("buttonAction"),
+    onSubmit(researchContextName, researchContextDescription, files) {
+      alert(
+        `Submitted: ${researchContextName}, ${researchContextDescription}, ${files}`,
+      );
+    },
+    clientFiles: [],
+    viewModel: {
+      status: "success",
+      researchContext: {
+        id: 1,
+        title: "Research Context",
+        description: "Description",
+      },
+    },
   },
 };
 
-export const AlertExample: Story = {
+export const Request: Story = {
   args: {
-    onSubmit: (inputValues: onSubmitInputValues) => {
-      const formattedInputValues = Object.entries(inputValues)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join("\n   ");
-      alert(`User inputs were:\n\n   ${formattedInputValues}`);
+    onSubmit(researchContextName, researchContextDescription, files) {
+      alert(
+        `Submitted: ${researchContextName}, ${researchContextDescription}, ${files}`,
+      );
+    },
+    clientFiles: [],
+    viewModel: {
+      status: "request",
+      researchContextName: "Research Context",
+    },
+  },
+};
+
+export const Error: Story = {
+  args: {
+    onSubmit(researchContextName, researchContextDescription, files) {
+      alert(
+        `Submitted: ${researchContextName}, ${researchContextDescription}, ${files}`,
+      );
+    },
+    clientFiles: [],
+    viewModel: {
+      status: "error",
+      message: "Error message",
+      context: {},
+    },
+  },
+};
+
+export const Progress: Story = {
+  args: {
+    onSubmit(researchContextName, researchContextDescription, files) {
+      alert(
+        `Submitted: ${researchContextName}, ${researchContextDescription}, ${files}`,
+      );
+    },
+    clientFiles: [],
+    viewModel: {
+      status: "progress",
+      message: "Progress message",
+      context: {},
     },
   },
 };
