@@ -70,6 +70,7 @@ export const ErrorState: Story = {
   args: {
     rowData: [],
     isLoading: false,
+    enableUpload: false,
     errorOverlayProps: {
       errorStatus: true,
       overlayText:
@@ -82,6 +83,7 @@ export const WithAlertFunctions: Story = {
   args: {
     rowData: Array.from({ length: 106 }, dataGenerator),
     isLoading: false,
+    enableUpload: true,
     handleDownloadSourceData: (relativePath: string) => {
       alert(`Downloading source data '${relativePath}'`);
     },
@@ -96,6 +98,7 @@ export const WithUploading: Story = {
     rowData: Array.from({ length: 106 }, dataGenerator),
     isLoading: false,
     isUploading: true,
+    enableUpload: true,
     handleDownloadSourceData: (relativePath: string) => {
       alert(`Downloading source data '${relativePath}'`);
     },
