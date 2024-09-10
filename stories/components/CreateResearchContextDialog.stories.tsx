@@ -23,13 +23,13 @@ export const Success: Story = {
     },
     clientFiles: [
       {
-        id: 1,
+        id: "1",
         name: "File 1",
         relativePath: "path/to/file1",
         createdAt: "2021-01-01",
       },
       {
-        id: 2,
+        id: "2",
         name: "File 2",
         relativePath: "path/to/file2",
         createdAt: "2021-01-02",
