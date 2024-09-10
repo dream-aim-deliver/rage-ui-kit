@@ -9,7 +9,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-import { RemoteFile, TCreateResearchContextViewModel } from "../models";
+import { TCreateResearchContextViewModel } from "../models";
 import { useState } from "react";
 import {
   CreateResearchContextForm,
@@ -18,7 +18,7 @@ import {
 import { CreateResearchContextSelectFilesView } from "./CreateResearchContextSelectFiles";
 import { PlusCircle } from "lucide-react";
 import { CreateResearchContextCreating } from "./CreateResearchContextCreating";
-
+import { SelectableSourceDataRow } from "../table/SelectableSourceDataAGGrid";
 export interface CreateResearchContextDialogProps {
   /**
    * Callback function that will be called when the form is submitted.
@@ -26,9 +26,9 @@ export interface CreateResearchContextDialogProps {
   onSubmit: (
     researchContextName: string,
     researchContextDescription: string,
-    files: RemoteFile[],
+    files: SelectableSourceDataRow[],
   ) => void;
-  clientFiles: RemoteFile[];
+  clientFiles: SelectableSourceDataRow[];
   viewModel: TCreateResearchContextViewModel;
 }
 
@@ -44,16 +44,11 @@ export const CreateResearchContextDialog = (
   const [researchContextName, setResearchContextName] = useState<string>("");
   const [researchContextDescription, setResearchContextDescription] =
     useState<string>("");
-  const [selectedFiles, setSelectedFiles] = useState<RemoteFile[]>([]);
-
-  const selectFile = (file: RemoteFile) => {
-    if (selectedFiles.includes(file)) {
-      setSelectedFiles(
-        selectedFiles.filter((selectedFile) => selectedFile.id !== file.id),
-      );
-    } else {
-      setSelectedFiles([...selectedFiles, file]);
-    }
+  const [selectedFiles, setSelectedFiles] = useState<SelectableSourceDataRow[]>(
+    [],
+  );
+  const handleConfirmSelection = (selectedRows: SelectableSourceDataRow[]) => {
+    setSelectedFiles(selectedRows);
   };
 
   const handleSubmit = () => {
@@ -94,8 +89,9 @@ export const CreateResearchContextDialog = (
         )}
         {currentView === "files" && (
           <CreateResearchContextSelectFilesView
-            files={props.clientFiles}
-            selectFile={selectFile}
+            sourceDataList={props.clientFiles}
+            isLoading={false} // TODO: add loading state
+            handleConfirmSelection={handleConfirmSelection}
             onNext={handleSubmit}
             onPrevious={() => {
               setCurrentView("form");

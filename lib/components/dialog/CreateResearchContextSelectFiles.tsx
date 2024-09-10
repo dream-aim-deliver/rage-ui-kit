@@ -21,7 +21,7 @@ export const CreateResearchContextSelectFilesView = (
         <SelectableSourceDataAGGrid
           rowData={props.sourceDataList}
           isLoading={props.isLoading}
-          handleConfirmSelection={props.handleConfirmSelection} 
+          handleConfirmSelection={props.handleConfirmSelection}
           errorOverlayProps={props.errorOverlayProps}
         />
       </div>
