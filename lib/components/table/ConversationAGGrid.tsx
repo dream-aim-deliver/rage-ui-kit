@@ -30,7 +30,6 @@ export interface ConversationAGGridProps {
   rowData: ConversationRow[];
   isLoading: boolean;
   newConversationIsEnabled: boolean;
-  newConversationDialogIsOpen?: boolean;
   handleGoToConversation: (id: number) => void;
   handleNewConversation: (conversationTitle: string) => void;
   errorOverlayProps?: {
@@ -64,7 +63,6 @@ const GoToConversationButton = (params: GoToConversationButtonParams) => {
 
 const NewConversationComponent = (
   isEnabled: boolean,
-  isOpen: boolean = true,
   handleNewConversation: (title: string) => void,
 ) => {
   // Wrapper to pass it as a buttonAction to the dialog
@@ -75,7 +73,6 @@ const NewConversationComponent = (
   return (
     <CreateConversationDialog
       isEnabled={isEnabled}
-      isOpen={isOpen}
       buttonAction={newConversationAction}
     />
   );
@@ -126,7 +123,6 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
         additionalComponentsLeft={[
           NewConversationComponent(
             props.newConversationIsEnabled,
-            props.newConversationDialogIsOpen,
             props.handleNewConversation,
           ),
         ]}
