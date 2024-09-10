@@ -58,7 +58,6 @@ export const CreateConversationDialog = ({
   buttonAction,
   ...props
 }: CreateConversationDialogProps) => {
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,13 +69,18 @@ export const CreateConversationDialog = ({
     buttonAction(values);
   };
 
-
   const [isDialogOpen, setIsDialogOpen] = useState(isOpen);
 
   return (
     <ShadcnDialog open={isDialogOpen} {...props}>
       <DialogTrigger asChild>
-        <Button variant="default" size="icon" label={<PenSquare />} disabled={!isEnabled} onClick={() => setIsDialogOpen(true)} />
+        <Button
+          variant="default"
+          size="icon"
+          label={<PenSquare />}
+          disabled={!isEnabled}
+          onClick={() => setIsDialogOpen(true)}
+        />
       </DialogTrigger>
 
       <DialogContent
