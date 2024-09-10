@@ -1,3 +1,14 @@
+"use client";
+import {
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Card as ShadcnCard,
+} from "@/ui/card";
+
+import { Button } from "@/components/button/index";
+import { cn } from "@/utils/utils";
+
 export interface ResearchContextCardProps {
   title: string;
   description: string;
@@ -8,21 +19,54 @@ export interface ResearchContextCardProps {
   };
 }
 
-export const ResearchContextCard = (props: ResearchContextCardProps) => {
+export const ResearchContextCard = ({
+  title,
+  description,
+  id,
+  callbacks,
+  ...props
+}: ResearchContextCardProps) => {
   return (
-    <div className="flex flex-col items-center justify-between">
-      <h1>{props.title}</h1>
-      <p>{props.description}</p>
-      <button onClick={() => props.callbacks.onNavigateToSourcesPage(props.id)}>
-        Sources
-      </button>
-      <button
-        onClick={() =>
-          props.callbacks.onNavigateToListConversationPage(props.id)
-        }
+    <ShadcnCard {...props}>
+      <CardContent
+        className={cn(
+          "flex flex-col items-center justify-between gap-medium",
+          "sm:max-w-md",
+          "w-full",
+          "p-6",
+          "px-7",
+          "bg-neutral-100 dark:bg-neutral-800",
+          "text-black dark:text-white",
+          "border",
+          "rounded-lg",
+        )}
       >
-        Conversuations
-      </button>
-    </div>
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-center">
+            {title}
+          </CardTitle>
+        </CardHeader>
+        <p className="text-center text-gray-600 dark:text-gray-300 mb-4">
+          {description}
+        </p>
+
+        <div className="flex flex-row items-center justify-between gap-4">
+          <Button
+            className="w-full"
+            variant="default"
+            size="default"
+            label="Sources"
+            onClick={() => callbacks.onNavigateToSourcesPage(id)}
+          />
+          <Button
+            className="w-full"
+            variant="default"
+            size="default"
+            label="Conversations"
+            onClick={() => callbacks.onNavigateToListConversationPage(id)}
+          />
+        </div>
+      </CardContent>
+    </ShadcnCard>
   );
 };
