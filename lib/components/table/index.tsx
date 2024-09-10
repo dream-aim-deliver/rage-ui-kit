@@ -9,3 +9,7 @@ export {
   ConversationAGGrid,
   type ConversationAGGridProps,
 } from "./ConversationAGGrid";
+export {
+  SelectableSourceDataAGGrid,
+  type SelectableSourceDataAGGridProps,
+} from "./SelectableSourceDataAGGrid";

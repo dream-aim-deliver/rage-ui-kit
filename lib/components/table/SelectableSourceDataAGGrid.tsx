@@ -16,67 +16,32 @@ const SourceDataRowSchema = z.object({
 /**
  * SourceDataRow is a type that represents the structure of the data that will be displayed in the AG Grid.
  */
-export type SourceDataRow = z.infer<typeof SourceDataRowSchema>;
+export type SelectableSourceDataRow = z.infer<typeof SourceDataRowSchema>;
 
 /**
  * SourceDataAGGridProps is an interface that defines the props for the SourceDataAGGrid component.
  * @param rowData: the data to be displayed in the AG Grid. Must be an array of SourceDataRow objects.
  * @param buttonsWithCallBack: an array of objects containing a reactComponent and a callbackFunction.
  */
-export interface SourceDataAGGridProps {
-  rowData: SourceDataRow[];
+export interface SelectableSourceDataAGGridProps {
+  rowData: SelectableSourceDataRow[];
   isLoading: boolean;
-  isUploading: boolean;
-  enableUpload: boolean;
-  handleDownloadSourceData: (relativePath: string) => void;
-  handleUploadSourceData: () => void;
+  handleConfirmSelection: (selectedRows: SelectableSourceDataRow[]) => void;
   errorOverlayProps?: {
     errorStatus: boolean;
     overlayText: string;
   };
 }
 
-interface DownloadSourceDataButtonParams {
-  context: {
-    handleDownloadSourceData: (relativePath: string) => void;
-  };
-  data: {
-    relativePath: string;
-  };
-}
-
-const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
-  const handleClick = () => {
-    params.context.handleDownloadSourceData(params.data.relativePath);
-  };
-
+const ConfirmSelectionButton = ({ onClick }: { onClick: () => void }) => {
   return (
-    <ShadcnButton label={"Download"} variant="default" onClick={handleClick} />
+    <ShadcnButton
+      label={"Confirm Selection"}
+      variant="default"
+      onClick={onClick}
+      title="Confirm the selected rows"
+    />
   );
-};
-
-const UploadSourceDataComponent = (
-  enableUpload: boolean,
-  isUploading: boolean,
-  handleUploadSourceData: () => void,
-) => {
-  if (!enableUpload) {
-    return null;
-  }
-
-  if (isUploading) {
-    return (
-      <ShadcnButton label={"Uploading..."} variant="default" disabled={true} />
-    );
-  } else {
-    return (
-      <ShadcnButton
-        label={"Upload"}
-        variant="default"
-        onClick={handleUploadSourceData}
-      />
-    );
-  }
 };
 
 /**
@@ -88,9 +53,14 @@ const UploadSourceDataComponent = (
  * @param errorOverlayProps: an object that contains the error status and overlay text.
  * @returns a react component that displays a table of source data in an AG Grid.
  */
-export function SourceDataAGGrid(props: SourceDataAGGridProps) {
+export function SelectableSourceDataAGGrid(
+  props: SelectableSourceDataAGGridProps,
+) {
   const [columnDefs] = useState<ColDef[]>([
     {
+      headerCheckboxSelection: true,
+      headerCheckboxSelectionFilteredOnly: true,
+      checkboxSelection: true,
       headerName: "ID",
       filter: false,
       field: "id",
@@ -115,13 +85,8 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       headerName: "",
       filter: false,
       flex: 0.5,
-      cellRenderer: DownloadSourceDataButton,
     },
   ]);
-
-  const gridContext = {
-    handleDownloadSourceData: props.handleDownloadSourceData,
-  };
 
   return (
     <div>
@@ -129,16 +94,13 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
         isLoading={props.isLoading}
         rowData={props.rowData}
         columnDefs={columnDefs}
-        additionalComponentsLeft={[
-          UploadSourceDataComponent(
-            props.enableUpload,
-            props.isUploading,
-            props.handleUploadSourceData,
-          ),
+        componentsWithCallBack={[
+          {
+            reactComponent: ConfirmSelectionButton,
+            callbackFunction: props.handleConfirmSelection,
+          },
         ]}
         errorOverlayProps={props.errorOverlayProps}
-        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
-        context={gridContext}
       />
     </div>
   );

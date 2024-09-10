@@ -72,7 +72,13 @@ const NewConversationComponent = (
     handleNewConversation(inputValues.conversationTitle);
   };
 
-  return <CreateConversationDialog isEnabled={isEnabled} isOpen={isOpen} buttonAction={newConversationAction} />;
+  return (
+    <CreateConversationDialog
+      isEnabled={isEnabled}
+      isOpen={isOpen}
+      buttonAction={newConversationAction}
+    />
+  );
 };
 
 /**
@@ -118,7 +124,11 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
         rowData={props.rowData}
         columnDefs={columnDefs}
         additionalComponentsLeft={[
-          NewConversationComponent(props.newConversationIsEnabled, props.newConversationDialogIsOpen, props.handleNewConversation),
+          NewConversationComponent(
+            props.newConversationIsEnabled,
+            props.newConversationDialogIsOpen,
+            props.handleNewConversation,
+          ),
         ]}
         errorOverlayProps={props.errorOverlayProps}
         // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
