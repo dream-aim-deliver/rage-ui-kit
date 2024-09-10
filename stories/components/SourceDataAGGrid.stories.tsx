@@ -84,8 +84,8 @@ export const WithAlertFunctions: Story = {
     rowData: Array.from({ length: 106 }, dataGenerator),
     isLoading: false,
     enableUpload: true,
-    handleDownloadSourceData: (relativePath: string) => {
-      alert(`Downloading source data '${relativePath}'`);
+    handleDownloadSourceData: (name: string, relativePath: string) => {
+      alert(`Downloading source data '${relativePath}', with name '${name}'`);
     },
     handleUploadSourceData: () => {
       alert(`Uploading source data...`);
@@ -99,8 +99,8 @@ export const WithUploading: Story = {
     isLoading: false,
     isUploading: true,
     enableUpload: true,
-    handleDownloadSourceData: (relativePath: string) => {
-      alert(`Downloading source data '${relativePath}'`);
+    handleDownloadSourceData: (name: string, relativePath: string) => {
+      alert(`Downloading source data '${relativePath}' with name '${name}'`);
     },
     handleUploadSourceData: () => {
       alert(`Uploading source data...`);

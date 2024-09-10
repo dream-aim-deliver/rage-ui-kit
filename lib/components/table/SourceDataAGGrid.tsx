@@ -28,7 +28,7 @@ export interface SourceDataAGGridProps {
   isLoading: boolean;
   isUploading: boolean;
   enableUpload: boolean;
-  handleDownloadSourceData: (relativePath: string) => void;
+  handleDownloadSourceData: (name: string, relativePath: string) => void;
   handleUploadSourceData: () => void;
   errorOverlayProps?: {
     errorStatus: boolean;
@@ -38,16 +38,20 @@ export interface SourceDataAGGridProps {
 
 interface DownloadSourceDataButtonParams {
   context: {
-    handleDownloadSourceData: (relativePath: string) => void;
+    handleDownloadSourceData: (name: string, relativePath: string) => void;
   };
   data: {
+    name: string;
     relativePath: string;
   };
 }
 
 const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
   const handleClick = () => {
-    params.context.handleDownloadSourceData(params.data.relativePath);
+    params.context.handleDownloadSourceData(
+      params.data.name,
+      params.data.relativePath,
+    );
   };
 
   return (
