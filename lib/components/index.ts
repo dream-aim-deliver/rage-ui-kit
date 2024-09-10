@@ -1,5 +1,6 @@
 export * from "./button";
 export * from "./conversation";
+export * from "./dialog";
 export * from "./site-header";
 export * from "./mode-toggle";
 export * from "./card";
