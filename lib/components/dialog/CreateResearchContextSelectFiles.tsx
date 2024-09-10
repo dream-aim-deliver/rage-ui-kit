@@ -1,5 +1,6 @@
 import { SelectableSourceDataAGGrid } from "../table";
 import { SelectableSourceDataRow } from "../table/SelectableSourceDataAGGrid";
+import { cn } from "@/utils/utils";
 
 export interface CreateResearchContextSelectFilesViewProps {
   sourceDataList: SelectableSourceDataRow[];
@@ -16,7 +17,7 @@ export const CreateResearchContextSelectFilesView = (
   props: CreateResearchContextSelectFilesViewProps,
 ) => {
   return (
-    <div>
+    <div className="p-5 space-y-1">
       <div>
         <SelectableSourceDataAGGrid
           rowData={props.sourceDataList}
@@ -25,8 +26,30 @@ export const CreateResearchContextSelectFilesView = (
           errorOverlayProps={props.errorOverlayProps}
         />
       </div>
-      <button onClick={props.onNext}>Next</button>
-      <button onClick={props.onPrevious}>Prev</button>
+
+      <div className="flex justify-between">
+        <button
+          onClick={props.onPrevious}
+          className={cn(
+            "bg-neutral-200 hover:bg-neutral-400 text-black",
+            "font-semibold py-2 px-4 rounded-lg shadow-md",
+            "transition-colors duration-300",
+          )}
+        >
+          Prev
+        </button>
+
+        <button
+          onClick={props.onNext}
+          className={cn(
+            "bg-neutral-200 hover:bg-neutral-400 text-black",
+            "font-semibold py-2 px-4 rounded-lg shadow-md",
+            "transition-colors duration-300",
+          )}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
