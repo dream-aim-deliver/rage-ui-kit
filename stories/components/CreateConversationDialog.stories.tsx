@@ -21,12 +21,14 @@ type Story = StoryObj<typeof meta>;
 
 export const EmptyAction: Story = {
   args: {
+    isEnabled: true,
     buttonAction: action("buttonAction"),
   },
 };
 
 export const AlertExample: Story = {
   args: {
+    isEnabled: true,
     buttonAction: (inputValues: buttonActionInputValues) => {
       const formattedInputValues = Object.entries(inputValues)
         .map(([key, value]) => `${key}: ${value}`)

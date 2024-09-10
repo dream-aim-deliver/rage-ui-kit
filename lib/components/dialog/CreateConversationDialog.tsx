@@ -66,13 +66,14 @@ export const CreateConversationDialog = ({
   });
 
   const onSubmitWrapper = (values: z.infer<typeof formSchema>) => {
+    setIsDialogOpen(false);
     buttonAction(values);
   };
 
   const [isDialogOpen, setIsDialogOpen] = useState(isOpen);
 
   return (
-    <ShadcnDialog open={isDialogOpen} {...props}>
+    <ShadcnDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} {...props}>
       <DialogTrigger asChild>
         <Button
           variant="default"
