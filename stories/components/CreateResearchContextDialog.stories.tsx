@@ -21,7 +21,20 @@ export const Success: Story = {
         `Submitted: ${researchContextName}, ${researchContextDescription}, ${files}`,
       );
     },
-    clientFiles: [],
+    clientFiles: [
+      {
+        id: 1,
+        name: "File 1",
+        relativePath: "path/to/file1",
+        createdAt: "2021-01-01",
+      },
+      {
+        id: 2,
+        name: "File 2",
+        relativePath: "path/to/file2",
+        createdAt: "2021-01-02",
+      },
+    ],
     viewModel: {
       status: "success",
       researchContext: {
