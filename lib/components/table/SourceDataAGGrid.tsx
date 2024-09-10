@@ -27,6 +27,7 @@ export interface SourceDataAGGridProps {
   rowData: SourceDataRow[];
   isLoading: boolean;
   isUploading: boolean;
+  enableUpload: boolean;
   handleDownloadSourceData: (relativePath: string) => void;
   handleUploadSourceData: () => void;
   errorOverlayProps?: {
@@ -55,9 +56,15 @@ const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
 };
 
 const UploadSourceDataComponent = (
+  enableUpload: boolean,
   isUploading: boolean,
   handleUploadSourceData: () => void,
 ) => {
+
+  if (!enableUpload) {
+    return null;
+  }
+
   if (isUploading) {
     return (
       <ShadcnButton label={"Uploading..."} variant="default" disabled={true} />
@@ -123,8 +130,9 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
         isLoading={props.isLoading}
         rowData={props.rowData}
         columnDefs={columnDefs}
-        additionalComponentsLeft={[
+        additionalComponentsLeft={[ 
           UploadSourceDataComponent(
+            props.enableUpload,
             props.isUploading,
             props.handleUploadSourceData,
           ),
