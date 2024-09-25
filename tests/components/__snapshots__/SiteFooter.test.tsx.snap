@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<SiteFooter /> > should match the snapshot 1`] = `
+<div>
+  <footer
+    class="bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white shadow-lg mt-auto"
+  >
+    <div
+      class="w-screen px-4 py-6 flex flex-col lg:flex-row justify-between items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-6"
+    >
+      <div
+        class="flex items-center gap-2"
+      >
+        <svg
+          class="text-neutral-800 dark:text-white"
+          size="20"
+        />
+        <span
+          class="text-xl font-bold text-neutral-800 dark:text-white"
+        >
+          SDA
+        </span>
+        <span
+          class="text-sm text-neutral-500 dark:text-neutral-400"
+        >
+          © 2024
+        </span>
+      </div>
+      <nav
+        class="flex flex-wrap justify-center lg:justify-start w-full lg:w-auto text-sm space-x-6 lg:space-x-8"
+      >
+        <p
+          class="text-sm text-neutral-500 dark:text-neutral-400"
+        >
+          Add your links here.
+        </p>
+      </nav>
+      <div
+        class="text-sm text-center lg:text-left"
+      >
+        <a
+          class="hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors duration-300"
+          href="mailto:info@example.com"
+        >
+          info@example.com
+        </a>
+      </div>
+    </div>
+    <div
+      class="w-full border-t border-neutral-300 dark:border-neutral-700"
+    />
+  </footer>
+</div>
+`;
