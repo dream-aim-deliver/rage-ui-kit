@@ -17,12 +17,6 @@ describe("<SiteFooter />", () => {
     // Check if default branding is rendered
     expect(screen.getByText(/SDA/i)).toBeInTheDocument();
     expect(screen.getByText(/© 2024/i)).toBeInTheDocument();
-
-    // Check if default links section is rendered
-    expect(screen.getByText(/Add your links here/i)).toBeInTheDocument();
-
-    // Check if default contact section is rendered
-    expect(screen.getByText(/info@example.com/i)).toBeInTheDocument();
   });
 
   it("should render the SiteFooter with provided sections", () => {
@@ -64,14 +58,6 @@ describe("<SiteFooter />", () => {
 
     // Check if custom contact is rendered
     expect(screen.getByText(/support@customdomain.com/i)).toBeInTheDocument();
-  });
-
-  it("should render correctly without brandSection, linksSection, and contactSection", () => {
-    render(<SiteFooter />);
-
-    // Ensure the placeholder or default sections are rendered
-    expect(screen.getByText(/Add your links here/i)).toBeInTheDocument();
-    expect(screen.getByText(/info@example.com/i)).toBeInTheDocument();
   });
 
   it("should match the snapshot", () => {

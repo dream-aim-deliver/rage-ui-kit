@@ -35,24 +35,13 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({
 
         {/* Links Section */}
         <nav className="flex flex-wrap justify-center lg:justify-start w-full lg:w-auto text-sm space-x-6 lg:space-x-8">
-          {linksSection || (
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
-              Add your links here.
-            </p>
-          )}
+          {
+            linksSection // Here your links will appear
+          }
         </nav>
 
         {/* Contact Section */}
-        <div className="text-sm text-center lg:text-left">
-          {contactSection || (
-            <a
-              href="mailto:info@example.com"
-              className="hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors duration-300"
-            >
-              info@example.com
-            </a>
-          )}
-        </div>
+        <div className="text-sm text-center lg:text-left">{contactSection}</div>
       </div>
 
       {/* Bottom Border for Aesthetic Similarity to Header */}
