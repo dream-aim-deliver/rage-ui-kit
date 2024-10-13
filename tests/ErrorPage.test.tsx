@@ -16,12 +16,13 @@ vi.mock("@/components/button", () => ({
 }));
 
 describe("<ErrorPage />", () => {
-  it("should render the ErrorPage with default error code and message", () => {
-    render(<ErrorPage />);
+  it("should render the ErrorPage with custom message and default reset action", () => {
+    render(
+      <ErrorPage error={{ message: "Holi Poli, something ain't right" }} />,
+    );
 
     // Check if the default error code and message are rendered
-    expect(screen.getByText(/404/i)).toBeInTheDocument();
-    expect(screen.getByText(/Page not found/i)).toBeInTheDocument();
+    expect(screen.getByText(/Holi Poli/i)).toBeInTheDocument();
 
     // Check if the Go back to Homepage button is rendered
     expect(
@@ -30,7 +31,9 @@ describe("<ErrorPage />", () => {
   });
 
   it("should render the ErrorPage with custom error code and message", () => {
-    render(<ErrorPage errorCode={500} errorMessage="Internal Server Error" />);
+    render(
+      <ErrorPage error={{ code: 500, message: "Internal Server Error" }} />,
+    );
 
     // Check if the custom error code and message are rendered
     expect(screen.getByText(/500/i)).toBeInTheDocument();
@@ -44,7 +47,7 @@ describe("<ErrorPage />", () => {
 
   it("should render children content passed to ErrorPage", () => {
     render(
-      <ErrorPage>
+      <ErrorPage error={{ message: "Holi Poli Carli" }}>
         <p>Custom child content here</p>
       </ErrorPage>,
     );
@@ -60,7 +63,7 @@ describe("<ErrorPage />", () => {
       writable: true,
     });
 
-    render(<ErrorPage />);
+    render(<ErrorPage error={{ message: "Holi Poli Carli" }} />);
 
     // Simulate button click
     const button = screen.getByRole("button", { name: /Go back to Homepage/i });
