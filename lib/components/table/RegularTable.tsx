@@ -1,4 +1,5 @@
-import React, { RefObject, useEffect, useRef, useState } from "react";
+/* Implementation credits to Viktoriia Myts ( @MytsV ) */
+import { RefObject, useEffect, useRef, useState } from "react";
 import {
   HiOutlineChevronDoubleLeft,
   HiOutlineChevronDoubleRight,
@@ -8,21 +9,21 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Skeleton } from "@/components/skeleton";
 import { AgGridReact, AgGridReactProps } from "ag-grid-react";
-import { NoDataYetOverlay } from "@/component-library/features/table/overlays/NoDataYetOverlay";
 import { AgGridEvent, GridReadyEvent } from "ag-grid-community";
-import useDarkMode from "@/lib/infrastructure/hooks/useDarkMode";
-import "@/component-library/features/table/RegularTable/styles/agGridThemeRucioDark.css";
-import "@/component-library/features/table/RegularTable/styles/agGridThemeRucioLight.css";
+import useDarkMode from "@/hooks/use-dark-mode";
+import "@/assets/ag-grid-theme-dark.css";
+import "@/assets/ag-grid-theme-light.css";
+import { LoadingDataOverlay } from "./overlays/NoDataOverlay";
 
 export interface RegularTableProps extends AgGridReactProps {
   tableRef: RefObject<AgGridReact>;
 }
 
-// This implementation of the pagination panel uses refs to prevent excessive state updates
 /**
  * A component for flexible and responsive pagination of the table
  */
 export const SimplePaginationPanel = (props: {
+  // This implementation of the pagination panel uses refs to prevent excessive state updates
   currentPageRef: RefObject<HTMLSpanElement>;
   totalPagesRef: RefObject<HTMLSpanElement>;
   previousPageRef: RefObject<HTMLButtonElement>;
@@ -190,7 +191,7 @@ export const RegularTable = (props: RegularTableProps) => {
           pagination={true}
           paginationAutoPageSize={true}
           ref={props.tableRef}
-          loadingOverlayComponent={NoDataYetOverlay}
+          loadingOverlayComponent={LoadingDataOverlay}
           onGridReady={onGridReady}
           domLayout="normal" // Ensures the grid fits within the flex container
           suppressPaginationPanel={true}
