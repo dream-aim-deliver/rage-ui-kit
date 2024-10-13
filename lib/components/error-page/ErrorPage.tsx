@@ -3,17 +3,52 @@ import { AlertTriangleIcon } from "lucide-react";
 import { Button } from "@/components/button";
 import { cn } from "@/utils/utils";
 
-interface ErrorPageProps {
-  errorCode?: number;
-  errorMessage?: string;
+/**
+ * A generic error page component to display
+ * error messages and provide a reset action.
+ */
+export interface ErrorPageProps {
+  error: {
+    /**
+     * The HTTP status code
+     */
+    code?: number;
+    /**
+     * An automatically generated hash to identify the error server side.
+     */
+    digest?: string;
+    /**
+     * The error message to display
+     */
+    message: string;
+  };
+  /**
+   * Optional child components to render
+   * below the error message
+   * @default null
+   * @example
+   * ```tsx
+   * <ErrorPage>
+   *  <p>Custom child content here</p>
+   * </ErrorPage>
+   * ```
+   */
   children?: React.ReactNode;
+  /**
+   * Optional reset action to perform when the user
+   * clicks the reset button.
+   * @default <code>{ action: () => (window.location.href = "/"), message: "Go back to Homepage" }</code>
+   */
+  reset?: {
+    action: () => void;
+    message: string;
+  };
 }
 
-export const ErrorPage: React.FC<ErrorPageProps> = ({
-  errorCode = 404,
-  errorMessage = "Page not found",
-  children,
-}) => {
+export const ErrorPage: React.FC<ErrorPageProps> = (props: ErrorPageProps) => {
+  const resetMessage = props.reset?.message || "Go back to Homepage";
+  const resetAction =
+    props.reset?.action || (() => (window.location.href = "/"));
   return (
     <div
       className={cn(
@@ -29,18 +64,23 @@ export const ErrorPage: React.FC<ErrorPageProps> = ({
       </div>
 
       {/* Error Message */}
-      <h1 className={cn("text-4xl font-bold")}>{errorCode}</h1>
-      <p className={cn("text-lg mb-6")}>{errorMessage}</p>
+      {props.error.code && (
+        <h1 className={cn("text-4xl font-bold")}>{props.error.code}</h1>
+      )}
+      {props.error.digest && (
+        <p className="text-sm p-2 mb-6">Digest: {props.error.digest}</p>
+      )}
+      <p className={cn("text-lg mb-6")}>{props.error.message}</p>
 
       {/* Child Components */}
-      {children && <div className={cn("mb-6")}>{children}</div>}
+      {props.children && <div className={cn("mb-6")}>{props.children}</div>}
 
       {/* Custom Button Component */}
       <Button
         variant="default"
         size="default"
-        label="Go back to Homepage"
-        onClick={() => (window.location.href = "/")} // Redirect to the homepage
+        label={resetMessage}
+        onClick={resetAction}
       />
     </div>
   );

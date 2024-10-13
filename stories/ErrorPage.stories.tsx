@@ -27,16 +27,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    errorCode: 404,
-    errorMessage: "Page not found",
+    error: {
+      code: 404,
+      message: "Page not found",
+    },
     children: sampleChild,
   },
 };
 
 export const ServerError: Story = {
   args: {
-    errorCode: 500,
-    errorMessage: "Internal Server Error",
+    error: {
+      code: 500,
+      message: "Internal Server Error",
+      digest: "13490023433",
+    },
     children: (
       <div className="text-center">
         <p className="text-neutral-600 dark:text-neutral-800">
@@ -44,5 +49,13 @@ export const ServerError: Story = {
         </p>
       </div>
     ),
+  },
+};
+
+export const GenericException: Story = {
+  args: {
+    error: {
+      message: "Something went wrong",
+    },
   },
 };
