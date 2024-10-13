@@ -7,5 +7,6 @@ export * from "./mode-toggle";
 export * from "./research-context";
 export * from "./site-header";
 export * from "./site-footer";
+export * from "./skeleton";
 export * from "./spinner";
 export * from "./table";
