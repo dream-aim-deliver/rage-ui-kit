@@ -13,3 +13,4 @@ export {
   SelectableSourceDataAGGrid,
   type SelectableSourceDataAGGridProps,
 } from "./SelectableSourceDataAGGrid";
+export { SourceDataRegularTable } from "./SourceDataRegularTable";
