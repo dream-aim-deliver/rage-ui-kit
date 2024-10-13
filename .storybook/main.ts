@@ -36,6 +36,7 @@ const config: StorybookConfig = {
           { find: /^@\/ui\/(.*)/, replacement: path.resolve(__dirname, "../lib/components/ui/$1") },
           { find: /^@\/assets\/(.*)/, replacement: path.resolve(__dirname, "../lib/assets/$1") },
           { find: /^@\/lib\/(.*)/, replacement: path.resolve(__dirname, "../lib/$1") },
+          { find: /^@\/hooks\/(.*)/, replacement: path.resolve(__dirname, "../lib/hooks/$1") },
         ] 
       }
     });

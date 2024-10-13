@@ -33,6 +33,10 @@ export default defineConfig({
         find: /^@\/lib\/(.*)/,
         replacement: path.resolve(__dirname, "lib/$1"),
       },
+      {
+        find: /^@\/hooks\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/hooks/$1"),
+      },
     ],
   },
   test: {
@@ -56,6 +60,10 @@ export default defineConfig({
       {
         find: /^@\/lib\/(.*)/,
         replacement: path.resolve(__dirname, "lib/$1"),
+      },
+      {
+        find: /^@\/hooks\/(.*)/,
+        replacement: path.resolve(__dirname, "lib/hooks/$1"),
       },
     ],
     clearMocks: true,

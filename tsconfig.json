@@ -27,6 +27,7 @@
       "@/utils/*": ["./lib/utils/*"],
       "@/assets/*": ["./lib/assets/*"],
       "@/ui/*": ["./lib/components/ui/*"],
+      "@/hooks/*": ["./lib/hooks/*"],
     }
   },
   "include": ["app", "lib", "tests", "stories"],
