@@ -7,7 +7,7 @@ const meta: Meta = {
   title: "Components/AGGrid/SourceDataRegularTable",
   component: SourceDataRegularTable,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof SourceDataRegularTable>;
