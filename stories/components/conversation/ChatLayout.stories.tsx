@@ -65,38 +65,59 @@ export const ChatCapabilities: Story = {
   args: {
     messages: [
       {
-        role: "user",
-        content: "Hello, can you render formatted text?",
-        timestamp: 1,
-        type: "text",
-        isLoading: false,
+        sender_type: "user",
+        message_contents: [
+          {
+            content: "Hello, can you render formatted text?",
+            content_type: "text",
+          },
+        ],
+        created_at: `${Date.now()}`,
+        sender: "Carla",
       },
       {
-        role: "agent",
-        content: "Hello, yes. \n Let me give you an example:",
-        timestamp: 2,
-        type: "text",
-        isLoading: false,
+        sender_type: "agent",
+        message_contents: [
+          {
+            content: "Hello, yes. \n Let me give you an example:",
+            content_type: "text",
+          },
+        ],
+        created_at: `${Date.now()}`,
+        sender: "Agent",
       },
       {
-        role: "agent",
-        timestamp: 3,
-        type: "text",
-        content: markdownWithCode,
+        sender_type: "agent",
+        created_at: `${Date.now()}`,
+        message_contents: [
+          {
+            content: markdownWithCode,
+            content_type: "text",
+          },
+        ],
+        sender: "Agent",
       },
       {
-        role: "user",
-        content: "Well done!",
-        timestamp: 4,
-        type: "text",
-        isLoading: false,
+        sender_type: "user",
+        message_contents: [
+          {
+            content: "Well done!",
+            content_type: "text",
+          },
+        ],
+        created_at: `${Date.now()}`,
+        sender: "Carla",
       },
       {
-        role: "agent",
-        content: mermaidData,
-        timestamp: 5,
-        type: "text",
-        isLoading: false,
+        sender_type: "agent",
+        message_contents: [
+          {
+            content: mermaidData,
+            content_type: "text",
+          },
+        ],
+        created_at: `${Date.now()}`,
+        sender: "Agent",
       },
     ],
     onSendMessage: (message) => {
