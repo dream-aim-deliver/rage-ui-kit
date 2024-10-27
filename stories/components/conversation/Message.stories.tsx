@@ -58,27 +58,50 @@ sequenceDiagram
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const UserMessage: Story = {
   args: {
-    role: "user",
-    content: "holi boli",
-    type: "text",
-    timestamp: Date.now(),
+    sender_type: "user",
+    message_contents: [
+      {
+        content: "holi boli",
+        content_type: "text",
+      },
+    ],
+    created_at: `${Date.now()}`,
+    sender: "Carla",
   },
 };
 
 export const ImageMessage: Story = {
   args: {
-    role: "user",
-    type: "image",
-    content: imageData,
-    timestamp: Date.now(),
+    sender_type: "user",
+    message_contents: [
+      {
+        content: "Here I generated an image for you:",
+        content_type: "text",
+      },
+      {
+        content: imageData,
+        content_type: "image",
+      },
+      {
+        content: "This image is super cool",
+        content_type: "text",
+      },
+    ],
+    created_at: `${Date.now()}`,
+    sender: "Carla",
   },
 };
 
 export const MermaidDiagramMessage: Story = {
   args: {
-    role: "user",
-    type: "text",
-    content: mermaidData,
-    timestamp: Date.now(),
+    sender_type: "user",
+    message_contents: [
+      {
+        content: mermaidData,
+        content_type: "text",
+      },
+    ],
+    created_at: `${Date.now()}`,
+    sender: "Carla",
   },
 };
