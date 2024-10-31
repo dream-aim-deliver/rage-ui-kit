@@ -68,7 +68,7 @@ export const ConversationMessage = ({
           <ReactMarkdown
             remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
             rehypePlugins={[rehypeRaw]}
-            className="prose text-gray-900 mt-2 mb-2"
+            className="prose text-wrap text-gray-900 mt-2 mb-2"
             components={{
               code({ className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || "");
