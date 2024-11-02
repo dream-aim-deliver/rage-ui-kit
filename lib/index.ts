@@ -1,4 +1,5 @@
 import "./tailwind/theme.css";
+import "./assets/ag-grid-theme.css";
 export * from "./components";
 export * from "./hooks";
 export * from "./tailwind";

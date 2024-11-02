@@ -2,8 +2,6 @@
 
 import { AgGridEvent, ColDef } from "ag-grid-community";
 import { AgGridReact, AgGridReactProps } from "ag-grid-react";
-import "@/assets/ag-grid-theme-dark.css";
-import "@/assets/ag-grid-theme-light.css";
 import React, { useCallback, useMemo, useRef } from "react";
 
 import { Button as ShadcnButton } from "@/components/button/index";
