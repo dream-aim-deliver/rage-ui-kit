@@ -1,9 +1,9 @@
 "use client";
 
-import { ColDef } from "ag-grid-community";
+import { AgGridEvent, ColDef } from "ag-grid-community";
 import { AgGridReact, AgGridReactProps } from "ag-grid-react";
-import "ag-grid-community/styles/ag-theme-quartz.css";
-// import "./ag-theme-sda.css";
+import "@/assets/ag-grid-theme-dark.css";
+import "@/assets/ag-grid-theme-light.css";
 import React, { useCallback, useMemo, useRef } from "react";
 
 import { Button as ShadcnButton } from "@/components/button/index";
@@ -13,63 +13,19 @@ import { Label as ShadcnLabel } from "@/ui/label";
 import { cn } from "@/lib/utils/utils";
 import { FilterX } from "lucide-react";
 import { Spinner } from "../spinner";
+import useDarkMode from "@/lib/hooks/use-dark-mode";
+import { twMerge } from "tailwind-merge";
 
 /**
- * RowSelectionAction is a generic type that defines the structure of the functions that will be called when a component in the custom header of the AG Grid is clicked.
+ * ToolbarAction is an interface that defines the structure of the objects that will be passed as props to the BaseAGGrid component.
+ * @param Component: a React component that will be rendered as a button in the custom header of the AG Grid
+ * @param callback: a function that will be called when the button is clicked. It will receive the selected rows as input
  * @param TRowData: the type of the data to be displayed in the AG Grid
- * @param selectedRows: the data of the visually selected rows
- * @returns an unknown value
- * @example
- * ```tsx
- * const alertRawCallBack = (selectedRows: SourceDataRow[]) => {
- *  alert(
- *    "Selected rows:\n\n" +
- *    selectedRows.map((row) => JSON.stringify(row)).join("\n\n"),
- *  );
- * };
- * ```
+ * @returns an object that contains a React Component and a Callback Function
  */
-export type RowSelectionAction<TRowData> = (
-  selectedRows: TRowData[],
-) => unknown;
-
-/**
- * componentWithCallBack is a generic interface that defines the structure of the objects that can be passed in the componentsWithCallBack prop.
- * @param TRowData: the type of the data to be displayed in the AG Grid
- * @param reactComponent: a react component that will be rendered in the custom header of the AG Grid
- * @param callbackFunction: a function that will be called when the reactComponent is clicked
- * @returns an object containing a reactComponent and a callbackFunction
- * @example
- * ```tsx
- * const alertRawButton = ({ onClick }: { onClick: () => void }) => {
- *  return (
- *   <ShadcnButton
- *      label={"Alert raw data"}
- *      variant="default"
- *      onClick={onClick}
- *      title="Alert the raw data of the selected rows"
- *    />
- *  );
- * };
- *
- * const alertRawCallBack = (selectedRows: SourceDataRow[]) => {
- *  alert(
- *    "Selected rows:\n\n" +
- *    selectedRows.map((row) => JSON.stringify(row)).join("\n\n"),
- *  );
- * };
- *
- * const buttonsWithCallBack: componentWithCallBack<TRowData>[] = [
- *  {
- *   reactComponent: alertRawButton,
- *   callbackFunction: alertRawCallBack,
- * },
- * ];
- * ```
- */
-export type componentWithCallBack<TRowData> = {
-  reactComponent: React.ComponentType<{ onClick: () => void }>;
-  callbackFunction: RowSelectionAction<TRowData>;
+export type ToolbarAction<TRowData> = {
+  Component: React.ReactNode;
+  callback: (selectedRows: TRowData[]) => void;
 };
 
 /**
@@ -78,7 +34,7 @@ export type componentWithCallBack<TRowData> = {
  * @param TRowData: the type of the data to be displayed in the AG Grid
  * @param rowData: the data to be displayed in the AG Grid
  * @param columnDefs: the column definitions for the AG Grid
- * @param componentsWithCallBack: an array of objects containing a reactComponent and a callbackFunction
+ * @param toolbarActions: an array of objects containing a React Component and a Callback Function that receives the selected rows as input
  * @param additionalComponentsLeft: an array of react components that will be rendered on the left side of the custom header of the AG Grid
  * @param additionalComponentsCenter: an array of react components that will be rendered in the center of the custom header of the AG Grid
  * @param additionalComponentsRight: an array of react components that will be rendered on the right side of the custom header of the AG Grid
@@ -90,7 +46,7 @@ export interface BaseAGGridProps<TRowData> {
   isLoading: boolean;
   rowData: TRowData[];
   columnDefs: ColDef[];
-  componentsWithCallBack?: componentWithCallBack<TRowData>[];
+  toolbarActions?: ToolbarAction<TRowData>[];
   additionalComponentsLeft?: React.ReactNode[];
   additionalComponentsCenter?: React.ReactNode[];
   additionalComponentsRight?: React.ReactNode[];
@@ -111,7 +67,7 @@ export interface BaseAGGridProps<TRowData> {
  * @param isLoading: a boolean that indicates whether the data is being loaded
  * @param rowData: the data to be displayed in the AG Grid
  * @param columnDefs: the column definitions for the AG Grid
- * @param componentsWithCallBack: an array of objects containing a reactComponent and a callbackFunction
+ * @param toolbarActions: an array of objects containing a reactComponent and a callbackFunction
  * @param additionalComponentsLeft: an array of react components that will be rendered on the left side of the custom header of the AG Grid
  * @param additionalComponentsCenter: an array of react components that will be rendered in the center of the custom header of the AG Grid
  * @param additionalComponentsRight: an array of react components that will be rendered on the right side of the custom header of the AG Grid
@@ -124,14 +80,10 @@ export function BaseAGGrid<TRowData>({
   isLoading,
   rowData,
   columnDefs,
-  componentsWithCallBack: buttonsWithCallBack,
+  toolbarActions,
   additionalComponentsLeft,
   additionalComponentsCenter,
   additionalComponentsRight,
-  errorOverlayProps = {
-    errorStatus: false,
-    overlayText: "",
-  },
   ...AGGridProps
 }: BaseAGGridProps<TRowData>) {
   const gridRef = useRef<AgGridReact<TRowData>>(null);
@@ -169,36 +121,27 @@ export function BaseAGGrid<TRowData>({
     );
   }, []);
 
-  // Made to override the default noRowsOverlayComponent of AG Grid, as it was showing a message out of place
-  const NoRowsOverlayComponent: () => JSX.Element = () => <div></div>;
-
-  // Custom error overlay component for the error state of the AG Grid
-  const ErrorOverlayComponent = () => {
-    return (
-      <div>
-        <div className={cn("overflow-auto h-fulll w-full")}>
-          <p
-            className={cn(
-              "text-white bg-error-800 rounded-md p-large font-bold text-sm",
-            )}
-          >
-            {errorOverlayProps.overlayText}
-          </p>
-        </div>
-      </div>
-    );
+  const handleResize = (event: AgGridEvent) => {
+    event.api.sizeColumnsToFit();
   };
+
+  const isDarkMode = useDarkMode();
+
+  // Made to override the default noRowsOverlayComponent of AG Grid, as it was showing a message out of place
+  const NoRowsOverlayComponent: () => JSX.Element = () => (
+    <div>No data to show!</div>
+  );
 
   return (
     <div
       id="base-ag-grid"
-      className={cn("flex flex-col h-full w-full bg-neutral-800")}
+      className={cn(
+        "flex flex-col h-full w-full bg-neutral-300 dark:bg-neutral-800",
+      )}
     >
       <div
         id="table-top"
-        className={cn(
-          "flex flex-col gap-medium bg-neutral-800 p-medium rounded-md",
-        )}
+        className={cn("flex flex-col gap-medium p-medium rounded-md")}
       >
         <div
           id="table-top-button-group"
@@ -219,20 +162,17 @@ export function BaseAGGrid<TRowData>({
             id="table-top-prop-buttons"
             className={cn("flex flex-grow justify-center gap-small")}
           >
-            {buttonsWithCallBack &&
-              buttonsWithCallBack.map(
-                (
-                  { reactComponent: ReactComponent, callbackFunction },
-                  index,
-                ) => (
-                  <ReactComponent
-                    key={`table-top-prop-button-${index}`}
-                    onClick={() =>
-                      callbackFunction(gridRef.current!.api.getSelectedRows())
-                    }
-                  />
-                ),
-              )}
+            {toolbarActions &&
+              toolbarActions.map((data, index) => (
+                <div
+                  key={`table-top-prop-button-${index}`}
+                  onClick={() =>
+                    data.callback(gridRef.current!.api.getSelectedRows())
+                  }
+                >
+                  {data.Component}
+                </div>
+              ))}
 
             {additionalComponentsCenter}
           </div>
@@ -256,61 +196,46 @@ export function BaseAGGrid<TRowData>({
           id="table-top-fuzzy-search-box"
           className={cn("flex items-center gap-small")}
         >
-          <ShadcnLabel className={cn("text-white")}>Fuzzy search:</ShadcnLabel>
+          <ShadcnLabel
+            className={cn("dark:text-white")}
+            aria-disabled={isLoading}
+          >
+            Fuzzy search:
+          </ShadcnLabel>
           <ShadcnInput
             type="text"
             id="ag-grid-filter-text-box"
             placeholder="enter text to search..."
             onInput={onFilterTextBoxChanged}
             className={cn("flex-1")}
+            disabled={isLoading}
           />
         </div>
       </div>
-
-      {!errorOverlayProps.errorStatus ? (
-        // Success state
-        <div
-          id="ag-grid-inner-component"
-          className={cn("ag-theme-sda h-screen overflow-auto")}
-          style={{ height: "80vh", width: "100vw" }}
-        >
-          <AgGridReact
-            loading={isLoading}
-            rowData={rowData}
-            columnDefs={columnDefs}
-            defaultColDef={defaultColDef}
-            rowSelection="multiple"
-            suppressRowClickSelection={true}
-            pagination={true}
-            paginationPageSize={13}
-            paginationPageSizeSelector={[13, 25, 50, 100]}
-            noRowsOverlayComponent={NoRowsOverlayComponent}
-            ref={gridRef}
-            {...AGGridProps}
-          />
-        </div>
-      ) : (
-        // Error state
-        <div
-          id="ag-grid-inner-component"
-          className={cn("ag-theme-sda h-screen overflow-auto")}
-          style={{ height: "80vh", width: "100vw" }}
-        >
-          <AgGridReact
-            rowData={[]}
-            columnDefs={columnDefs}
-            defaultColDef={defaultColDef}
-            rowSelection="multiple"
-            suppressRowClickSelection={true}
-            pagination={true}
-            paginationPageSize={13}
-            paginationPageSizeSelector={[13, 25, 50, 100]}
-            noRowsOverlayComponent={ErrorOverlayComponent}
-            ref={gridRef}
-            {...AGGridProps}
-          />
-        </div>
-      )}
+      <div
+        className={twMerge(
+          isDarkMode ? "ag-grid-theme-dark" : "ag-grid-theme-light",
+          "grid grow w-full",
+          "relative",
+          "min-h-[300px]",
+        )}
+      >
+        <AgGridReact
+          loading={isLoading}
+          rowData={rowData}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          rowSelection="multiple"
+          suppressRowClickSelection={true}
+          pagination={true}
+          paginationPageSize={25}
+          paginationPageSizeSelector={[25, 50, 100]}
+          noRowsOverlayComponent={NoRowsOverlayComponent}
+          onGridSizeChanged={handleResize}
+          ref={gridRef}
+          {...AGGridProps}
+        />
+      </div>
     </div>
   );
 }
