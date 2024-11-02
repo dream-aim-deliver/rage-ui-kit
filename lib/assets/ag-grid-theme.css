@@ -47,7 +47,7 @@
     --ag-column-hover-color: var(--ag-inherited-column-hover-color, color-mix(in srgb, transparent, var(--ag-accent-color) 5%));
     --ag-selected-row-background-color: var(--ag-inherited-selected-row-background-color, color-mix(in srgb, transparent, var(--ag-accent-color) 8%));
     --ag-modal-overlay-background-color: var(--ag-inherited-modal-overlay-background-color, color-mix(in srgb, transparent, var(--ag-background-color) 66%));
-    --ag-odd-row-background-color: var(--ag-inherited-odd-row-background-color, #1E293B);
+    /*--ag-odd-row-background-color: var(--ag-inherited-odd-row-background-color, #1E293B);*/
     --ag-border-radius: var(--ag-inherited-border-radius, 4px);
     --ag-wrapper-border-radius: var(--ag-inherited-wrapper-border-radius, 8px);
     --ag-cell-horizontal-padding: var(--ag-inherited-cell-horizontal-padding, calc(var(--ag-grid-size) * 2 * var(--ag-cell-horizontal-padding-scale)));
