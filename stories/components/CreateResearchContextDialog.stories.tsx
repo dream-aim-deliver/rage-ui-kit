@@ -72,7 +72,7 @@ export const Error: Story = {
     viewModel: {
       status: "error",
       message: "Error message",
-      context: {},
+      context: "",
     },
   },
 };
@@ -88,7 +88,7 @@ export const Progress: Story = {
     viewModel: {
       status: "progress",
       message: "Progress message",
-      context: {},
+      context: "",
     },
   },
 };
