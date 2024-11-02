@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
  * implementation credit to Viktoriia Myts
  */
 const useDarkMode = () => {
-  // TODO: load from whatever holds this state
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   useEffect(() => {

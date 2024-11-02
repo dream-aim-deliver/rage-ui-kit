@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/react";
 import { themes } from "@storybook/theming";
 import "../lib/tailwind/theme.css";
+import "../lib/assets/ag-grid-theme.css";
 import { Toaster } from "../lib/components/ui/toaster"
 import { ToastProvider } from "../lib/components/ui/toast";
 import React from "react";

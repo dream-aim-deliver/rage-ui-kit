@@ -11,8 +11,6 @@ import { Skeleton } from "@/components/skeleton";
 import { AgGridReact, AgGridReactProps } from "ag-grid-react";
 import { AgGridEvent, GridReadyEvent } from "ag-grid-community";
 import useDarkMode from "@/hooks/use-dark-mode";
-import "@/assets/ag-grid-theme-dark.css";
-import "@/assets/ag-grid-theme-light.css";
 import { LoadingDataOverlay } from "./overlays/NoDataOverlay";
 
 export interface RegularTableProps extends AgGridReactProps {

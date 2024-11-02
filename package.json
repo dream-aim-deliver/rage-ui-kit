@@ -20,7 +20,7 @@
   ],
   "exports": {
     "./theme.css": "./dist/static/css/theme.css",
-    "./ag-theme-sda.css": "./dist/ag-theme-sda.css",
+    "./ag-grid-theme.css": "./lib/assets/ag-grid-theme.css",
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.js"
