@@ -9,7 +9,7 @@ const meta: Meta = {
   title: "Components/AGGrid/SourceData",
   component: SourceDataAGGrid,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof SourceDataAGGrid>;

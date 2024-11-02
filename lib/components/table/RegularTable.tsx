@@ -177,7 +177,7 @@ export const RegularTable = (props: RegularTableProps) => {
     <>
       <div
         className={twMerge(
-          isDarkMode ? "ag-grid-theme-rucio-dark" : "ag-grid-theme-rucio-light",
+          isDarkMode ? "ag-grid-theme-dark" : "ag-grid-theme-light",
           "grid grow w-full",
           "relative",
           "min-h-[300px]",

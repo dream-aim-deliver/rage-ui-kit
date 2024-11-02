@@ -33,16 +33,13 @@ export interface SelectableSourceDataAGGridProps {
   };
 }
 
-const ConfirmSelectionButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <ShadcnButton
-      label={"Confirm Selection"}
-      variant="default"
-      onClick={onClick}
-      title="Confirm the selected rows"
-    />
-  );
-};
+const ConfirmSelectionButton = (
+  <ShadcnButton
+    label={"Confirm Selection"}
+    variant="default"
+    title="Confirm the selected rows"
+  />
+);
 
 /**
  * SourceDataAGGrid is a react component that displays a table of source data in an AG Grid.
@@ -94,10 +91,10 @@ export function SelectableSourceDataAGGrid(
         isLoading={props.isLoading}
         rowData={props.rowData}
         columnDefs={columnDefs}
-        componentsWithCallBack={[
+        toolbarActions={[
           {
-            reactComponent: ConfirmSelectionButton,
-            callbackFunction: props.handleConfirmSelection,
+            Component: ConfirmSelectionButton,
+            callback: props.handleConfirmSelection,
           },
         ]}
         errorOverlayProps={props.errorOverlayProps}

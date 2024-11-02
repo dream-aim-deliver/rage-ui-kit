@@ -1,11 +1,11 @@
 @import url('ag-grid-theme.css');
 
-.ag-grid-theme-rucio-light {
+.ag-grid-theme-light {
 	/* Equals to tailwind's neutral.0 */
-	--ag-background-color: var(--ag-inherited-background-color, #bc8a8a);
-	--ag-odd-row-background-color: var(--ag-inherited-odd-row-background-color, #a6d2ef);
+	--ag-background-color: var(--ag-inherited-background-color, #f1f5f9);
+	--ag-odd-row-background-color: var(--ag-inherited-odd-row-background-color, #cbd5e1);
 	/* Equals to tailwind's neutral.900 */
-	--ag-foreground-color: var(--ag-inherited-foreground-color, #7492d8);
+	--ag-foreground-color: var(--ag-inherited-foreground-color, #000);
 	--ag-text-color: var(--ag-inherited-text-color, var(--ag-foreground-color));
 	/* Equals to tailwind's neutral.200 */
 	--ag-header-background-color: var(--ag-inherited-header-background-color, #e2e8f0);
