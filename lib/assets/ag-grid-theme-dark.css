@@ -8,4 +8,5 @@
     --ag-header-background-color: var(--ag-inherited-header-background-color, #334155);
     --ag-header-text-color: var(--ag-inherited-header-text-color, --ag-foreground-color);
     --ag-color-scheme: var(--ag-inherited-color-scheme, dark);
+    --ag-accent-color: var(--ag-inherited-accent-color, #F8FAFC);
 }

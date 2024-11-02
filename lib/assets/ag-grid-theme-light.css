@@ -1,7 +1,7 @@
 .ag-grid-theme-light {
     /* Equals to tailwind's neutral.0 */
     --ag-background-color: var(--ag-inherited-background-color, #f1f5f9);
-    --ag-odd-row-background-color: var(--ag-inherited-odd-row-background-color, #cbd5e1);
+    --ag-odd-row-background-color: var(--ag-inherited-odd-row-background-color, #e2e8f0);
     /* Equals to tailwind's neutral.900 */
     --ag-foreground-color: var(--ag-inherited-foreground-color, #000);
     --ag-text-color: var(--ag-inherited-text-color, var(--ag-foreground-color));
@@ -10,4 +10,5 @@
     /* Equals to tailwind's neutral.700 */
     --ag-header-text-color: var(--ag-inherited-header-text-color, #334155);
     --ag-color-scheme: var(--ag-inherited-color-scheme, light);
+    --ag-accent-color: var(--ag-inherited-accent-color, #1E293B);
 }
