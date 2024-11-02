@@ -29,8 +29,8 @@ export type TCreateResearchContextSuccessViewModel = z.infer<
 
 export const CreateResearchContextErrorViewModelSchema = z.object({
   status: z.enum(["error"]),
-  message: z.string(),
-  context: z.any(),
+  message: z.string().optional(),
+  context: z.string().optional(),
 });
 export type TCreateResearchContextErrorViewModel = z.infer<
   typeof CreateResearchContextErrorViewModelSchema
@@ -38,8 +38,8 @@ export type TCreateResearchContextErrorViewModel = z.infer<
 
 export const CreateResearchContextProgressViewModelSchema = z.object({
   status: z.enum(["progress"]),
-  message: z.string(),
-  context: z.any(),
+  message: z.string().optional(),
+  context: z.string().optional(),
 });
 export type TCreateResearchContextProgressViewModel = z.infer<
   typeof CreateResearchContextProgressViewModelSchema
