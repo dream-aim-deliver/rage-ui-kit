@@ -6,7 +6,11 @@ import { useState } from "react";
 
 import { Button as ShadcnButton } from "@/components/button/index";
 import { formatDate } from "@/components/table/utils/text-formatters.ts";
-import { DefaultDateFilterParams, DefaultTextFilterParams } from "@/components/table/utils/filter-parameters.ts";
+import {
+  DefaultDateFilterParams,
+  DefaultTextFilterParams,
+} from "@/components/table/utils/filter-parameters.ts";
+import { buttonCellStyle } from "@/components/table/utils/cell-styles.ts";
 
 const SourceDataRowSchema = z.object({
   id: z.string(),
@@ -103,8 +107,6 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
       headerName: "ID",
-      filter: false,
-      sortable: false,
       field: "id",
       maxWidth: 100,
     },
@@ -142,11 +144,7 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       sortable: false,
       width: 150,
       cellRenderer: DownloadSourceDataButton,
-      cellStyle: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      },
+      cellStyle: buttonCellStyle,
     },
   ]);
 

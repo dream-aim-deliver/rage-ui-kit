@@ -9,7 +9,7 @@ const meta: Meta = {
   title: "Components/AGGrid/Conversation",
   component: ConversationAGGrid,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof ConversationAGGrid>;
