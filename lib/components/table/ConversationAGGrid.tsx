@@ -132,21 +132,19 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
   const gridContext = { handleGoToConversation: props.handleGoToConversation };
 
   return (
-    <div>
-      <BaseAGGrid
-        isLoading={props.isLoading}
-        rowData={props.rowData}
-        columnDefs={columnDefs}
-        additionalComponentsLeft={[
-          NewConversationComponent(
-            props.newConversationIsEnabled,
-            props.handleNewConversation,
-          ),
-        ]}
-        errorOverlayProps={props.errorOverlayProps}
-        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
-        context={gridContext}
-      />
-    </div>
+    <BaseAGGrid
+      isLoading={props.isLoading}
+      rowData={props.rowData}
+      columnDefs={columnDefs}
+      additionalComponentsLeft={[
+        NewConversationComponent(
+          props.newConversationIsEnabled,
+          props.handleNewConversation,
+        ),
+      ]}
+      errorOverlayProps={props.errorOverlayProps}
+      // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
+      context={gridContext}
+    />
   );
 }

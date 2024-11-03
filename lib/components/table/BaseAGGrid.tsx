@@ -111,7 +111,7 @@ export function BaseAGGrid<TRowData>({
     <div
       id="base-ag-grid"
       className={cn(
-        "flex flex-col h-screen w-full bg-neutral-300 dark:bg-neutral-800",
+        "flex flex-col grow w-full bg-neutral-300 dark:bg-neutral-800",
       )}
     >
       <div
