@@ -38,9 +38,10 @@ export const ConversationMessage = ({
 }: TMessage) => {
   const createdAtInt = created_at ? parseInt(created_at) : NaN;
 
+  // TODO: handle locale
   const formattedDate = isNaN(createdAtInt)
     ? ""
-    : new Date(createdAtInt).toLocaleString("en-US", {
+    : new Date(createdAtInt).toLocaleString("en-UK", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
