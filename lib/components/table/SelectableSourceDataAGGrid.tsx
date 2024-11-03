@@ -4,8 +4,6 @@ import { BaseAGGrid } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
 
-import { Button as ShadcnButton } from "@/components/button/index";
-
 const SourceDataRowSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -32,14 +30,6 @@ export interface SelectableSourceDataAGGridProps {
     overlayText: string;
   };
 }
-
-const ConfirmSelectionButton = (
-  <ShadcnButton
-    label={"Confirm Selection"}
-    variant="default"
-    title="Confirm the selected rows"
-  />
-);
 
 /**
  * SourceDataAGGrid is a react component that displays a table of source data in an AG Grid.
@@ -91,12 +81,6 @@ export function SelectableSourceDataAGGrid(
         isLoading={props.isLoading}
         rowData={props.rowData}
         columnDefs={columnDefs}
-        toolbarActions={[
-          {
-            Component: ConfirmSelectionButton,
-            callback: props.handleConfirmSelection,
-          },
-        ]}
         errorOverlayProps={props.errorOverlayProps}
       />
     </div>
