@@ -1,8 +1,8 @@
 "use client";
 
-import { AgGridEvent, ColDef } from "ag-grid-community";
+import { ColDef } from "ag-grid-community";
 import { AgGridReact, AgGridReactProps } from "ag-grid-react";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 
 import { Button as ShadcnButton } from "@/components/button/index";
 import { Input as ShadcnInput } from "@/ui/input";
