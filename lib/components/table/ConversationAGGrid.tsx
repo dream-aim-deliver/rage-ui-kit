@@ -9,6 +9,12 @@ import {
   buttonActionInputValues,
   CreateConversationDialog,
 } from "../dialog/CreateConversationDialog";
+import { formatDate } from "@/components/table/utils/text-formatters.ts";
+import {
+  DefaultDateFilterParams,
+  DefaultTextFilterParams,
+} from "@/components/table/utils/filter-parameters.ts";
+import { buttonCellStyle } from "@/components/table/utils/cell-styles.ts";
 
 const ConversationRowSchema = z.object({
   id: z.number(),
@@ -54,6 +60,7 @@ const GoToConversationButton = (params: GoToConversationButtonParams) => {
 
   return (
     <ShadcnButton
+      className="h-8"
       label={"Start chat"}
       variant="default"
       onClick={handleClick}
@@ -90,25 +97,35 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
   const [columnDefs] = useState<ColDef[]>([
     {
       headerName: "ID",
-      filter: false,
       field: "id",
-      flex: 0.6,
+      maxWidth: 100,
     },
     {
       headerName: "Title",
       field: "title",
       flex: 5,
+      filter: true,
+      filterParams: DefaultTextFilterParams,
+      floatingFilter: true,
     },
     {
       headerName: "Created At",
       field: "created_at",
       flex: 2,
+      valueFormatter: (params) => {
+        return formatDate(params.value);
+      },
+      filter: "agDateColumnFilter",
+      filterParams: DefaultDateFilterParams,
+      floatingFilter: true,
     },
     {
       headerName: "",
-      filter: false,
       flex: 1,
+      sortable: false,
+      width: 150,
       cellRenderer: GoToConversationButton,
+      cellStyle: buttonCellStyle,
     },
   ]);
 
