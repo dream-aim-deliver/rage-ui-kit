@@ -23,7 +23,6 @@ export interface SourceDataAGGridProps {
   rowData: TSourceDataRow[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const SourceDataRegularTable = ({ ...props }) => {
   const tableRef = useRef<AgGridReact<TSourceDataRow>>(null);
   const [columnDefs] = useState([

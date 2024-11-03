@@ -161,7 +161,7 @@ export const RegularTable = (props: RegularTableProps) => {
 
   useEffect(() => {
     onPaginationChanged();
-  }, [isTableLoaded]);
+  }, [isTableLoaded, onPaginationChanged]);
 
   const handleResize = (event: AgGridEvent) => {
     event.api.sizeColumnsToFit();
