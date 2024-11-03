@@ -57,7 +57,12 @@ const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
   };
 
   return (
-    <ShadcnButton label={"Download"} variant="default" onClick={handleClick} />
+    <ShadcnButton
+      className="h-8"
+      label={"Download"}
+      variant="default"
+      onClick={handleClick}
+    />
   );
 };
 
@@ -137,6 +142,11 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       sortable: false,
       width: 150,
       cellRenderer: DownloadSourceDataButton,
+      cellStyle: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
     },
   ]);
 
