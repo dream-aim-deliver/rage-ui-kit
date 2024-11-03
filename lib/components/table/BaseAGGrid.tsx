@@ -86,25 +86,6 @@ export function BaseAGGrid<TRowData>({
 }: BaseAGGridProps<TRowData>) {
   const gridRef = useRef<AgGridReact<TRowData>>(null);
 
-  // AG Grid set up: default column definition, which can be overriden by columnDefs prop
-  const defaultColDef = useMemo(() => {
-    return {
-      resizable: true,
-      sortable: true, // e.g., all columns are sortable, unless opted out
-      filter: "agTextColumnFilter",
-      filterParams: {
-        filterOptions: [
-          "contains",
-          "notContains",
-          "startsWith",
-          "endsWith",
-          "equals",
-        ],
-      },
-      floatingFilter: true,
-    };
-  }, []);
-
   function clearColumnFilters() {
     gridRef.current!.api.setFilterModel(null);
   }
@@ -218,7 +199,6 @@ export function BaseAGGrid<TRowData>({
           loading={isLoading}
           rowData={rowData}
           columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
           rowSelection="multiple"
           suppressRowClickSelection={true}
           pagination={true}
