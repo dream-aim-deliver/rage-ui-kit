@@ -119,10 +119,6 @@ export function BaseAGGrid<TRowData>({
     );
   }, []);
 
-  const handleResize = (event: AgGridEvent) => {
-    event.api.sizeColumnsToFit();
-  };
-
   const isDarkMode = useDarkMode();
 
   // Made to override the default noRowsOverlayComponent of AG Grid, as it was showing a message out of place
@@ -229,7 +225,6 @@ export function BaseAGGrid<TRowData>({
           paginationPageSize={25}
           paginationPageSizeSelector={[25, 50, 100]}
           noRowsOverlayComponent={NoRowsOverlayComponent}
-          onGridSizeChanged={handleResize}
           ref={gridRef}
           {...AGGridProps}
         />

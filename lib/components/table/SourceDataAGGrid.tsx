@@ -97,8 +97,9 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
     {
       headerName: "ID",
       filter: false,
+      sortable: false,
       field: "id",
-      flex: 0.3,
+      maxWidth: 100,
     },
     {
       headerName: "Name",
@@ -108,6 +109,7 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
     {
       headerName: "Relative Path",
       field: "relativePath",
+      sortable: false,
       flex: 2,
     },
     {
@@ -118,7 +120,8 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
     {
       headerName: "",
       filter: false,
-      flex: 0.5,
+      sortable: false,
+      width: 150,
       cellRenderer: DownloadSourceDataButton,
     },
   ]);
