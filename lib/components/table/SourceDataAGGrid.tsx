@@ -11,6 +11,8 @@ import {
   DefaultTextFilterParams,
 } from "@/components/table/utils/filter-parameters.ts";
 import { buttonCellStyle } from "@/components/table/utils/cell-styles.ts";
+import { LabelWithIcon } from "@/components/button/LabelWithIcon.tsx";
+import { UploadIcon } from "lucide-react";
 
 const SourceDataRowSchema = z.object({
   id: z.string(),
@@ -90,7 +92,7 @@ const UploadSourceDataComponent = ({
   } else {
     return (
       <ShadcnButton
-        label={"Upload"}
+        label={<LabelWithIcon Icon={UploadIcon} label="Upload" />}
         variant="default"
         onClick={handleUploadSourceData}
       />
