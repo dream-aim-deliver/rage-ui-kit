@@ -128,22 +128,20 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
   };
 
   return (
-    <div>
-      <BaseAGGrid
-        isLoading={props.isLoading}
-        rowData={props.rowData}
-        columnDefs={columnDefs}
-        additionalComponentsLeft={[
-          UploadSourceDataComponent(
-            props.enableUpload,
-            props.isUploading,
-            props.handleUploadSourceData,
-          ),
-        ]}
-        errorOverlayProps={props.errorOverlayProps}
-        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
-        context={gridContext}
-      />
-    </div>
+    <BaseAGGrid
+      isLoading={props.isLoading}
+      rowData={props.rowData}
+      columnDefs={columnDefs}
+      additionalComponentsLeft={[
+        UploadSourceDataComponent(
+          props.enableUpload,
+          props.isUploading,
+          props.handleUploadSourceData,
+        ),
+      ]}
+      errorOverlayProps={props.errorOverlayProps}
+      // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
+      context={gridContext}
+    />
   );
 }
