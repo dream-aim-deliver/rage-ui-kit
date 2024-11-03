@@ -1,20 +1,12 @@
 "use client";
-import { ConversationMessage } from "../conversation/message";
+import { ConversationMessage, TMessage } from "../conversation/message";
 import { SendMessageBox } from "../conversation/send-message";
 import { useRef, useEffect, useState } from "react";
 import { cn } from "@/utils/utils";
 
 export type ChatPageViewModel = {
-  messages: MessageViewModel[];
+  messages: TMessage[];
   onSendMessage: (message: string) => void;
-};
-
-export type MessageViewModel = {
-  role: "user" | "agent";
-  content: string;
-  type: "text" | "image";
-  timestamp: number;
-  isLoading?: boolean;
 };
 
 export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {

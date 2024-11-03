@@ -1,6 +1,6 @@
 {
   "name": "@maany_shr/rage-ui-kit",
-  "version": "1.0.0-rc.8",
+  "version": "1.0.0",
   "author": "Mayank Sharma <imptodefeat@gmail.com>",
   "homepage": "https://dream-aim-deliver.github.io/maany/rage-ui-kit",
   "private": false,
@@ -60,6 +60,7 @@
     "@storybook/react-vite": "^8.0.8",
     "@storybook/test": "^8.0.8",
     "@storybook/theming": "^8.0.10",
+    "@tailwindcss/typography": "^0.5.15",
     "@testing-library/jest-dom": "^6.3.0",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.11.10",
