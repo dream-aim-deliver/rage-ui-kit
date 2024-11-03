@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { PenSquare } from "lucide-react";
 import { useState } from "react";
+import { LabelWithIcon } from "@/components/button/LabelWithIcon.tsx";
 
 export interface buttonActionInputValues {
   conversationTitle: string;
@@ -77,8 +78,9 @@ export const CreateConversationDialog = ({
       <DialogTrigger asChild>
         <Button
           variant="default"
-          size="icon"
-          label={<PenSquare />}
+          label={
+            <LabelWithIcon Icon={PenSquare} label="Create a new conversation" />
+          }
           disabled={!isEnabled}
           onClick={() => setIsDialogOpen(true)}
         />
