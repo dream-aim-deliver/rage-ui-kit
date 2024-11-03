@@ -5,6 +5,8 @@ import { ColDef } from "ag-grid-community";
 import { useState } from "react";
 
 import { Button as ShadcnButton } from "@/components/button/index";
+import { formatDate } from "@/components/table/utils/text-formatters.ts";
+import { DefaultDateFilterParams, DefaultTextFilterParams } from "@/components/table/utils/filter-parameters.ts";
 
 const SourceDataRowSchema = z.object({
   id: z.string(),
@@ -105,17 +107,29 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       headerName: "Name",
       field: "name",
       flex: 1.5,
+      filter: true,
+      filterParams: DefaultTextFilterParams,
+      floatingFilter: true,
     },
     {
       headerName: "Relative Path",
       field: "relativePath",
       sortable: false,
       flex: 2,
+      filter: true,
+      filterParams: DefaultTextFilterParams,
+      floatingFilter: true,
     },
     {
       headerName: "Created At",
       field: "createdAt",
       flex: 1,
+      valueFormatter: (params) => {
+        return formatDate(params.value);
+      },
+      filter: "agDateColumnFilter",
+      filterParams: DefaultDateFilterParams,
+      floatingFilter: true,
     },
     {
       headerName: "",
