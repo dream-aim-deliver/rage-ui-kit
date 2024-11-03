@@ -70,11 +70,15 @@ const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
   );
 };
 
-const UploadSourceDataComponent = (
-  enableUpload: boolean,
-  isUploading: boolean,
-  handleUploadSourceData: () => void,
-) => {
+const UploadSourceDataComponent = ({
+  enableUpload,
+  isUploading,
+  handleUploadSourceData,
+}: {
+  enableUpload: boolean;
+  isUploading: boolean;
+  handleUploadSourceData: () => void;
+}) => {
   if (!enableUpload) {
     return null;
   }
@@ -116,7 +120,6 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       flex: 1.5,
       filter: true,
       filterParams: DefaultTextFilterParams,
-      floatingFilter: true,
     },
     {
       headerName: "Relative Path",
@@ -125,7 +128,6 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       flex: 2,
       filter: true,
       filterParams: DefaultTextFilterParams,
-      floatingFilter: true,
     },
     {
       headerName: "Created At",
@@ -136,7 +138,6 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
       },
       filter: "agDateColumnFilter",
       filterParams: DefaultDateFilterParams,
-      floatingFilter: true,
     },
     {
       headerName: "",
@@ -148,25 +149,26 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
     },
   ]);
 
+  // TODO: pass it with cell renderer parameters instead of context
   const gridContext = {
     handleDownloadSourceData: props.handleDownloadSourceData,
   };
 
   return (
-    <BaseAGGrid
-      isLoading={props.isLoading}
-      rowData={props.rowData}
-      columnDefs={columnDefs}
-      additionalComponentsLeft={[
-        UploadSourceDataComponent(
-          props.enableUpload,
-          props.isUploading,
-          props.handleUploadSourceData,
-        ),
-      ]}
-      errorOverlayProps={props.errorOverlayProps}
-      // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
-      context={gridContext}
-    />
+    <div className="flex flex-col grow space-y-3">
+      <BaseAGGrid
+        isLoading={props.isLoading}
+        rowData={props.rowData}
+        columnDefs={columnDefs}
+        errorOverlayProps={props.errorOverlayProps}
+        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
+        context={gridContext}
+      />
+      <UploadSourceDataComponent
+        enableUpload={props.enableUpload}
+        isUploading={props.isUploading}
+        handleUploadSourceData={props.handleUploadSourceData}
+      />
+    </div>
   );
 }
