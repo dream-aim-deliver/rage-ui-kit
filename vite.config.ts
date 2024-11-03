@@ -110,6 +110,18 @@ export default defineConfig({
           src: path.resolve(__dirname, "lib/tailwind/theme.css"),
           dest: path.resolve(__dirname, "dist/static/css"),
         },
+        {
+          src: path.resolve(__dirname, "lib/assets/ag-grid-theme.css"),
+          dest: path.resolve(__dirname, "dist/static/css"),
+        },
+        {
+          src: path.resolve(__dirname, "lib/assets/ag-grid-theme-dark.css"),
+          dest: path.resolve(__dirname, "dist/static/css"),
+        },
+        {
+          src: path.resolve(__dirname, "lib/assets/ag-grid-theme-light.css"),
+          dest: path.resolve(__dirname, "dist/static/css"),
+        },
       ],
     }),
   ],
