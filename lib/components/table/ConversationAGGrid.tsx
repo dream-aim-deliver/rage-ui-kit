@@ -68,10 +68,13 @@ const GoToConversationButton = (params: GoToConversationButtonParams) => {
   );
 };
 
-const NewConversationComponent = (
-  isEnabled: boolean,
-  handleNewConversation: (title: string) => void,
-) => {
+const NewConversationComponent = ({
+  isEnabled,
+  handleNewConversation,
+}: {
+  isEnabled: boolean;
+  handleNewConversation: (title: string) => void;
+}) => {
   // Wrapper to pass it as a buttonAction to the dialog
   const newConversationAction = (inputValues: buttonActionInputValues) => {
     handleNewConversation(inputValues.conversationTitle);
@@ -106,7 +109,6 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
       flex: 5,
       filter: true,
       filterParams: DefaultTextFilterParams,
-      floatingFilter: true,
     },
     {
       headerName: "Created At",
@@ -117,7 +119,6 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
       },
       filter: "agDateColumnFilter",
       filterParams: DefaultDateFilterParams,
-      floatingFilter: true,
     },
     {
       headerName: "",
@@ -132,19 +133,19 @@ export function ConversationAGGrid(props: ConversationAGGridProps) {
   const gridContext = { handleGoToConversation: props.handleGoToConversation };
 
   return (
-    <BaseAGGrid
-      isLoading={props.isLoading}
-      rowData={props.rowData}
-      columnDefs={columnDefs}
-      additionalComponentsLeft={[
-        NewConversationComponent(
-          props.newConversationIsEnabled,
-          props.handleNewConversation,
-        ),
-      ]}
-      errorOverlayProps={props.errorOverlayProps}
-      // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
-      context={gridContext}
-    />
+    <div className="flex flex-col grow space-y-3">
+      <BaseAGGrid
+        isLoading={props.isLoading}
+        rowData={props.rowData}
+        columnDefs={columnDefs}
+        errorOverlayProps={props.errorOverlayProps}
+        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
+        context={gridContext}
+      />
+      <NewConversationComponent
+        isEnabled={props.newConversationIsEnabled}
+        handleNewConversation={props.handleNewConversation}
+      />
+    </div>
   );
 }
