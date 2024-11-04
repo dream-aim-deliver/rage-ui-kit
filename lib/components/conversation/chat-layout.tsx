@@ -23,11 +23,12 @@ export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [messages]);
   return (
-    <div className={cn("h-screen bg-gradient-to-r from-blue-500 to-green-500")}>
+    <div
+      className={cn("flex w-full bg-gradient-to-r from-blue-500 to-green-500")}
+    >
       <div className={cn("flex-grow flex flex-col justify-between")}>
         <div
           className={cn(
-            "h-screen",
             "bg-neutral-100 dark:bg-neutral-800",
             "overflow-y-auto",
             "flex flex-col",
