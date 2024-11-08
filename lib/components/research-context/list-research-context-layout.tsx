@@ -21,7 +21,6 @@ export const ListResearchContextLayout = (props: {
         sm:grid-cols-2    
         lg:grid-cols-3    
         w-full
-        p-4
       "
     >
       {props.children}

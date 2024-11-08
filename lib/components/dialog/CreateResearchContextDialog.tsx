@@ -19,6 +19,7 @@ import { CreateResearchContextSelectFilesView } from "./CreateResearchContextSel
 import { PlusCircle } from "lucide-react";
 import { CreateResearchContextCreating } from "./CreateResearchContextCreating";
 import { SelectableSourceDataRow } from "../table/SelectableSourceDataAGGrid";
+import { LabelWithIcon } from "@/components/button/LabelWithIcon.tsx";
 export interface CreateResearchContextDialogProps {
   /**
    * Callback function that will be called when the form is submitted.
@@ -62,7 +63,15 @@ export const CreateResearchContextDialog = (
   return (
     <ShadcnDialog {...props}>
       <DialogTrigger asChild>
-        <Button variant="default" size="icon" label={<PlusCircle />} />
+        <Button
+          variant="default"
+          label={
+            <LabelWithIcon
+              label="Create a research context"
+              Icon={PlusCircle}
+            />
+          }
+        />
       </DialogTrigger>
 
       <DialogContent
