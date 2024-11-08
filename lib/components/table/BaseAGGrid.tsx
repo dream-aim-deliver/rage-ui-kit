@@ -2,13 +2,14 @@
 
 import { ColDef } from "ag-grid-community";
 import { AgGridReact, AgGridReactProps } from "ag-grid-react";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 import { Input as ShadcnInput } from "@/ui/input";
 
 import { cn } from "@/lib/utils/utils";
 import useDarkMode from "@/lib/hooks/use-dark-mode";
 import { twMerge } from "tailwind-merge";
+import { Skeleton } from "@/ui/skeleton.tsx";
 
 /**
  * ToolbarAction is an interface that defines the structure of the objects that will be passed as props to the BaseAGGrid component.
@@ -83,6 +84,13 @@ export function BaseAGGrid<TRowData>({
 
   const isDarkMode = useDarkMode();
 
+  // Whether the table component is ready to be displayed
+  const [isTableLoaded, setIsTableLoaded] = useState<boolean>(false);
+
+  const onGridReady = () => {
+    setIsTableLoaded(true);
+  };
+
   // Made to override the default noRowsOverlayComponent of AG Grid, as it was showing a message out of place
   const NoRowsOverlayComponent: () => JSX.Element = () => (
     <div>No data to show!</div>
@@ -111,6 +119,9 @@ export function BaseAGGrid<TRowData>({
           "min-h-[300px]",
         )}
       >
+        {!isTableLoaded && (
+          <Skeleton className="absolute flex items-center justify-center w-full h-full rounded-b-none" />
+        )}
         <AgGridReact
           loading={isLoading}
           rowData={rowData}
@@ -123,6 +134,7 @@ export function BaseAGGrid<TRowData>({
           noRowsOverlayComponent={NoRowsOverlayComponent}
           ref={gridRef}
           {...AGGridProps}
+          onGridReady={onGridReady}
         />
       </div>
     </div>
