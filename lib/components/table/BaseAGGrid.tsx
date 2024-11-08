@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils/utils";
 import useDarkMode from "@/lib/hooks/use-dark-mode";
 import { twMerge } from "tailwind-merge";
 import { Skeleton } from "@/ui/skeleton.tsx";
+import { ErrorOverlay } from "@/components/table/overlays/ErrorOverlay.tsx";
+import { NothingFoundOverlay } from "@/components/table/overlays/NothingFoundOverlay.tsx";
 
 /**
  * ToolbarAction is an interface that defines the structure of the objects that will be passed as props to the BaseAGGrid component.
@@ -67,6 +69,7 @@ export function BaseAGGrid<TRowData>({
   isLoading,
   rowData,
   columnDefs,
+  errorOverlayProps,
   ...AGGridProps
 }: BaseAGGridProps<TRowData>) {
   const gridRef = useRef<AgGridReact<TRowData>>(null);
@@ -92,9 +95,13 @@ export function BaseAGGrid<TRowData>({
   };
 
   // Made to override the default noRowsOverlayComponent of AG Grid, as it was showing a message out of place
-  const NoRowsOverlayComponent: () => JSX.Element = () => (
-    <div>No data to show!</div>
-  );
+  const NoRowsOverlayComponent: () => React.JSX.Element = () => {
+    if (errorOverlayProps) {
+      return <ErrorOverlay message={errorOverlayProps.overlayText} />;
+    } else {
+      return <NothingFoundOverlay />;
+    }
+  };
 
   return (
     <div id="base-ag-grid" className={cn("flex flex-col grow w-full")}>
