@@ -163,7 +163,6 @@ export function SourceDataAGGrid(props: SourceDataAGGridProps) {
         rowData={props.rowData}
         columnDefs={columnDefs}
         errorOverlayProps={props.errorOverlayProps}
-        // @ts-expect-error TODO: fix typing here somehow, passing "AGGridProps = { {context = ... } }" to "BaseAGGrid" doesn't work
         context={gridContext}
       />
       <UploadSourceDataComponent
