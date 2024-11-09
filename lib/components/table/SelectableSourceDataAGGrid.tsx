@@ -1,7 +1,7 @@
 "use client";
 import { z } from "zod";
 import { BaseAGGrid } from "./BaseAGGrid";
-import { ColDef } from "ag-grid-community";
+import { ColDef, SelectionChangedEvent } from "ag-grid-community";
 import { useState } from "react";
 
 const SourceDataRowSchema = z.object({
@@ -52,6 +52,7 @@ export function SelectableSourceDataAGGrid(
       filter: false,
       field: "id",
       flex: 0.3,
+      minWidth: 100,
     },
     {
       headerName: "Name",
@@ -75,6 +76,13 @@ export function SelectableSourceDataAGGrid(
     },
   ]);
 
+  const onSelectionChanged = (
+    event: SelectionChangedEvent<SelectableSourceDataRow>,
+  ) => {
+    const selectedRows = event.api.getSelectedRows();
+    props.handleConfirmSelection(selectedRows);
+  };
+
   return (
     <div>
       <BaseAGGrid
@@ -82,6 +90,7 @@ export function SelectableSourceDataAGGrid(
         rowData={props.rowData}
         columnDefs={columnDefs}
         errorOverlayProps={props.errorOverlayProps}
+        onSelectionChanged={onSelectionChanged}
       />
     </div>
   );

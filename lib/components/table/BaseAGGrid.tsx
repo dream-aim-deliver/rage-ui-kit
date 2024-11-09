@@ -39,7 +39,7 @@ export type ToolbarAction<TRowData> = {
  * @param overlayTextOnNoRows: the text to be displayed when there are no rows to display
  * @param AGGridProps: additional props for the AG Grid
  */
-export interface BaseAGGridProps<TRowData> {
+export interface BaseAGGridProps<TRowData> extends AgGridReactProps {
   isLoading: boolean;
   rowData: TRowData[];
   columnDefs: ColDef[];
@@ -48,7 +48,6 @@ export interface BaseAGGridProps<TRowData> {
     overlayText: string;
   };
   overlayTextOnNoRows?: string;
-  AGGridProps?: AgGridReactProps;
 }
 
 /**
@@ -62,7 +61,7 @@ export interface BaseAGGridProps<TRowData> {
  * @param columnDefs: the column definitions for the AG Grid
  * @param errorOverlayProps: an object containing the error status and the overlay text
  * @param overlayTextOnNoRows: the text to be displayed when there are no rows to display
- * @param AGGridProps: additional props for the AG Grid
+ * @param props: additional props for the AG Grid
  * @returns a BaseAGGrid component
  */
 export function BaseAGGrid<TRowData>({
@@ -70,7 +69,7 @@ export function BaseAGGrid<TRowData>({
   rowData,
   columnDefs,
   errorOverlayProps,
-  ...AGGridProps
+  ...props
 }: BaseAGGridProps<TRowData>) {
   const gridRef = useRef<AgGridReact<TRowData>>(null);
 
@@ -140,8 +139,8 @@ export function BaseAGGrid<TRowData>({
           paginationPageSizeSelector={[25, 50, 100]}
           noRowsOverlayComponent={NoRowsOverlayComponent}
           ref={gridRef}
-          {...AGGridProps}
           onGridReady={onGridReady}
+          {...props}
         />
       </div>
     </div>
