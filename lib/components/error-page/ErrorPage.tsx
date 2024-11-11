@@ -46,13 +46,17 @@ export interface ErrorPageProps {
 }
 
 export const ErrorPage: React.FC<ErrorPageProps> = (props: ErrorPageProps) => {
-  const resetMessage = props.reset?.message || "Go back to Homepage";
-  const resetAction =
-    props.reset?.action || (() => (window.location.href = "/"));
+  const returnHome = () => {
+    window.location.href = "/";
+  };
+
+  const resetMessage = props.reset?.message ?? "Return to homepage";
+  const resetAction = props.reset?.action ?? returnHome;
+
   return (
     <div
       className={cn(
-        "min-h-screen flex flex-col justify-center items-center bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white",
+        "flex flex-col grow justify-center items-center text-neutral-800 dark:text-white",
       )}
     >
       {/* Icon */}
