@@ -1,4 +1,5 @@
 "use client";
+
 import { ConversationMessage, TMessage } from "../conversation/message";
 import { SendMessageBox } from "../conversation/send-message";
 import { useRef, useEffect, useState } from "react";
@@ -23,21 +24,12 @@ export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [messages]);
   return (
-    <div
-      className={cn("flex w-full bg-gradient-to-r from-blue-500 to-green-500")}
-    >
-      <div className={cn("flex-grow flex flex-col justify-between")}>
-        <div
-          className={cn(
-            "bg-neutral-100 dark:bg-neutral-800",
-            "overflow-y-auto",
-            "flex flex-col",
-            "space-y-4",
-          )}
-        >
+    <div className="flex w-full bg-neutral-100 dark:bg-neutral-800">
+      <div className="flex-grow flex flex-col justify-between">
+        <div className="overflow-y-auto flex flex-col space-y-4">
           {messages.map((message, idx) => {
             return (
-              <div key={idx} className={cn("max-width-screen ")}>
+              <div key={idx} className="max-width-screen">
                 <ConversationMessage key={idx} {...message} />
               </div>
             );
