@@ -26,7 +26,7 @@ describe("<ErrorPage />", () => {
 
     // Check if the Go back to Homepage button is rendered
     expect(
-      screen.getByRole("button", { name: /Go back to Homepage/i }),
+      screen.getByRole("button", { name: /Return to homepage/i }),
     ).toBeInTheDocument();
   });
 
@@ -41,7 +41,7 @@ describe("<ErrorPage />", () => {
 
     // Check if the Go back to Homepage button is rendered
     expect(
-      screen.getByRole("button", { name: /Go back to Homepage/i }),
+      screen.getByRole("button", { name: /Return to homepage/i }),
     ).toBeInTheDocument();
   });
 
@@ -66,7 +66,7 @@ describe("<ErrorPage />", () => {
     render(<ErrorPage error={{ message: "Holi Poli Carli" }} />);
 
     // Simulate button click
-    const button = screen.getByRole("button", { name: /Go back to Homepage/i });
+    const button = screen.getByRole("button", { name: /Return to homepage/i });
     fireEvent.click(button);
 
     // Check if the button click triggers the correct navigation
