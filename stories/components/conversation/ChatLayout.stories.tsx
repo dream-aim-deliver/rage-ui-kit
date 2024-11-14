@@ -66,6 +66,7 @@ export const ChatCapabilities: Story = {
     messages: [
       {
         sender_type: "user",
+        status: "success",
         message_contents: [
           {
             content: "Hello, can you render formatted text?",
@@ -77,6 +78,7 @@ export const ChatCapabilities: Story = {
       },
       {
         sender_type: "agent",
+        status: "success",
         message_contents: [
           {
             content: "Hello, yes. \n Let me give you an example:",
@@ -88,6 +90,7 @@ export const ChatCapabilities: Story = {
       },
       {
         sender_type: "agent",
+        status: "success",
         created_at: `${Date.now()}`,
         message_contents: [
           {
@@ -99,6 +102,7 @@ export const ChatCapabilities: Story = {
       },
       {
         sender_type: "user",
+        status: "success",
         message_contents: [
           {
             content: "Well done!",
@@ -110,6 +114,7 @@ export const ChatCapabilities: Story = {
       },
       {
         sender_type: "agent",
+        status: "success",
         message_contents: [
           {
             content: mermaidData,

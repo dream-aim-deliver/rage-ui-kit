@@ -4,7 +4,7 @@ import { PrimaryButton } from "@/components/ui/primary-button";
 import { cn } from "@/utils/utils";
 
 type SendMessageBoxProps = {
-  className: string;
+  className?: string;
   onSendMessage?: (message: string) => void;
 };
 
