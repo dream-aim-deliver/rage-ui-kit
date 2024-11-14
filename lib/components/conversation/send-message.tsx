@@ -3,25 +3,26 @@ import { useState, FormEvent, KeyboardEvent } from "react";
 import { PrimaryButton } from "@/components/ui/primary-button";
 import { cn } from "@/utils/utils";
 
+type SendMessageBoxProps = {
+  className: string;
+  onSendMessage?: (message: string) => void;
+};
+
 export const SendMessageBox = ({
   className = "",
-  onSendMessage = (message: string): void => {
-    console.log(
-      `GENERAL:: ERROR "Message won't be sent!! Override in parent component"  : ${message}`,
-    );
-  },
-}) => {
+  onSendMessage,
+}: SendMessageBoxProps) => {
   const [message, setMessage] = useState("");
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const sendMessage = () => {
+    if (!onSendMessage) return;
     onSendMessage(message);
     setMessage("");
   };
 
-  const buttonSubmit = () => {
-    onSendMessage(message);
-    setMessage("");
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendMessage();
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -33,7 +34,7 @@ export const SendMessageBox = ({
       );
     } else if (e.key === "Enter") {
       e.preventDefault();
-      buttonSubmit();
+      sendMessage();
     }
   };
 
@@ -64,7 +65,11 @@ export const SendMessageBox = ({
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <PrimaryButton text="" action={"send"} onClick={buttonSubmit} />
+      <PrimaryButton
+        text=""
+        action={"send"}
+        onClick={onSendMessage ? sendMessage : undefined}
+      />
       <div className="w-1"></div>
     </form>
   );
