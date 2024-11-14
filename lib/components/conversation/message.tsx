@@ -8,6 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { cn } from "@/utils/utils";
 import ImageComponent from "@/components/conversation/image-component";
 import { z } from "zod";
+import { CheckIcon, ClockIcon, LucideIcon, XCircleIcon } from "lucide-react";
 
 export const MessageContentSchema = z.object({
   id: z.number().optional(),
@@ -22,6 +23,11 @@ export type TMessageContent = z.infer<typeof MessageContentSchema>;
 
 export const MessageSchema = z.object({
   id: z.number().optional(),
+  status: z.union([
+    z.literal("request"),
+    z.literal("error"),
+    z.literal("success"),
+  ]),
   message_contents: z.array(MessageContentSchema).optional(),
   sender: z.string(),
   sender_type: z.union([z.literal("user"), z.literal("agent")]),
@@ -35,6 +41,7 @@ export const ConversationMessage = ({
   sender_type,
   created_at,
   message_contents,
+  status,
 }: TMessage) => {
   const createdAtInt = created_at ? parseInt(created_at) : NaN;
 
@@ -57,6 +64,29 @@ export const ConversationMessage = ({
       : "bg-neutral-800 dark:bg-neutral-950";
 
   const isLoading = message_contents === undefined || message_contents === null;
+
+  const statusIcons: Record<TMessage["status"], LucideIcon> = {
+    error: XCircleIcon,
+    request: ClockIcon,
+    success: CheckIcon,
+  };
+
+  const getStatusIcon = () => {
+    const IconComponent = statusIcons[status];
+    return <IconComponent className="w-3 h-3 mr-1" />;
+  };
+
+  const statusMessageColors: Record<TMessage["status"], string> = {
+    error: "bg-red-300",
+    request: "bg-blue-200",
+    success: "bg-blue-400",
+  };
+
+  const statusTailBorders: Record<TMessage["status"], string> = {
+    error: "border-l-red-300",
+    request: "border-l-blue-200",
+    success: "border-l-blue-400",
+  };
 
   const CachedContentBlock = useMemo(() => {
     if (message_contents) {
@@ -124,7 +154,7 @@ export const ConversationMessage = ({
           "rounded-xl p-4",
           "animate-opacity",
           sender_type === "user"
-            ? "bg-blue-400 text-white"
+            ? statusMessageColors[status]
             : "bg-neutral-300 text-black",
         )}
       >
@@ -143,7 +173,12 @@ export const ConversationMessage = ({
           ) : (
             <>
               {CachedContentBlock}
-              <div className={cn("text-xs text-gray-700 mt-2 text-right")}>
+              <div
+                className={cn(
+                  "flex items-center text-xs text-gray-700 mt-2 text-right",
+                )}
+              >
+                {getStatusIcon()}
                 {formattedDate}
               </div>
             </>
@@ -159,7 +194,7 @@ export const ConversationMessage = ({
             "border-r-[10px] border-r-transparent",
             "border-l-[10px]",
             sender_type === "user"
-              ? "border-l-blue-400 right-[-10px]"
+              ? `${statusTailBorders[status]} right-[-10px]`
               : "border-l-gray-300 left-[-10px] transform scale-x-[-1]",
           )}
         ></div>

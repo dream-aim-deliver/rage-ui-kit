@@ -56,9 +56,40 @@ sequenceDiagram
 `;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const UserMessage: Story = {
+export const UserMessageSuccess: Story = {
   args: {
     sender_type: "user",
+    status: "success",
+    message_contents: [
+      {
+        content: "holi boli",
+        content_type: "text",
+      },
+    ],
+    created_at: `${Date.now()}`,
+    sender: "Carla",
+  },
+};
+
+export const UserMessageRequest: Story = {
+  args: {
+    sender_type: "user",
+    status: "request",
+    message_contents: [
+      {
+        content: "holi boli",
+        content_type: "text",
+      },
+    ],
+    created_at: `${Date.now()}`,
+    sender: "Carla",
+  },
+};
+
+export const UserMessageError: Story = {
+  args: {
+    sender_type: "user",
+    status: "error",
     message_contents: [
       {
         content: "holi boli",
@@ -73,6 +104,7 @@ export const UserMessage: Story = {
 export const ImageMessage: Story = {
   args: {
     sender_type: "user",
+    status: "success",
     message_contents: [
       {
         content: "Here I generated an image for you:",
@@ -95,6 +127,7 @@ export const ImageMessage: Story = {
 export const MermaidDiagramMessage: Story = {
   args: {
     sender_type: "user",
+    status: "success",
     message_contents: [
       {
         content: mermaidData,
