@@ -152,7 +152,7 @@ export const ConversationMessage = ({
           "relative",
           "max-w-lg",
           "rounded-xl p-4",
-          "animate-opacity",
+          "transition-colors",
           sender_type === "user"
             ? statusMessageColors[status]
             : "bg-neutral-300 text-black",
@@ -161,11 +161,7 @@ export const ConversationMessage = ({
         <div className={cn("flex space-x-4 align-text-center")}></div>
 
         {/* Message Content */}
-        <div
-          className={cn(
-            `object-center rounded-xl p-1 ${isLoading ? "" : "animate-opacity"} overflow-hidden`,
-          )}
-        >
+        <div className={cn(`object-center rounded-xl p-1 overflow-hidden`)}>
           {isLoading ? (
             <div className={cn("animate-pulse flex space-x-4")}>
               <div className={cn("h-4 bg-gray-400 rounded w-4")}></div>
