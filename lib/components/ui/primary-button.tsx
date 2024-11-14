@@ -10,14 +10,18 @@ export type PrimaryButtonViewModel = {
 export const PrimaryButton = ({
   text = "Primary Button",
   action = "send",
-  onClick = () => {},
+  onClick,
 }: PrimaryButtonViewModel) => {
+  const isDisabled = !onClick;
+  const colorClasses = isDisabled
+    ? "bg-blue-200 dark:bg-blue-700 cursor-not-allowed"
+    : "bg-blue-600 dark:bg-blue-900 hover:bg-blue-900 dark:hover:bg-blue-600";
+
   return (
     <div className={cn("flex bg-transparent justify-center")}>
       <button
         className={cn(
-          "bg-blue-600 dark:bg-blue-900",
-          "hover:bg-blue-900 dark:hover:bg-blue-600",
+          colorClasses,
           "text-white",
           "font-bold",
           "py-2",

@@ -6,7 +6,7 @@ import { cn } from "@/utils/utils";
 
 export type ChatPageViewModel = {
   messages: TMessage[];
-  onSendMessage: (message: string) => void;
+  onSendMessage?: (message: string) => void;
 };
 
 export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
