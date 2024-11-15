@@ -48,6 +48,14 @@ export const CreateResearchContextDialog = (
   const [selectedFiles, setSelectedFiles] = useState<SelectableSourceDataRow[]>(
     [],
   );
+
+  const refresh = () => {
+    setCurrentView("form");
+    setResearchContextName("");
+    setResearchContextDescription("");
+    setSelectedFiles([]);
+  };
+
   const handleConfirmSelection = (selectedRows: SelectableSourceDataRow[]) => {
     setSelectedFiles(selectedRows);
   };
@@ -60,8 +68,20 @@ export const CreateResearchContextDialog = (
       selectedFiles,
     );
   };
+
+  const onOpenChange = (isOpen: boolean) => {
+    if (isOpen) return;
+
+    if (currentView === "progress") {
+      refresh();
+    } else {
+      // The selected files have to be refreshed as the table won't render them on reopening
+      setSelectedFiles([]);
+    }
+  };
+
   return (
-    <ShadcnDialog {...props}>
+    <ShadcnDialog {...props} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="default"
