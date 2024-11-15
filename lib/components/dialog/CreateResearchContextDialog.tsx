@@ -77,8 +77,7 @@ export const CreateResearchContextDialog = (
       <DialogContent
         className={cn(
           "flex flex-col items-center justify-between gap-large",
-          "sm:max-w-md",
-          "w-full",
+          "max-w-[90%] rounded-md",
           "py-8",
           "bg-neutral-100 dark:bg-neutral-800",
           "text-black dark:text-white",
@@ -101,7 +100,7 @@ export const CreateResearchContextDialog = (
             sourceDataList={props.clientFiles}
             isLoading={false} // TODO: add loading state
             handleConfirmSelection={handleConfirmSelection}
-            onNext={handleSubmit}
+            onNext={selectedFiles.length === 0 ? undefined : handleSubmit}
             onPrevious={() => {
               setCurrentView("form");
             }}
