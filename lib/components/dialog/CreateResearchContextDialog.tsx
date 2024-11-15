@@ -73,7 +73,12 @@ export const CreateResearchContextDialog = (
     if (isOpen) return;
 
     if (currentView === "progress") {
-      refresh();
+      if (
+        props.viewModel.status === "success" ||
+        props.viewModel.status === "error"
+      ) {
+        refresh();
+      }
     } else {
       // The selected files have to be refreshed as the table won't render them on reopening
       setSelectedFiles([]);
