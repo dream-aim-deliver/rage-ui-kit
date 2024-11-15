@@ -15,7 +15,7 @@ export const SendMessageBox = ({
   const [message, setMessage] = useState("");
 
   const sendMessage = () => {
-    if (!onSendMessage) return;
+    if (!onSendMessage || message === "") return;
     onSendMessage(message);
     setMessage("");
   };
@@ -68,7 +68,7 @@ export const SendMessageBox = ({
       <PrimaryButton
         text=""
         action={"send"}
-        onClick={onSendMessage ? sendMessage : undefined}
+        onClick={message !== "" && onSendMessage ? sendMessage : undefined}
       />
       <div className="w-1"></div>
     </form>
