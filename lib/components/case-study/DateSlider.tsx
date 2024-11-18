@@ -13,12 +13,7 @@ const DateSlider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & DateSliderProps
 >(({ className, timestamps, ...props }, ref) => {
-  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
-
-  const handleSliderChange = (newValue: number[]) => {
-    setSelectedIndex(newValue[0]);
-  };
-
+  const selectedIndex = props.value ? props.value[0] : 0;
   const currentDate = new Date(timestamps[selectedIndex]).toLocaleDateString();
 
   return (
@@ -29,8 +24,8 @@ const DateSlider = React.forwardRef<
           "relative flex w-full touch-none select-none items-center",
           className,
         )}
-        value={[selectedIndex]}
-        onValueChange={handleSliderChange}
+        value={props.value}
+        onValueChange={props.onValueChange}
         max={timestamps.length - 1} // Set max to the last index of timestamps
         step={1}
         {...props}

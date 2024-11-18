@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DateSlider } from "@/components/case-study/DateSlider.tsx";
+import { generateTimestamps } from "../../utils.ts";
 
 const meta = {
   title: "Example/DateSlider",
@@ -19,19 +20,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-function generateTimestamps(daysAgo: number): number[] {
-  const now = new Date(); // Current date
-  const timestamps: number[] = [];
-
-  for (let i = daysAgo; i >= 0; i--) {
-    const date = new Date(now);
-    date.setDate(now.getDate() - i);
-    timestamps.push(date.getTime());
-  }
-
-  return timestamps;
-}
 
 export const Short: Story = {
   args: {
