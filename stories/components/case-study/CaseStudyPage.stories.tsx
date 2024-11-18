@@ -6,6 +6,7 @@ import {
 } from "@/components/case-study/CaseStudyPage.tsx";
 import { TDisasterData } from "@/components/table/case-study/DisasterDataTable.tsx";
 import { TClimateData } from "@/components/table/case-study/ClimateDataTable.tsx";
+import { faker } from "@faker-js/faker";
 
 const meta = {
   title: "Pages/CaseStudy",
@@ -29,19 +30,19 @@ type Story = StoryObj<typeof meta>;
 
 const generateDisasterDataFixture = (): TDisasterData => {
   return {
-    id: "example",
-    name: "Example",
-    dateOccurred: new Date("2024-08-15T00:00:00Z"),
-    affectedPopulation: Math.floor(Math.random() * 1000000),
+    id: faker.string.uuid(),
+    name: faker.commerce.productName(),
+    dateOccurred: faker.date.past({ years: 1 }),
+    affectedPopulation: faker.number.int({ min: 0, max: 1000000 }),
   };
 };
 
 const generateClimateDataFixture = (): TClimateData => {
   return {
-    id: "example",
-    location: "Example",
-    temperature: Math.floor(Math.random() * (100 - -100 + 1)) - 100, // Random temperature between -100 and 100
-    humidity: Math.floor(Math.random() * (100 + 1)), // Random humidity between 0 and 100
+    id: faker.string.uuid(),
+    location: faker.location.city(),
+    temperature: faker.number.int({ min: -100, max: 100 }),
+    humidity: faker.number.int({ min: 0, max: 100 }),
   };
 };
 
@@ -53,8 +54,8 @@ const generateFixtureKeyframe = (
   const baseFrame = {
     timestamp,
     image: {
-      url: "https://cdn.pixabay.com/photo/2024/02/28/07/42/european-shorthair-8601492_640.jpg",
-      description: "Example",
+      url: faker.image.url({ width: 640, height: 480 }),
+      description: faker.lorem.sentence(),
     },
   };
 
