@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CaseStudyTableProps } from "@/components/table/case-study/CaseStudyTable.tsx";
+import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { BaseAGGrid } from "@/lib/components";
 import {
   DefaultDateFilterParams,
@@ -9,7 +9,7 @@ import { formatDate } from "@/components/table/utils/text-formatters.ts";
 import { useState } from "react";
 import { ColDef } from "ag-grid-community";
 
-const DisasterDataSchema = z.object({
+export const DisasterDataSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1),
   dateOccurred: z.date(),
@@ -18,9 +18,7 @@ const DisasterDataSchema = z.object({
 
 export type TDisasterData = z.infer<typeof DisasterDataSchema>;
 
-export const DisasterDataTable = (
-  props: CaseStudyTableProps<TDisasterData>,
-) => {
+export const DisasterDataTable: CaseStudyTable<TDisasterData> = (props) => {
   const [columnDefs] = useState<ColDef[]>([
     {
       headerName: "ID",

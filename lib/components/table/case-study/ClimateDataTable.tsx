@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { CaseStudyTableProps } from "@/components/table/case-study/CaseStudyTable.tsx";
+import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { useState } from "react";
 import { DefaultTextFilterParams } from "@/components/table/utils/filter-parameters.ts";
 import { BaseAGGrid } from "@/lib/components";
 import { ColDef } from "ag-grid-community";
 
-const ClimateDataSchema = z.object({
+export const ClimateDataSchema = z.object({
   id: z.string().uuid(),
   location: z.string().min(1),
   temperature: z.number().min(-100).max(100),
@@ -14,7 +14,7 @@ const ClimateDataSchema = z.object({
 
 export type TClimateData = z.infer<typeof ClimateDataSchema>;
 
-export const ClimateDataTable = (props: CaseStudyTableProps<TClimateData>) => {
+export const ClimateDataTable: CaseStudyTable<TClimateData> = (props) => {
   const [columnDefs] = useState<ColDef[]>([
     {
       headerName: "ID",
