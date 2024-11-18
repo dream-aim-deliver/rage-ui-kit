@@ -91,3 +91,52 @@ export const Disaster: Story = {
     messages: [],
   },
 };
+
+export const ClimateMessages: Story = {
+  args: {
+    keyframes: generateTimestamps(30).map((timestamp) =>
+      generateFixtureKeyframe("climate", timestamp.toString()),
+    ),
+    messages: [
+      {
+        sender_type: "user",
+        status: "success",
+        message_contents: [
+          {
+            content: "Hello, can you render formatted text?",
+            content_type: "text",
+          },
+        ],
+        created_at: `${Date.now()}`,
+        sender: "Carla",
+      },
+      {
+        sender_type: "agent",
+        status: "success",
+        message_contents: [
+          {
+            content: "Hello, yes. \n Let me give you an example:",
+            content_type: "text",
+          },
+        ],
+        created_at: `${Date.now()}`,
+        sender: "Agent",
+      },
+      {
+        sender_type: "user",
+        status: "success",
+        message_contents: [
+          {
+            content: "Well done!",
+            content_type: "text",
+          },
+        ],
+        created_at: `${Date.now()}`,
+        sender: "Carla",
+      },
+    ],
+    onSendMessage: (message) => {
+      alert(`Message sent: ${message}`);
+    },
+  },
+};
