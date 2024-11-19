@@ -49,14 +49,14 @@ const toastVariants = cva(
       size: {
         small: "w-64",
         medium: "w-80",
-        large: "w-96",
+        large: "w-[600px]",
       },
     },
     defaultVariants: {
       variant: "default",
       animation: "enter",
       position: "right",
-      size: "small",
+      size: "large",
     },
   },
 );
