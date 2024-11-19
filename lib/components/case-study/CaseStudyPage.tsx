@@ -12,27 +12,33 @@ import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
 
-const ClimateKeyframeSchema = z.object({
+const BaseKeyframeSchema = z.object({
   timestamp: z.string(),
   image: z.object({
-    url: z.string().url(),
+    signedUrl: z.string().url(),
     description: z.string(),
   }),
-  caseStudy: z.literal("climate"),
-  data: z.array(ClimateDataSchema),
+  expirationTime: z.number().int().positive(), // A unix timestamp
 });
 
-const DisasterKeyframeSchema = z.object({
-  timestamp: z.string(),
-  image: z.object({
-    url: z.string().url(),
-    description: z.string(),
+const ClimateKeyframeSchema = BaseKeyframeSchema.merge(
+  z.object({
+    caseStudy: z.literal("climate-monitoring"),
+    data: z.array(ClimateDataSchema),
   }),
-  caseStudy: z.literal("disaster"),
-  data: z.array(DisasterDataSchema),
-});
+);
 
-const KeyframeSchema = z.union([ClimateKeyframeSchema, DisasterKeyframeSchema]);
+const DisasterKeyframeSchema = BaseKeyframeSchema.merge(
+  z.object({
+    caseStudy: z.literal("disaster-tracking"),
+    data: z.array(DisasterDataSchema),
+  }),
+);
+
+const KeyframeSchema = z.discriminatedUnion("caseStudy", [
+  ClimateKeyframeSchema,
+  DisasterKeyframeSchema,
+]);
 
 export type TKeyframe = z.infer<typeof KeyframeSchema>;
 
@@ -73,8 +79,8 @@ export const CaseStudyPage = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     CaseStudyTable<any>
   > = {
-    climate: ClimateDataTable,
-    disaster: DisasterDataTable,
+    "climate-monitoring": ClimateDataTable,
+    "disaster-tracking": DisasterDataTable,
   };
 
   const Table = tablesForCaseStudies[currentFrame.caseStudy];
@@ -85,7 +91,7 @@ export const CaseStudyPage = ({
       <div className="flex flex-1 flex-col grow space-y-4">
         <div
           className="flex-1 bg-cover bg-center w-full h-auto"
-          style={{ backgroundImage: `url(${currentFrame.image.url})` }}
+          style={{ backgroundImage: `url(${currentFrame.image.signedUrl})` }}
         ></div>
         <div className="flex flex-1 grow">
           <Table

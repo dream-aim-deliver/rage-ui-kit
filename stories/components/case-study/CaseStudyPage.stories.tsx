@@ -47,19 +47,20 @@ const generateClimateDataFixture = (): TClimateData => {
 };
 
 const generateFixtureKeyframe = (
-  caseStudy: "climate" | "disaster",
+  caseStudy: "climate-monitoring" | "disaster-tracking",
   timestamp: string,
 ): TKeyframe => {
   const length = 30;
   const baseFrame = {
     timestamp,
     image: {
-      url: faker.image.url({ width: 640, height: 480 }),
+      signedUrl: faker.image.url({ width: 640, height: 480 }),
       description: faker.lorem.sentence(),
     },
+    expirationTime: faker.date.anytime().getTime(),
   };
 
-  if (caseStudy === "climate") {
+  if (caseStudy === "climate-monitoring") {
     return {
       ...baseFrame,
       caseStudy: caseStudy,
@@ -77,7 +78,7 @@ const generateFixtureKeyframe = (
 export const Climate: Story = {
   args: {
     keyframes: generateTimestamps(30).map((timestamp) =>
-      generateFixtureKeyframe("climate", timestamp.toString()),
+      generateFixtureKeyframe("climate-monitoring", timestamp.toString()),
     ),
     messages: [],
   },
@@ -87,7 +88,7 @@ export const Disaster: Story = {
   args: {
     // Generate a single keyframe
     keyframes: generateTimestamps(0).map((timestamp) =>
-      generateFixtureKeyframe("disaster", timestamp.toString()),
+      generateFixtureKeyframe("disaster-tracking", timestamp.toString()),
     ),
     messages: [],
   },
@@ -96,7 +97,7 @@ export const Disaster: Story = {
 export const ClimateMessages: Story = {
   args: {
     keyframes: generateTimestamps(30).map((timestamp) =>
-      generateFixtureKeyframe("climate", timestamp.toString()),
+      generateFixtureKeyframe("climate-monitoring", timestamp.toString()),
     ),
     messages: [
       {
