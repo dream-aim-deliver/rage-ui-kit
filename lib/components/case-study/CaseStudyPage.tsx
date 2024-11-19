@@ -12,6 +12,7 @@ import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
 import { Skeleton } from "@/ui/skeleton.tsx";
+import { cn } from "@/utils/utils.ts";
 
 const BaseKeyframeSchema = z.object({
   timestamp: z.string(),
@@ -89,12 +90,14 @@ export const CaseStudyPage = ({
   const Table = tablesForCaseStudies[currentFrame.caseStudy];
 
   const getImage = () => {
+    const commonClasses = "lg:flex-1 w-full lg:h-auto h-[300px]";
+
     if (isLoading) {
-      return <Skeleton className="flex-1 w-full h-auto" />;
+      return <Skeleton className={commonClasses} />;
     } else {
       return (
         <div
-          className="flex-1 bg-cover bg-center w-full h-auto"
+          className={cn(commonClasses, "bg-cover bg-center")}
           style={{ backgroundImage: `url(${currentFrame.image.signedUrl})` }}
         ></div>
       );
@@ -103,15 +106,8 @@ export const CaseStudyPage = ({
 
   // TODO: display image description as a hint on hover
   return (
-    <div className="flex flex-row grow space-x-4">
+    <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow space-y-4">
-        {getImage()}
-        <div className="flex flex-1 grow">
-          <Table
-            rowData={isLoading ? [] : currentFrame.data}
-            isLoading={isLoading}
-          />
-        </div>
         {timelineEnabled && (
           <DateSlider
             timestamps={keyframes.map((frame) => parseInt(frame.timestamp))}
@@ -119,8 +115,15 @@ export const CaseStudyPage = ({
             onValueChange={onTimestampChange}
           />
         )}
+        {getImage()}
+        <div className="flex flex-1 grow">
+          <Table
+            rowData={isLoading ? [] : currentFrame.data}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
-      <div className="flex flex-1 grow">
+      <div className="flex lg:flex-1 grow lg:h-auto h-[600px]">
         <ChatPage messages={messages} onSendMessage={onSendMessage} />
       </div>
     </div>
