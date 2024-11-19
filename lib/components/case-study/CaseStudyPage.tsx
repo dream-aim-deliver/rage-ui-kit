@@ -12,7 +12,6 @@ import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
 import { Skeleton } from "@/ui/skeleton.tsx";
-import { clearInterval } from "node:timers";
 
 const BaseKeyframeSchema = z.object({
   timestamp: z.string(),
@@ -62,21 +61,17 @@ export const CaseStudyPage = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const throttleIntervalId = useRef<any>(undefined);
+  const throttleTimeoutId = useRef<any>(undefined);
 
   const onTimestampChange = (newValue: number[]) => {
     setIsLoading(true);
     setSelectedTimestampIndex(newValue[0]);
 
-    if (throttleIntervalId.current) {
-      throttleIntervalId.current = setInterval(() => {
+    if (throttleTimeoutId.current === undefined) {
+      throttleTimeoutId.current = setTimeout(() => {
         setIsLoading(false);
-
-        return () => {
-          clearInterval(throttleIntervalId.current);
-          throttleIntervalId.current = undefined;
-        };
-      }, 1500);
+        throttleTimeoutId.current = undefined;
+      }, 1000);
     }
   };
 
