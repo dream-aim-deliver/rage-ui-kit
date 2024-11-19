@@ -12,6 +12,7 @@ import { twMerge } from "tailwind-merge";
 import { Skeleton } from "@/ui/skeleton.tsx";
 import { ErrorOverlay } from "@/components/table/overlays/ErrorOverlay.tsx";
 import { NothingFoundOverlay } from "@/components/table/overlays/NothingFoundOverlay.tsx";
+import { LoadingOverlay } from "@/components/table/overlays/LoadingOverlay.tsx";
 
 /**
  * ToolbarAction is an interface that defines the structure of the objects that will be passed as props to the BaseAGGrid component.
@@ -137,6 +138,7 @@ export function BaseAGGrid<TRowData>({
           pagination={true}
           paginationPageSize={25}
           paginationPageSizeSelector={[25, 50, 100]}
+          loadingOverlayComponent={LoadingOverlay}
           noRowsOverlayComponent={NoRowsOverlayComponent}
           ref={gridRef}
           onGridReady={onGridReady}
