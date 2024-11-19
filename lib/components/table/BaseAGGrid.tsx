@@ -2,7 +2,13 @@
 
 import { ColDef } from "ag-grid-community";
 import { AgGridReact, AgGridReactProps } from "ag-grid-react";
-import React, { useCallback, useRef, useState } from "react";
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { Input as ShadcnInput } from "@/ui/input";
 
@@ -13,17 +19,81 @@ import { Skeleton } from "@/ui/skeleton.tsx";
 import { ErrorOverlay } from "@/components/table/overlays/ErrorOverlay.tsx";
 import { NothingFoundOverlay } from "@/components/table/overlays/NothingFoundOverlay.tsx";
 import { LoadingOverlay } from "@/components/table/overlays/LoadingOverlay.tsx";
+import {
+  HiOutlineChevronDoubleLeft,
+  HiOutlineChevronDoubleRight,
+  HiOutlineChevronLeft,
+  HiOutlineChevronRight,
+} from "react-icons/hi";
 
-/**
- * ToolbarAction is an interface that defines the structure of the objects that will be passed as props to the BaseAGGrid component.
- * @param Component: a React component that will be rendered as a button in the custom header of the AG Grid
- * @param callback: a function that will be called when the button is clicked. It will receive the selected rows as input
- * @param TRowData: the type of the data to be displayed in the AG Grid
- * @returns an object that contains a React Component and a Callback Function
- */
-export type ToolbarAction<TRowData> = {
-  Component: React.ReactNode;
-  callback: (selectedRows: TRowData[]) => void;
+export const SimplePaginationPanel = (props: {
+  currentPageRef: RefObject<HTMLSpanElement>;
+  totalPagesRef: RefObject<HTMLSpanElement>;
+  previousPageRef: RefObject<HTMLButtonElement>;
+  nextPageRef: RefObject<HTMLButtonElement>;
+  lastPageRef: RefObject<HTMLButtonElement>;
+  firstPageRef: RefObject<HTMLButtonElement>;
+  containerRef: RefObject<HTMLDivElement>;
+}) => {
+  const enabledTextClasses = "text-neutral-800 dark:text-neutral-100";
+  const disabledTextClasses =
+    "disabled:text-neutral-400 disabled:dark:text-neutral-500";
+  const buttonClasses = twMerge(
+    "text-l",
+    "px-1",
+    enabledTextClasses,
+    disabledTextClasses,
+  );
+
+  return (
+    <div
+      className={twMerge(
+        "flex items-center justify-center",
+        enabledTextClasses,
+        "py-2 !m-0",
+        "bg-neutral-200 dark:bg-neutral-700",
+        "border border-solid",
+        "border-neutral-900 dark:border-neutral-100",
+        "border-opacity-10 dark:border-opacity-10",
+        "rounded-b-md",
+      )}
+    >
+      <div className="flex justify-center invisible" ref={props.containerRef}>
+        <button
+          disabled={true}
+          ref={props.firstPageRef}
+          className={buttonClasses}
+        >
+          <HiOutlineChevronDoubleLeft />
+        </button>
+        <button
+          disabled={true}
+          ref={props.previousPageRef}
+          className={buttonClasses}
+        >
+          <HiOutlineChevronLeft />
+        </button>
+        <span className="px-3">
+          Page <span ref={props.currentPageRef}>0</span> of{" "}
+          <span ref={props.totalPagesRef}>0</span>
+        </span>
+        <button
+          disabled={true}
+          ref={props.nextPageRef}
+          className={buttonClasses}
+        >
+          <HiOutlineChevronRight />
+        </button>
+        <button
+          disabled={true}
+          ref={props.lastPageRef}
+          className={buttonClasses}
+        >
+          <HiOutlineChevronDoubleRight />
+        </button>
+      </div>
+    </div>
+  );
 };
 
 /**
@@ -44,6 +114,7 @@ export interface BaseAGGridProps<TRowData> extends AgGridReactProps {
   isLoading: boolean;
   rowData: TRowData[];
   columnDefs: ColDef[];
+  // TODO: change the interface for specifying an error
   errorOverlayProps?: {
     errorStatus: boolean;
     overlayText: string;
@@ -74,6 +145,68 @@ export function BaseAGGrid<TRowData>({
 }: BaseAGGridProps<TRowData>) {
   const gridRef = useRef<AgGridReact<TRowData>>(null);
 
+  // Whether the table component is ready to be displayed
+  const [isTableLoaded, setIsTableLoaded] = useState<boolean>(false);
+
+  const onGridReady = () => {
+    setIsTableLoaded(true);
+  };
+
+  // Refs for controlling the pagination panel
+  const currentPageRef = useRef<HTMLSpanElement>(null);
+  const totalPagesRef = useRef<HTMLSpanElement>(null);
+  const previousPageRef = useRef<HTMLButtonElement>(null);
+  const nextPageRef = useRef<HTMLButtonElement>(null);
+  const firstPageRef = useRef<HTMLButtonElement>(null);
+  const lastPageRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const onNextPage = () => {
+    const gridApi = gridRef.current?.api;
+    gridApi?.paginationGoToNextPage();
+  };
+
+  const onPreviousPage = () => {
+    const gridApi = gridRef.current?.api;
+    gridApi?.paginationGoToPreviousPage();
+  };
+
+  const onFirstPage = () => {
+    const gridApi = gridRef.current?.api;
+    gridApi?.paginationGoToFirstPage();
+  };
+
+  const onLastPage = () => {
+    const gridApi = gridRef.current?.api;
+    gridApi?.paginationGoToLastPage();
+  };
+
+  const onPaginationChanged = useCallback(() => {
+    const gridApi = gridRef.current?.api;
+    // Make sure the table is loaded before updating the pagination component to avoid flickering
+    if (isTableLoaded && gridApi) {
+      const totalPages = gridApi.paginationGetTotalPages();
+      totalPagesRef.current!.textContent = totalPages.toString();
+      // Ensure visibility of the pagination panel only after some data is loaded
+      containerRef.current!.style.visibility =
+        totalPages === 0 ? "hidden" : "visible";
+
+      // Pages are zero based, hence the +1
+      const currentPage = gridApi.paginationGetCurrentPage() + 1;
+      currentPageRef.current!.textContent = currentPage.toString();
+
+      previousPageRef.current!.disabled = currentPage === 1;
+      firstPageRef.current!.disabled = currentPage === 1;
+      previousPageRef.current!.onclick = onPreviousPage;
+      firstPageRef.current!.onclick = onFirstPage;
+
+      nextPageRef.current!.disabled = currentPage === totalPages;
+      lastPageRef.current!.disabled = currentPage === totalPages;
+      nextPageRef.current!.onclick = onNextPage;
+      lastPageRef.current!.onclick = onLastPage;
+    }
+  }, [isTableLoaded]);
+
   // TODO: get the value from form event
   // AG Grid Quick Filter set up:
   // to enable a fuzzy search bar
@@ -87,12 +220,9 @@ export function BaseAGGrid<TRowData>({
 
   const isDarkMode = useDarkMode();
 
-  // Whether the table component is ready to be displayed
-  const [isTableLoaded, setIsTableLoaded] = useState<boolean>(false);
-
-  const onGridReady = () => {
-    setIsTableLoaded(true);
-  };
+  useEffect(() => {
+    onPaginationChanged();
+  }, [isTableLoaded, onPaginationChanged]);
 
   // Made to override the default noRowsOverlayComponent of AG Grid, as it was showing a message out of place
   const NoRowsOverlayComponent: () => React.JSX.Element = () => {
@@ -134,17 +264,27 @@ export function BaseAGGrid<TRowData>({
           rowData={rowData}
           columnDefs={columnDefs}
           rowSelection="multiple"
-          suppressRowClickSelection={true}
           pagination={true}
-          paginationPageSize={25}
-          paginationPageSizeSelector={[25, 50, 100]}
+          paginationAutoPageSize={true}
+          suppressPaginationPanel={true}
+          suppressRowClickSelection={true}
           loadingOverlayComponent={LoadingOverlay}
           noRowsOverlayComponent={NoRowsOverlayComponent}
           ref={gridRef}
           onGridReady={onGridReady}
+          onPaginationChanged={onPaginationChanged}
           {...props}
         />
       </div>
+      <SimplePaginationPanel
+        currentPageRef={currentPageRef}
+        totalPagesRef={totalPagesRef}
+        nextPageRef={nextPageRef}
+        previousPageRef={previousPageRef}
+        containerRef={containerRef}
+        firstPageRef={firstPageRef}
+        lastPageRef={lastPageRef}
+      />
     </div>
   );
 }
