@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
+import { Skeleton } from "@/ui/skeleton.tsx";
 
 const BaseKeyframeSchema = z.object({
   timestamp: z.string(),
@@ -85,14 +86,24 @@ export const CaseStudyPage = ({
 
   const Table = tablesForCaseStudies[currentFrame.caseStudy];
 
-  // TODO: display image description as a hint on hover
-  return (
-    <div className="flex flex-row grow space-x-4">
-      <div className="flex flex-1 flex-col grow space-y-4">
+  const getImage = () => {
+    if (isLoading) {
+      return <Skeleton className="flex-1 w-full h-auto" />;
+    } else {
+      return (
         <div
           className="flex-1 bg-cover bg-center w-full h-auto"
           style={{ backgroundImage: `url(${currentFrame.image.signedUrl})` }}
         ></div>
+      );
+    }
+  };
+
+  // TODO: display image description as a hint on hover
+  return (
+    <div className="flex flex-row grow space-x-4">
+      <div className="flex flex-1 flex-col grow space-y-4">
+        {getImage()}
         <div className="flex flex-1 grow">
           <Table
             rowData={isLoading ? [] : currentFrame.data}
