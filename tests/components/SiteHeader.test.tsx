@@ -5,7 +5,7 @@ import { Header } from "@/components//site-header/SiteHeader";
 describe("<Header />", () => {
   it("should render the logo", () => {
     render(<Header />);
-    expect(screen.getByText("SDA")).toBeInTheDocument();
+    expect(screen.getByText("SkyPulse")).toBeInTheDocument();
   });
 
   it("should display mobile menu on sceens width < lg, else display desktop menu", () => {
