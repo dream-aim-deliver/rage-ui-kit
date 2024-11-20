@@ -99,10 +99,10 @@ export const CaseStudyPage = ({
 
   const IMAGE_BLOCK_HEIGHT = 300;
   const getImageBlock = () => {
-    const commonClasses = `lg:flex-1 w-full max-h-[${IMAGE_BLOCK_HEIGHT}px] h-[${IMAGE_BLOCK_HEIGHT}px]`;
+    const commonClasses = `rounded-lg lg:flex-1 w-full max-h-[${IMAGE_BLOCK_HEIGHT}px] h-[${IMAGE_BLOCK_HEIGHT}px]`;
     // A wrapper is required for skeleton display during image loading
     const imageContents = (
-      <div className={cn(commonClasses, "relative")}>
+      <div className={cn(commonClasses, "relative border")}>
         <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
         <Zoom>
           <img
@@ -140,7 +140,7 @@ export const CaseStudyPage = ({
           {getImageBlock()}
           {timelineEnabled && (
             <DateSlider
-              className="absolute inset-0 top-[232px] p-4 z-20 bg-neutral-900 bg-opacity-40"
+              className="absolute inset-0 top-[232px] p-4 z-20 bg-neutral-900 bg-opacity-40 rounded-b-lg"
               timestamps={keyframes.map((frame) => parseInt(frame.timestamp))}
               value={[selectedTimestampIndex]}
               onValueChange={onTimestampChange}
