@@ -12,6 +12,8 @@ import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
 import { Skeleton } from "@/ui/skeleton.tsx";
+import "react-medium-image-zoom/dist/styles.css";
+import Zoom from "react-medium-image-zoom";
 import { cn } from "@/utils/utils.ts";
 
 const BaseKeyframeSchema = z.object({
@@ -90,16 +92,25 @@ export const CaseStudyPage = ({
   const Table = tablesForCaseStudies[currentFrame.caseStudy];
 
   const getImage = () => {
-    const commonClasses = "lg:flex-1 w-full lg:h-auto h-[300px]";
+    const commonClasses = "lg:flex-1 w-full min-h-[300px] max-h-[300px]";
 
     if (isLoading) {
       return <Skeleton className={commonClasses} />;
     } else {
       return (
-        <div
-          className={cn(commonClasses, "bg-cover bg-center")}
-          style={{ backgroundImage: `url(${currentFrame.image.signedUrl})` }}
-        ></div>
+        // Required for skeleton display during image loading
+        <div className={cn(commonClasses, "relative")}>
+          <Skeleton className="absolute inset-0 z-0" />;
+          <Zoom>
+            <img
+              className={cn(
+                commonClasses,
+                "absolute inset-0 z-10 object-cover object-center",
+              )}
+              src={currentFrame.image.signedUrl}
+            />
+          </Zoom>
+        </div>
       );
     }
   };
@@ -107,7 +118,7 @@ export const CaseStudyPage = ({
   // TODO: display image description as a hint on hover
   return (
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
-      <div className="flex flex-1 flex-col grow space-y-4">
+      <div className="flex flex-1 flex-col grow">
         {timelineEnabled && (
           <DateSlider
             timestamps={keyframes.map((frame) => parseInt(frame.timestamp))}
