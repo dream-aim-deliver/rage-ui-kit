@@ -97,13 +97,13 @@ export const CaseStudyPage = ({
 
   const Table = tablesForCaseStudies[currentFrame.caseStudy];
 
-  const getImage = () => {
-    const height = 300;
-    const commonClasses = `lg:flex-1 w-full h-[${height}px] max-h-[${height}px]`;
+  const IMAGE_BLOCK_HEIGHT = 300;
+  const getImageBlock = () => {
+    const commonClasses = `lg:flex-1 w-full max-h-[${IMAGE_BLOCK_HEIGHT}px] h-[${IMAGE_BLOCK_HEIGHT}px]`;
     // A wrapper is required for skeleton display during image loading
     const imageContents = (
       <div className={cn(commonClasses, "relative")}>
-        <Skeleton className="absolute inset-0 z-0" />;
+        <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
         <Zoom>
           <img
             className={cn(
@@ -132,11 +132,12 @@ export const CaseStudyPage = ({
     }
   };
 
+  // TODO: set date slider position without hardcoding a value
   return (
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow">
-        <div className="relative">
-          {getImage()}
+        <div className={`relative h-[${IMAGE_BLOCK_HEIGHT}px]`}>
+          {getImageBlock()}
           {timelineEnabled && (
             <DateSlider
               className="absolute inset-0 top-[232px] p-4 z-20 bg-neutral-900 bg-opacity-40"
