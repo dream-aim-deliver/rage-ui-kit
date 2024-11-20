@@ -33,7 +33,7 @@ export const Header = (props: HeaderProps) => {
             href="/"
             className={cn("text-xl font-bold text-neutral-800 dark:text-white")}
           >
-            SDA
+            SkyPulse
           </a>
         </div>
 
