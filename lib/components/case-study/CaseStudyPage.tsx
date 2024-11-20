@@ -15,6 +15,12 @@ import { Skeleton } from "@/ui/skeleton.tsx";
 import "react-medium-image-zoom/dist/styles.css";
 import Zoom from "react-medium-image-zoom";
 import { cn } from "@/utils/utils.ts";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/ui/tooltip.tsx";
 
 const BaseKeyframeSchema = z.object({
   timestamp: z.string(),
@@ -92,30 +98,40 @@ export const CaseStudyPage = ({
   const Table = tablesForCaseStudies[currentFrame.caseStudy];
 
   const getImage = () => {
-    const commonClasses = "lg:flex-1 w-full min-h-[300px] max-h-[300px]";
+    const height = 300;
+    const commonClasses = `lg:flex-1 w-full h-[${height}px] max-h-[${height}px]`;
+    // A wrapper is required for skeleton display during image loading
+    const imageContents = (
+      <div className={cn(commonClasses, "relative")}>
+        <Skeleton className="absolute inset-0 z-0" />;
+        <Zoom>
+          <img
+            className={cn(
+              commonClasses,
+              "absolute inset-0 z-10 object-cover object-center",
+            )}
+            src={currentFrame.image.signedUrl}
+          />
+        </Zoom>
+      </div>
+    );
 
     if (isLoading) {
       return <Skeleton className={commonClasses} />;
     } else {
       return (
-        // Required for skeleton display during image loading
-        <div className={cn(commonClasses, "relative")}>
-          <Skeleton className="absolute inset-0 z-0" />;
-          <Zoom>
-            <img
-              className={cn(
-                commonClasses,
-                "absolute inset-0 z-10 object-cover object-center",
-              )}
-              src={currentFrame.image.signedUrl}
-            />
-          </Zoom>
-        </div>
+        <TooltipProvider delayDuration={250}>
+          <Tooltip>
+            <TooltipTrigger asChild>{imageContents}</TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>{currentFrame.image.description}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     }
   };
 
-  // TODO: display image description as a hint on hover
   return (
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow">
