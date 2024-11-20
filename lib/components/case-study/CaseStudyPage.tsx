@@ -135,14 +135,17 @@ export const CaseStudyPage = ({
   return (
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow">
-        {timelineEnabled && (
-          <DateSlider
-            timestamps={keyframes.map((frame) => parseInt(frame.timestamp))}
-            value={[selectedTimestampIndex]}
-            onValueChange={onTimestampChange}
-          />
-        )}
-        {getImage()}
+        <div className="relative">
+          {getImage()}
+          {timelineEnabled && (
+            <DateSlider
+              className="absolute inset-0 top-[232px] p-4 z-20 bg-neutral-900 bg-opacity-40"
+              timestamps={keyframes.map((frame) => parseInt(frame.timestamp))}
+              value={[selectedTimestampIndex]}
+              onValueChange={onTimestampChange}
+            />
+          )}
+        </div>
         <div className="flex flex-1 grow">
           <Table
             rowData={isLoading ? [] : currentFrame.data}
