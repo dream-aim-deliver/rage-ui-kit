@@ -17,25 +17,24 @@ const DateSlider = React.forwardRef<
   const currentDate = new Date(timestamps[selectedIndex]).toLocaleDateString();
 
   return (
-    <div className="flex flex-col items-center space-y-2 w-full">
+    <div
+      className={cn("flex flex-col items-center space-y-2 w-full", className)}
+    >
       <SliderPrimitive.Root
         ref={ref}
-        className={cn(
-          "relative flex w-full touch-none select-none items-center",
-          className,
-        )}
+        className="relative flex w-full touch-none select-none items-center"
         value={props.value}
         onValueChange={props.onValueChange}
         max={timestamps.length - 1} // Set max to the last index of timestamps
         step={1}
         {...props}
       >
-        <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-neutral-200">
-          <SliderPrimitive.Range className="absolute h-full bg-neutral-900" />
+        <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-neutral-300">
+          <SliderPrimitive.Range className="absolute h-full bg-neutral-50" />
         </SliderPrimitive.Track>
-        <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full bg-neutral-900 focus-visible:outline-none" />
+        <SliderPrimitive.Thumb className="block h-3 w-3 rounded-full bg-neutral-50 focus-visible:outline-none" />
       </SliderPrimitive.Root>
-      <span>{currentDate}</span>
+      <span className="text-neutral-50">{currentDate}</span>
     </div>
   );
 });
