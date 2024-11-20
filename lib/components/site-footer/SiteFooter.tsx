@@ -26,7 +26,7 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({
             className="text-neutral-800 dark:text-white"
           />
           <span className="text-xl font-bold text-neutral-800 dark:text-white">
-          SkyPulse
+            SkyPulse
           </span>
           <span className="text-sm text-neutral-500 dark:text-neutral-400">
             © 2024

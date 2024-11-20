@@ -18,7 +18,7 @@ exports[`<SiteFooter /> > should match the snapshot 1`] = `
         <span
           class="text-xl font-bold text-neutral-800 dark:text-white"
         >
-          SDA
+          SkyPulse
         </span>
         <span
           class="text-sm text-neutral-500 dark:text-neutral-400"
