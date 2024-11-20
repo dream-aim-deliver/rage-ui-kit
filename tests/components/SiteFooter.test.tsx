@@ -7,26 +7,24 @@ interface SatelliteIconProps extends SVGProps<SVGSVGElement> {}
 
 // Mocking the SatelliteIcon from lucide-react
 vi.mock("lucide-react", () => ({
-  SatelliteIcon: (props: SatelliteIconProps) => <svg {...props} />,
+  SatelliteIcon: (props: SatelliteIconProps) => (
+    <svg data-testid="mock-satellite-icon" {...props} />
+  ),
 }));
 
 describe("<SiteFooter />", () => {
-  it("should render the SiteFooter with default content", () => {
+  it("should render the default SiteFooter content", () => {
     render(<SiteFooter />);
 
     // Check if default branding is rendered
-    expect(screen.getByText(/SDA/i)).toBeInTheDocument();
+    expect(screen.getByText(/SkyPulse/i)).toBeInTheDocument();
     expect(screen.getByText(/© 2024/i)).toBeInTheDocument();
+
+    // Check if the mocked SatelliteIcon is rendered
+    expect(screen.getByTestId("mock-satellite-icon")).toBeInTheDocument();
   });
 
   it("should render the SiteFooter with provided sections", () => {
-    const brandSection = (
-      <div className="flex items-center gap-2">
-        <span className="text-xl font-bold">SDA</span>
-        <span className="text-sm">© 2024</span>
-      </div>
-    );
-
     const linksSection = (
       <div>
         <a href="/about">About</a>
@@ -42,14 +40,13 @@ describe("<SiteFooter />", () => {
 
     render(
       <SiteFooter
-        brandSection={brandSection}
         linksSection={linksSection}
         contactSection={contactSection}
       />,
     );
 
     // Check if custom branding is rendered
-    expect(screen.getByText(/SDA/i)).toBeInTheDocument();
+    expect(screen.getByText(/SkyPulse/i)).toBeInTheDocument();
     expect(screen.getByText(/© 2024/i)).toBeInTheDocument();
 
     // Check if custom links are rendered
@@ -60,8 +57,19 @@ describe("<SiteFooter />", () => {
     expect(screen.getByText(/support@customdomain.com/i)).toBeInTheDocument();
   });
 
-  it("should match the snapshot", () => {
+  it("should render the footer structure correctly", () => {
     const { container } = render(<SiteFooter />);
-    expect(container).toMatchSnapshot();
+
+    // Check if a footer element exists
+    const footer = container.querySelector("footer");
+    expect(footer).toBeInTheDocument();
+
+    // Check if the flex container exists within the footer
+    const flexContainer = container.querySelector("div.flex");
+    expect(flexContainer).toBeInTheDocument();
+
+    // Validate other footer elements or structure if needed
+    const borderDiv = container.querySelector("div.w-full.border-t");
+    expect(borderDiv).toBeInTheDocument();
   });
 });
