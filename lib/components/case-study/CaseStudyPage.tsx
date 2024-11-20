@@ -132,7 +132,6 @@ export const CaseStudyPage = ({
     }
   };
 
-  // TODO: set date slider position without hardcoding a value
   return (
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow">
@@ -140,7 +139,7 @@ export const CaseStudyPage = ({
           {getImageBlock()}
           {timelineEnabled && (
             <DateSlider
-              className="absolute inset-0 top-[232px] p-4 z-20 bg-neutral-900 bg-opacity-40 rounded-b-lg"
+              className="absolute inset-0 self-end p-4 z-20 bg-neutral-900 bg-opacity-40 rounded-b-lg"
               timestamps={keyframes.map((frame) => parseInt(frame.timestamp))}
               value={[selectedTimestampIndex]}
               onValueChange={onTimestampChange}
