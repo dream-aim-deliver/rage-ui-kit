@@ -1,7 +1,6 @@
 import { z } from "zod";
-import React, { useRef, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 import { DateSlider } from "@/components/case-study/DateSlider.tsx";
-import { ChatPage, TMessage } from "@/lib/components";
 import { Skeleton } from "@/ui/skeleton.tsx";
 import { cn } from "@/utils/utils.ts";
 import {
@@ -63,14 +62,14 @@ const BaseInfoSchema = z.object({
 const ClimateInfoSchema = BaseInfoSchema.merge(
   z.object({
     caseStudy: z.literal("climate-monitoring"),
-    keyFrames: z.array(ClimateKeyframeSchema),
+    keyframes: z.array(ClimateKeyframeSchema),
   }),
 );
 
 const SentinelInfoSchema = BaseInfoSchema.merge(
   z.object({
     caseStudy: z.literal("sentinel-5p"),
-    keyFrames: z.array(SentinelKeyframeSchema),
+    keyframes: z.array(SentinelKeyframeSchema),
   }),
 );
 
@@ -82,16 +81,11 @@ type TInfoSchema = z.infer<typeof InfoSchema>;
 
 export interface CaseStudyPageProps {
   info: TInfoSchema;
-  messages: TMessage[];
-  onSendMessage?: (message: string) => void;
+  sideComponent: ReactNode;
 }
 
-export const CaseStudyPage = ({
-  info,
-  messages,
-  onSendMessage,
-}: CaseStudyPageProps) => {
-  const keyframes = info.keyFrames;
+export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
+  const keyframes = info.keyframes;
   const timelineEnabled = keyframes.length > 1;
 
   const [selectedTimestampIndex, setSelectedTimestampIndex] =
@@ -270,11 +264,7 @@ export const CaseStudyPage = ({
         </div>
       </div>
       <div className="flex lg:flex-1 grow lg:h-auto h-[600px]">
-        <ChatPage
-          messages={messages}
-          onSendMessage={onSendMessage}
-          className="border rounded-lg"
-        />
+        {sideComponent}
       </div>
     </div>
   );

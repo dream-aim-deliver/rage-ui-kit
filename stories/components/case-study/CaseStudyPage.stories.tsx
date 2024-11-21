@@ -4,6 +4,7 @@ import { CaseStudyPage } from "@/components/case-study/CaseStudyPage.tsx";
 import { faker } from "@faker-js/faker";
 import { TClimateData } from "@/components/case-study/table/ClimateDataTable.tsx";
 import { TSentinelData } from "@/components/case-study/table/SentinelDataTable.tsx";
+import { ChatPage } from "@/lib/components";
 
 const meta = {
   title: "Pages/CaseStudy",
@@ -108,47 +109,49 @@ export const ClimateMessages: Story = {
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: ["webcam", "satellite"],
     },
-    messages: [
-      {
-        sender_type: "user",
-        status: "success",
-        message_contents: [
+    sideComponent: (
+      <ChatPage
+        messages={[
           {
-            content: "Hello, can you render formatted text?",
-            content_type: "text",
+            sender_type: "user",
+            status: "success",
+            message_contents: [
+              {
+                content: "Hello, can you render formatted text?",
+                content_type: "text",
+              },
+            ],
+            created_at: `${Date.now()}`,
+            sender: "Carla",
           },
-        ],
-        created_at: `${Date.now()}`,
-        sender: "Carla",
-      },
-      {
-        sender_type: "agent",
-        status: "success",
-        message_contents: [
           {
-            content: "Hello, yes. \n Let me give you an example:",
-            content_type: "text",
+            sender_type: "agent",
+            status: "success",
+            message_contents: [
+              {
+                content: "Hello, yes. \n Let me give you an example:",
+                content_type: "text",
+              },
+            ],
+            created_at: `${Date.now()}`,
+            sender: "Agent",
           },
-        ],
-        created_at: `${Date.now()}`,
-        sender: "Agent",
-      },
-      {
-        sender_type: "user",
-        status: "success",
-        message_contents: [
           {
-            content: "Well done!",
-            content_type: "text",
+            sender_type: "user",
+            status: "success",
+            message_contents: [
+              {
+                content: "Well done!",
+                content_type: "text",
+              },
+            ],
+            created_at: `${Date.now()}`,
+            sender: "Carla",
           },
-        ],
-        created_at: `${Date.now()}`,
-        sender: "Carla",
-      },
-    ],
-    onSendMessage: (message) => {
-      alert(`Message sent: ${message}`);
-    },
+        ]}
+        className="border rounded-lg"
+      />
+    ),
   },
 };
 
@@ -162,7 +165,7 @@ export const ClimateErrors: Story = {
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: ["webcam", "satellite", "error"],
     },
-    messages: [],
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
   },
 };
 
@@ -176,6 +179,6 @@ export const Sentinel: Story = {
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: ["webcam", "satellite"],
     },
-    messages: [],
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
   },
 };
