@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/ui/select.tsx";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { XIcon } from "lucide-react";
 
 const ErrorSchema = z.object({
   errorName: z.string(),
@@ -159,21 +160,27 @@ export const CaseStudyPage = ({
         onClick={() => switchPopupVisible()}
       >
         <div
-          className="relative flex flex-col items-center max-w-screen-md space-y-2 w-full p-4 bg-white rounded-lg cursor-default"
+          className="relative max-w-screen-lg space-y-2 w-full p-4 bg-white rounded-lg cursor-default overflow-y-auto max-h-screen"
           onClick={(event) => {
             // Don't propagate the clicks to the parent
             event.stopPropagation();
           }}
         >
-          <TransformWrapper>
-            <TransformComponent>
-              <img
-                src={image.signedUrl}
-                alt="full image"
-                className="w-full h-auto object-contain"
-              />
-            </TransformComponent>
-          </TransformWrapper>
+          <XIcon
+            onClick={() => switchPopupVisible()}
+            className="cursor-pointer"
+          />
+          <div className="flex w-full justify-center mb-2">
+            <TransformWrapper>
+              <TransformComponent>
+                <img
+                  src={image.signedUrl}
+                  alt="full image"
+                  className="w-full h-auto object-cover"
+                />
+              </TransformComponent>
+            </TransformWrapper>
+          </div>
           <p>{image.description}</p>
         </div>
       </div>
