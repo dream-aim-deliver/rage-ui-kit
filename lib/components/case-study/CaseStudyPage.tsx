@@ -154,6 +154,8 @@ export const CaseStudyPage = ({
 
   const getImagePopup = (image: TImage) => {
     const visibilityClass = popupVisible ? "visible" : "hidden";
+    const formattedDescription = image.description.replaceAll(" | ", "\n");
+
     return (
       <div
         className={`fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center ${visibilityClass} z-50 cursor-zoom-out`}
@@ -181,7 +183,7 @@ export const CaseStudyPage = ({
               </TransformComponent>
             </TransformWrapper>
           </div>
-          <p>{image.description}</p>
+          <p className="whitespace-pre-wrap">{formattedDescription}</p>
         </div>
       </div>
     );

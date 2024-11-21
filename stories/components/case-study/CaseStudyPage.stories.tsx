@@ -3,6 +3,7 @@ import { generateTimestamps } from "../../utils.ts";
 import { CaseStudyPage } from "@/components/case-study/CaseStudyPage.tsx";
 import { faker } from "@faker-js/faker";
 import { TClimateData } from "@/components/case-study/table/ClimateDataTable.tsx";
+import { TSentinelData } from "@/components/case-study/table/SentinelDataTable.tsx";
 
 const meta = {
   title: "Pages/CaseStudy",
@@ -33,6 +34,15 @@ const generateClimateDataFixture = (): TClimateData => {
   };
 };
 
+const generateSentinelDataFixture = (): TSentinelData => {
+  return {
+    timestamp: faker.date.anytime().getTime().toString(),
+    latitude: faker.number.float(),
+    longitude: faker.number.float(),
+    CarbonMonoxideLevel: faker.lorem.word(),
+  };
+};
+
 const generateFixtureKeyframeClimate = (timestamp: string) => {
   const length = 30;
   const baseFrame = {
@@ -57,6 +67,34 @@ const generateFixtureKeyframeClimate = (timestamp: string) => {
   return {
     ...baseFrame,
     data: Array.from({ length: length }, generateClimateDataFixture),
+  };
+};
+
+const generateFixtureKeyframeSentinel = (timestamp: string) => {
+  const length = 45;
+  const baseFrame = {
+    timestamp,
+    images: [
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description:
+          "dataset: SENTINEL2-L1C | coords_wgs84: (-156.708984, 20.955027, -156.299744, 20.759645) | details: A Sentinel-2 image highlighting areas of interest based on water, vegetation, and spectral thresholds in true color. Bands: B04, B03, B02, B08, B11, B12",
+        kind: "webcam",
+      },
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description: faker.lorem.sentence(),
+        kind: "satellite",
+      },
+    ],
+    dataDescription: faker.lorem.sentence(),
+  };
+
+  return {
+    ...baseFrame,
+    data: Array.from({ length: length }, generateSentinelDataFixture),
   };
 };
 
@@ -123,6 +161,20 @@ export const ClimateErrors: Story = {
       ),
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: ["webcam", "satellite", "error"],
+    },
+    messages: [],
+  },
+};
+
+export const Sentinel: Story = {
+  args: {
+    info: {
+      caseStudy: "sentinel-5p",
+      keyFrames: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeSentinel(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: ["webcam", "satellite"],
     },
     messages: [],
   },
