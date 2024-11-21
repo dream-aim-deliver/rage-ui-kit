@@ -12,7 +12,11 @@ describe("<Header />", () => {
     window.innerWidth = 640;
     fireEvent(window, new Event("resize"));
     // Simulate mobile view by setting screen width
-    render(<Header />);
+    render(
+      <Header>
+        <span>Test</span>
+      </Header>,
+    );
 
     const menuBars = screen.getAllByRole("menubar");
     const desktopMenu = menuBars[0];
@@ -23,7 +27,11 @@ describe("<Header />", () => {
   });
 
   it("should toggle mobile menu when button is clicked", () => {
-    render(<Header />);
+    render(
+      <Header>
+        <span>Test</span>
+      </Header>,
+    );
 
     let allButtons = screen.getAllByRole("button");
     const openMenuButton = allButtons.find(
