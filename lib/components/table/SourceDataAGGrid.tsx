@@ -3,6 +3,8 @@ import { z } from "zod";
 import { BaseAGGrid } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
+import { Fab } from '@mui/material';
+import DownloadIcon from '@mui/icons-material/Download';
 
 import { Button as ShadcnButton } from "@/components/button/index";
 
@@ -55,7 +57,18 @@ const DownloadSourceDataButton = (params: DownloadSourceDataButtonParams) => {
   };
 
   return (
-    <ShadcnButton label={"Download"} variant="default" onClick={handleClick} />
+    <Fab
+    color="default" 
+      aria-label="download" 
+      onClick={handleClick} 
+      sx={{
+        width: 35,
+        height: 30,
+        mt: -1,
+      }}
+    >
+      <DownloadIcon style={{ fontSize: 20 }} />
+    </Fab>
   );
 };
 

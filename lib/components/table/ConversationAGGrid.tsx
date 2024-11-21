@@ -3,6 +3,8 @@ import { z } from "zod";
 import { BaseAGGrid } from "./BaseAGGrid";
 import { ColDef } from "ag-grid-community";
 import { useState } from "react";
+import { IconButton } from "@mui/material";
+import ChatIcon from "@mui/icons-material/Chat";
 
 import { Button as ShadcnButton } from "@/components/button/index";
 import {
@@ -53,11 +55,15 @@ const GoToConversationButton = (params: GoToConversationButtonParams) => {
   };
 
   return (
-    <ShadcnButton
-      label={"Start chat"}
-      variant="default"
+    <IconButton
+      aria-label="start-chat"
       onClick={handleClick}
-    />
+      sx={{
+        color: 'white',
+      }}
+    >
+      <ChatIcon style={{ fontSize: 30 }} />
+    </IconButton>
   );
 };
 
