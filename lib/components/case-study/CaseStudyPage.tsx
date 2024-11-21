@@ -3,15 +3,7 @@ import React, { useRef, useState } from "react";
 import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
 import { Skeleton } from "@/ui/skeleton.tsx";
-import "react-medium-image-zoom/dist/styles.css";
-import Zoom from "react-medium-image-zoom";
 import { cn } from "@/utils/utils.ts";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/ui/tooltip.tsx";
 import {
   SentinelDataSchema,
   SentinelDataTable,
@@ -28,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/select.tsx";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
 const ErrorSchema = z.object({
   errorName: z.string(),
@@ -152,6 +145,41 @@ export const CaseStudyPage = ({
     );
   };
 
+  const [popupVisible, setPopupVisible] = useState<boolean>(false);
+
+  const switchPopupVisible = () => {
+    setPopupVisible((prevState) => !prevState);
+  };
+
+  const getImagePopup = (image: TImage) => {
+    const visibilityClass = popupVisible ? "visible" : "hidden";
+    return (
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center ${visibilityClass} z-50 cursor-zoom-out`}
+        onClick={() => switchPopupVisible()}
+      >
+        <div
+          className="relative flex flex-col items-center max-w-screen-md space-y-2 w-full p-4 bg-white rounded-lg cursor-default"
+          onClick={(event) => {
+            // Don't propagate the clicks to the parent
+            event.stopPropagation();
+          }}
+        >
+          <TransformWrapper>
+            <TransformComponent>
+              <img
+                src={image.signedUrl}
+                alt="full image"
+                className="w-full h-auto object-contain"
+              />
+            </TransformComponent>
+          </TransformWrapper>
+          <p>{image.description}</p>
+        </div>
+      </div>
+    );
+  };
+
   const getImageBlock = () => {
     const commonClasses = "rounded-lg lg:flex-1 w-full max-h-[300px] h-[300px]";
     let imageElement;
@@ -189,33 +217,23 @@ export const CaseStudyPage = ({
       );
     } else {
       const image = imageElement as TImage;
-
-      // A wrapper is required for skeleton display during image loading
-      const imageContents = (
-        <div className={cn(commonClasses, "relative border")}>
-          <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
-          <Zoom>
+      return (
+        <>
+          {getImagePopup(image)}
+          <div className={cn(commonClasses, "relative border")}>
+            <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
             <img
               loading="lazy"
               className={cn(
                 commonClasses,
-                "absolute inset-0 z-10 object-cover object-center",
+                "absolute inset-0 z-10 object-cover object-center cursor-zoom-in",
               )}
               src={image.signedUrl}
+              onClick={() => switchPopupVisible()}
+              alt="collapsed image"
             />
-          </Zoom>
-        </div>
-      );
-
-      return (
-        <TooltipProvider delayDuration={250}>
-          <Tooltip>
-            <TooltipTrigger asChild>{imageContents}</TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>{image.description}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+          </div>
+        </>
       );
     }
   };
