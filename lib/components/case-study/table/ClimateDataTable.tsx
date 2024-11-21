@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { useState } from "react";
 import { DefaultTextFilterParams } from "@/components/table/utils/filter-parameters.ts";
 import { BaseAGGrid } from "@/lib/components";
 import { ColDef } from "ag-grid-community";
+import { CaseStudyTable } from "@/components/case-study/table/CaseStudyTable.tsx";
 
 export const ClimateDataSchema = z.object({
   id: z.string().uuid(),
