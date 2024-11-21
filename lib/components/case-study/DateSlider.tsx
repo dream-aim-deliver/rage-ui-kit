@@ -13,8 +13,12 @@ const DateSlider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & DateSliderProps
 >(({ className, timestamps, ...props }, ref) => {
+  const sortedTimestamps = timestamps.toSorted();
   const selectedIndex = props.value ? props.value[0] : 0;
-  const currentDate = new Date(timestamps[selectedIndex]).toLocaleDateString();
+
+  const currentDate = new Date(sortedTimestamps[selectedIndex]);
+  const dateString =
+    currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
 
   return (
     <div
@@ -34,7 +38,7 @@ const DateSlider = React.forwardRef<
         </SliderPrimitive.Track>
         <SliderPrimitive.Thumb className="block h-3 w-3 rounded-full bg-neutral-50 focus-visible:outline-none" />
       </SliderPrimitive.Root>
-      <span className="text-neutral-50">{currentDate}</span>
+      <span className="text-neutral-50">{dateString}</span>
     </div>
   );
 });
