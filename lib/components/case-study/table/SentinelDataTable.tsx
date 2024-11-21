@@ -19,6 +19,14 @@ export const SentinelDataTable: CaseStudyTable<TSentinelData> = (props) => {
       headerName: "Latitude",
       field: "latitude",
     },
+    {
+      headerName: "Longitude",
+      field: "longitude",
+    },
+    {
+      headerName: "CO Level",
+      field: "CarbonMonoxideLevel",
+    },
   ]);
 
   const errorOverlayProps = props.error
