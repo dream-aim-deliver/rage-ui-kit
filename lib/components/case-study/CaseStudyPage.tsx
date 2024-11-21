@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
 import { Skeleton } from "@/ui/skeleton.tsx";
@@ -21,28 +21,43 @@ import {
   ClimateDataTable,
 } from "@/components/case-study/table/ClimateDataTable.tsx";
 import { CaseStudyTable } from "@/components/case-study/table/CaseStudyTable.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/ui/select.tsx";
+
+const ErrorSchema = z.object({
+  errorName: z.string(),
+  errorMessage: z.string(),
+});
+type TError = z.infer<typeof ErrorSchema>;
+
+const ImageSchema = z.object({
+  relativePath: z.string(),
+  signedUrl: z.string().url(),
+  description: z.string(),
+  kind: z.string(),
+});
+type TImage = z.infer<typeof ImageSchema>;
 
 const BaseKeyframeSchema = z.object({
   timestamp: z.string(),
-  images: z.array(
-    z.object({
-      relativePath: z.string(),
-      signedUrl: z.string().url(),
-      description: z.string(),
-    }),
-  ),
+  images: z.array(ImageSchema.or(ErrorSchema)),
   dataDescription: z.string(),
 });
 
 const ClimateKeyframeSchema = BaseKeyframeSchema.merge(
   z.object({
-    data: z.array(ClimateDataSchema),
+    data: z.array(ClimateDataSchema.or(ErrorSchema)),
   }),
 );
 
 const SentinelKeyframeSchema = BaseKeyframeSchema.merge(
   z.object({
-    data: z.array(SentinelDataSchema),
+    data: z.array(SentinelDataSchema.or(ErrorSchema)),
   }),
 );
 
@@ -116,10 +131,48 @@ export const CaseStudyPage = ({
   };
 
   const Table = tablesForCaseStudies[info.caseStudy];
+  const [imageKind, setImageKind] = useState<string>(info.imageKinds[0] ?? "");
+
+  const getImageKindSelector = () => {
+    return (
+      <Select value={imageKind} onValueChange={setImageKind}>
+        <SelectTrigger className="mb-3">
+          <SelectValue placeholder="Select a case study" />
+        </SelectTrigger>
+        <SelectContent>
+          {info.imageKinds.map((kind) => {
+            return (
+              <SelectItem key={kind} value={kind}>
+                {kind}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </Select>
+    );
+  };
 
   const getImageBlock = () => {
     const commonClasses = "rounded-lg lg:flex-1 w-full max-h-[300px] h-[300px]";
-    const image = currentFrame.images[0];
+    let imageElement;
+    if (info.imageKinds.length === 0) {
+      imageElement = currentFrame.images[0];
+    } else {
+      imageElement = currentFrame.images.find((image) => {
+        return (image as TImage).kind === imageKind;
+      });
+    }
+
+    if (!imageElement) {
+      return <span>Couldn't load</span>;
+    }
+
+    if (ErrorSchema.safeParse(imageElement).success) {
+      const imageError = imageElement as TError;
+      return <span>{imageError.errorMessage}</span>;
+    }
+
+    const image = imageElement as TImage;
 
     // A wrapper is required for skeleton display during image loading
     const imageContents = (
@@ -127,6 +180,7 @@ export const CaseStudyPage = ({
         <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
         <Zoom>
           <img
+            loading="lazy"
             className={cn(
               commonClasses,
               "absolute inset-0 z-10 object-cover object-center",
@@ -156,6 +210,7 @@ export const CaseStudyPage = ({
   return (
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow">
+        {getImageKindSelector()}
         <div className="relative h-[300px]">
           {getImageBlock()}
           {timelineEnabled && (

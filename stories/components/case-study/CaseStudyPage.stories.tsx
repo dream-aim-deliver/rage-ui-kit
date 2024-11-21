@@ -42,6 +42,13 @@ const generateFixtureKeyframeClimate = (timestamp: string) => {
         relativePath: faker.lorem.sentence(),
         signedUrl: faker.image.url({ width: 640, height: 480 }),
         description: faker.lorem.sentence(),
+        kind: "webcam",
+      },
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description: faker.lorem.sentence(),
+        kind: "satellite",
       },
     ],
     dataDescription: faker.lorem.sentence(),
@@ -57,11 +64,11 @@ export const ClimateMessage: Story = {
   args: {
     info: {
       caseStudy: "climate-monitoring",
-      keyframes: generateTimestamps(30).map((timestamp) =>
+      keyFrames: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeClimate(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
-      imageKinds: [],
+      imageKinds: ["webcam", "satellite"],
     },
     messages: [
       {
