@@ -12,7 +12,7 @@ import {
 export type CaseStudyParameters = {
   caseStudy: string;
   tracerId: string;
-  jobId: string;
+  jobId: number;
 };
 
 type CaseStudyFormProps = {
@@ -32,7 +32,7 @@ export const CaseStudyForm = ({
     const parameters: CaseStudyParameters = {
       caseStudy,
       tracerId,
-      jobId,
+      jobId: parseInt(jobId),
     };
     // Any validity checks should be on the side of the client
     onSubmit(parameters);
@@ -69,7 +69,13 @@ export const CaseStudyForm = ({
         value={tracerId}
         onChange={onTracerIdChanged}
       />
-      <Input placeholder="Job ID" value={jobId} onChange={onJobIdChanged} />
+      <Input
+        type="number"
+        min="0"
+        placeholder="Job ID"
+        value={jobId}
+        onChange={onJobIdChanged}
+      />
       <Button onClick={onClick}>Proceed</Button>
     </div>
   );
