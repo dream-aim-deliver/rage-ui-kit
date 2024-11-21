@@ -57,7 +57,7 @@ export const CaseStudyForm = ({
   };
 
   return (
-    <div className="flex flex-col space-y-4 max-w-xl">
+    <div className="flex flex-col grow space-y-4 max-w-xl">
       <Select value={caseStudy} onValueChange={setCaseStudy}>
         <SelectTrigger>
           <SelectValue placeholder="Select a case study" />
