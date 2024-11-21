@@ -41,7 +41,7 @@ const generateFixtureKeyframeClimate = (timestamp: string) => {
       {
         relativePath: faker.lorem.sentence(),
         signedUrl: faker.image.url({ width: 640, height: 480 }),
-        description: faker.lorem.sentence(),
+        description: faker.lorem.paragraph(50),
         kind: "webcam",
       },
       {
