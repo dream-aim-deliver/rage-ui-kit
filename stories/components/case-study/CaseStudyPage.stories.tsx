@@ -60,7 +60,7 @@ const generateFixtureKeyframeClimate = (timestamp: string) => {
   };
 };
 
-export const ClimateMessage: Story = {
+export const ClimateMessages: Story = {
   args: {
     info: {
       caseStudy: "climate-monitoring",
@@ -111,5 +111,19 @@ export const ClimateMessage: Story = {
     onSendMessage: (message) => {
       alert(`Message sent: ${message}`);
     },
+  },
+};
+
+export const ClimateErrors: Story = {
+  args: {
+    info: {
+      caseStudy: "climate-monitoring",
+      keyFrames: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeClimate(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: ["webcam", "satellite", "error"],
+    },
+    messages: [],
   },
 };
