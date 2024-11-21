@@ -1,15 +1,16 @@
 import { z } from "zod";
 import { useState } from "react";
-import { DefaultTextFilterParams } from "@/components/table/utils/filter-parameters.ts";
 import { BaseAGGrid } from "@/lib/components";
 import { ColDef } from "ag-grid-community";
 import { CaseStudyTable } from "@/components/case-study/table/CaseStudyTable.tsx";
 
 export const ClimateDataSchema = z.object({
-  id: z.string().uuid(),
-  location: z.string().min(1),
-  temperature: z.number().min(-100).max(100),
-  humidity: z.number().min(0).max(100),
+  timestamp: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+  CarbonMonoxideLevel: z.string(),
+  PredictedWeather: z.string(),
+  ActualWeather: z.string(),
 });
 
 export type TClimateData = z.infer<typeof ClimateDataSchema>;
@@ -17,34 +18,35 @@ export type TClimateData = z.infer<typeof ClimateDataSchema>;
 export const ClimateDataTable: CaseStudyTable<TClimateData> = (props) => {
   const [columnDefs] = useState<ColDef[]>([
     {
-      headerName: "ID",
-      field: "id",
-      maxWidth: 100,
-      filter: true,
-      sortable: true,
+      headerName: "Date & Time",
+      valueFormatter: (params) => {
+        const currentDate = new Date(parseInt(params.data?.timestamp));
+        return (
+          currentDate.toLocaleDateString() +
+          " " +
+          currentDate.toLocaleTimeString()
+        );
+      },
     },
     {
-      headerName: "Location",
-      field: "location",
-      flex: 4,
-      filter: true,
-      filterParams: DefaultTextFilterParams,
+      headerName: "Latitude",
+      field: "latitude",
     },
     {
-      headerName: "Temperature (°C)",
-      field: "temperature",
-      flex: 2,
-      valueFormatter: (params) => `${params.value}°C`,
-      filter: "agNumberColumnFilter",
-      sortable: true,
+      headerName: "Longitude",
+      field: "longitude",
     },
     {
-      headerName: "Humidity (%)",
-      field: "humidity",
-      flex: 2,
-      valueFormatter: (params) => `${params.value}%`,
-      filter: "agNumberColumnFilter",
-      sortable: true,
+      headerName: "CO Level",
+      field: "CarbonMonoxideLevel",
+    },
+    {
+      headerName: "Predicted Weather",
+      field: "PredictedWeather",
+    },
+    {
+      headerName: "Actual Weather",
+      field: "ActualWeather",
     },
   ]);
 

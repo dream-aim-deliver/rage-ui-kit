@@ -28,10 +28,12 @@ type Story = StoryObj<typeof meta>;
 
 const generateClimateDataFixture = (): TClimateData => {
   return {
-    id: faker.string.uuid(),
-    location: faker.location.city(),
-    temperature: faker.number.int({ min: -100, max: 100 }),
-    humidity: faker.number.int({ min: 0, max: 100 }),
+    timestamp: faker.date.anytime().getTime().toString(),
+    latitude: faker.number.float(),
+    longitude: faker.number.float(),
+    CarbonMonoxideLevel: faker.lorem.word(),
+    PredictedWeather: faker.lorem.sentence(),
+    ActualWeather: faker.lorem.sentence(),
   };
 };
 
@@ -103,7 +105,7 @@ export const ClimateMessages: Story = {
   args: {
     info: {
       caseStudy: "climate-monitoring",
-      keyFrames: generateTimestamps(30).map((timestamp) =>
+      keyframes: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeClimate(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
@@ -159,7 +161,7 @@ export const ClimateErrors: Story = {
   args: {
     info: {
       caseStudy: "climate-monitoring",
-      keyFrames: generateTimestamps(30).map((timestamp) =>
+      keyframes: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeClimate(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
@@ -173,7 +175,7 @@ export const Sentinel: Story = {
   args: {
     info: {
       caseStudy: "sentinel-5p",
-      keyFrames: generateTimestamps(30).map((timestamp) =>
+      keyframes: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeSentinel(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
