@@ -38,16 +38,18 @@ export const Header = (props: HeaderProps) => {
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          className="block lg:hidden text-neutral-800 dark:text-white relative z-50 ml-auto"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? (
-            <X size={24} role="button" id="close-menu-button" />
-          ) : (
-            <Menu size={24} role="button" id="open-menu-button" />
-          )}
-        </button>
+        {props.children && (
+          <button
+            className="block lg:hidden text-neutral-800 dark:text-white relative z-50 ml-auto"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X size={24} role="button" id="close-menu-button" />
+            ) : (
+              <Menu size={24} role="button" id="open-menu-button" />
+            )}
+          </button>
+        )}
 
         <NavigationMenu>
           {/* Desktop Menu */}
