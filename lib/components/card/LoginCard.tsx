@@ -84,7 +84,7 @@ export const LoginCard = ({ buttonAction, ...props }: LoginCardProps) => {
         )}
       >
         <CardHeader>
-          <CardTitle>Welcome to SDA</CardTitle>
+          <CardTitle>Welcome to SkyPulse</CardTitle>
         </CardHeader>
 
         <ShadcnForm {...form}>

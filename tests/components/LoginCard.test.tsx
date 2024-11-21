@@ -8,7 +8,7 @@ describe("<LoginCard/>", () => {
     const mockButtonAction = vi.fn();
 
     render(<LoginCard buttonAction={mockButtonAction} />);
-    expect(screen.getByText(/Welcome to SDA/i)).toBeInTheDocument();
+    expect(screen.getByText(/Welcome to SkyPulse/i)).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(/Enter your username/i),
     ).toBeInTheDocument();
