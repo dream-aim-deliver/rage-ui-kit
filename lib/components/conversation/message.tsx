@@ -60,7 +60,7 @@ export const ConversationMessage = ({
   const avatarLetter = sender_type === "user" ? "U" : "A";
   const avatarColor =
     sender_type === "user"
-      ? "bg-blue-500"
+      ? "bg-blue-400"
       : "bg-neutral-800 dark:bg-neutral-950";
 
   const isLoading = message_contents === undefined || message_contents === null;
@@ -78,14 +78,14 @@ export const ConversationMessage = ({
 
   const statusMessageColors: Record<TMessage["status"], string> = {
     error: "bg-red-300",
-    request: "bg-blue-200",
-    success: "bg-blue-400",
+    request: "bg-blue-100",
+    success: "bg-blue-300",
   };
 
   const statusTailBorders: Record<TMessage["status"], string> = {
     error: "border-l-red-300",
-    request: "border-l-blue-200",
-    success: "border-l-blue-400",
+    request: "border-l-blue-100",
+    success: "border-l-blue-300",
   };
 
   const CachedContentBlock = useMemo(() => {
@@ -151,11 +151,11 @@ export const ConversationMessage = ({
         className={cn(
           "relative",
           "max-w-lg",
-          "rounded-xl p-4",
+          "rounded-xl border p-4",
           "transition-colors",
           sender_type === "user"
             ? statusMessageColors[status]
-            : "bg-neutral-300 text-black",
+            : "bg-neutral-200 text-black",
         )}
       >
         <div className={cn("flex space-x-4 align-text-center")}></div>
@@ -191,7 +191,7 @@ export const ConversationMessage = ({
             "border-l-[10px]",
             sender_type === "user"
               ? `${statusTailBorders[status]} right-[-10px]`
-              : "border-l-gray-300 left-[-10px] transform scale-x-[-1]",
+              : "border-l-gray-200 left-[-10px] transform scale-x-[-1]",
           )}
         ></div>
       </div>
@@ -199,7 +199,7 @@ export const ConversationMessage = ({
         <div className={cn("self-end text-black")}>
           <Avatar
             className={cn(
-              `${avatarColor} text-white dark:bg-blue-500 flex items-center justify-center`,
+              `${avatarColor} text-white dark:bg-blue-500 flex items-center justify-center border`,
             )}
           >
             {avatarLetter}
