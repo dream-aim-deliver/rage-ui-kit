@@ -6,7 +6,6 @@ import { useState } from "react";
 import { IconButton } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 
-import { Button as ShadcnButton } from "@/components/button/index";
 import {
   buttonActionInputValues,
   CreateConversationDialog,
@@ -59,7 +58,7 @@ const GoToConversationButton = (params: GoToConversationButtonParams) => {
       aria-label="start-chat"
       onClick={handleClick}
       sx={{
-        color: 'white',
+        color: "white",
       }}
     >
       <ChatIcon style={{ fontSize: 30 }} />
