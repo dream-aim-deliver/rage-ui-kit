@@ -42,8 +42,6 @@ export const SendMessageBox = ({
     <form
       onSubmit={onSubmit}
       className={cn(
-        "shadow-lg",
-        "bg-neutral-100 dark:bg-neutral-800",
         "flex items-center",
         "justify-center",
         "space-x-4",
@@ -53,10 +51,10 @@ export const SendMessageBox = ({
       <textarea
         className={cn(
           "text-gray-900 dark:text-white",
-          "dark:bg-neutral-900",
-          "rounded-xl",
+          "bg-neutral-50 dark:bg-neutral-900",
+          "border rounded-md",
           "order-none",
-          "focus:outline-none",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 focus-visible:ring-neutral-500",
           "m-2",
           "p-2",
           "flex-grow",

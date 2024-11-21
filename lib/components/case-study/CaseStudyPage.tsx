@@ -154,7 +154,11 @@ export const CaseStudyPage = ({
         </div>
       </div>
       <div className="flex lg:flex-1 grow lg:h-auto h-[600px]">
-        <ChatPage messages={messages} onSendMessage={onSendMessage} />
+        <ChatPage
+          messages={messages}
+          onSendMessage={onSendMessage}
+          className="border rounded-lg"
+        />
       </div>
     </div>
   );

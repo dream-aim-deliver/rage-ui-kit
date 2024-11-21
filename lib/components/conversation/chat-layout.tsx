@@ -8,9 +8,14 @@ import { cn } from "@/utils/utils";
 export type ChatPageViewModel = {
   messages: TMessage[];
   onSendMessage?: (message: string) => void;
+  className?: string;
 };
 
-export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
+export const ChatPage = ({
+  messages,
+  onSendMessage,
+  className,
+}: ChatPageViewModel) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [prevMessagesLength, setPrevMessagesLength] = useState(0);
 
@@ -24,7 +29,7 @@ export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [messages]);
   return (
-    <div className="flex w-full bg-neutral-100 dark:bg-neutral-800">
+    <div className={cn("flex w-full bg-white dark:bg-neutral-800", className)}>
       <div className="flex-grow flex flex-col justify-between">
         <div className="overflow-y-auto flex flex-col space-y-4">
           {messages.map((message, idx) => {
@@ -39,7 +44,7 @@ export const ChatPage = ({ messages, onSendMessage }: ChatPageViewModel) => {
         <div
           className={cn(
             "sticky",
-            "bg-neutral-100 dark:bg-neutral-800",
+            "bg-white dark:bg-neutral-800",
             "bottom-0",
             "flex flex-col",
             "w-full space-y-4",
