@@ -1,12 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { generateTimestamps } from "../../utils.ts";
-import {
-  CaseStudyPage,
-  TKeyframe,
-} from "@/components/case-study/CaseStudyPage.tsx";
-import { TDisasterData } from "@/components/table/case-study/DisasterDataTable.tsx";
-import { TClimateData } from "@/components/table/case-study/ClimateDataTable.tsx";
+import { CaseStudyPage } from "@/components/case-study/CaseStudyPage.tsx";
 import { faker } from "@faker-js/faker";
+import { TClimateData } from "@/components/case-study/table/ClimateDataTable.tsx";
 
 const meta = {
   title: "Pages/CaseStudy",
@@ -28,15 +24,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const generateDisasterDataFixture = (): TDisasterData => {
-  return {
-    id: faker.string.uuid(),
-    name: faker.commerce.productName(),
-    dateOccurred: faker.date.past({ years: 1 }),
-    affectedPopulation: faker.number.int({ min: 0, max: 1000000 }),
-  };
-};
-
 const generateClimateDataFixture = (): TClimateData => {
   return {
     id: faker.string.uuid(),
@@ -46,59 +33,36 @@ const generateClimateDataFixture = (): TClimateData => {
   };
 };
 
-const generateFixtureKeyframe = (
-  caseStudy: "climate-monitoring" | "disaster-tracking",
-  timestamp: string,
-): TKeyframe => {
+const generateFixtureKeyframeClimate = (timestamp: string) => {
   const length = 30;
   const baseFrame = {
     timestamp,
-    image: {
-      signedUrl: faker.image.url({ width: 640, height: 480 }),
-      description: faker.lorem.sentence(),
-    },
-    expirationTime: faker.date.anytime().getTime(),
+    images: [
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description: faker.lorem.sentence(),
+      },
+    ],
+    dataDescription: faker.lorem.sentence(),
   };
 
-  if (caseStudy === "climate-monitoring") {
-    return {
-      ...baseFrame,
-      caseStudy: caseStudy,
-      data: Array.from({ length: length }, generateClimateDataFixture),
-    };
-  } else {
-    return {
-      ...baseFrame,
-      caseStudy: caseStudy,
-      data: Array.from({ length: length }, generateDisasterDataFixture),
-    };
-  }
+  return {
+    ...baseFrame,
+    data: Array.from({ length: length }, generateClimateDataFixture),
+  };
 };
 
-export const Climate: Story = {
+export const ClimateMessage: Story = {
   args: {
-    keyframes: generateTimestamps(30).map((timestamp) =>
-      generateFixtureKeyframe("climate-monitoring", timestamp.toString()),
-    ),
-    messages: [],
-  },
-};
-
-export const Disaster: Story = {
-  args: {
-    // Generate a single keyframe
-    keyframes: generateTimestamps(0).map((timestamp) =>
-      generateFixtureKeyframe("disaster-tracking", timestamp.toString()),
-    ),
-    messages: [],
-  },
-};
-
-export const ClimateMessages: Story = {
-  args: {
-    keyframes: generateTimestamps(30).map((timestamp) =>
-      generateFixtureKeyframe("climate-monitoring", timestamp.toString()),
-    ),
+    info: {
+      caseStudy: "climate-monitoring",
+      keyframes: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeClimate(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: [],
+    },
     messages: [
       {
         sender_type: "user",

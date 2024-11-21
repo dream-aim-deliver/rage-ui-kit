@@ -1,15 +1,6 @@
 import { z } from "zod";
-import {
-  ClimateDataSchema,
-  ClimateDataTable,
-} from "@/components/table/case-study/ClimateDataTable.tsx";
-import {
-  DisasterDataSchema,
-  DisasterDataTable,
-} from "@/components/table/case-study/DisasterDataTable.tsx";
 import { useRef, useState } from "react";
 import { DateSlider } from "@/components/case-study/DateSlider.tsx";
-import { CaseStudyTable } from "@/components/table/case-study/CaseStudyTable.tsx";
 import { ChatPage, TMessage } from "@/lib/components";
 import { Skeleton } from "@/ui/skeleton.tsx";
 import "react-medium-image-zoom/dist/styles.css";
@@ -21,48 +12,77 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/ui/tooltip.tsx";
+import {
+  SentinelDataSchema,
+  SentinelDataTable,
+} from "@/components/case-study/table/SentinelDataTable.tsx";
+import {
+  ClimateDataSchema,
+  ClimateDataTable,
+} from "@/components/case-study/table/ClimateDataTable.tsx";
+import { CaseStudyTable } from "@/components/case-study/table/CaseStudyTable.tsx";
 
 const BaseKeyframeSchema = z.object({
   timestamp: z.string(),
-  image: z.object({
-    signedUrl: z.string().url(),
-    description: z.string(),
-  }),
-  expirationTime: z.number().int().positive(), // A unix timestamp
+  images: z.array(
+    z.object({
+      relativePath: z.string(),
+      signedUrl: z.string().url(),
+      description: z.string(),
+    }),
+  ),
+  dataDescription: z.string(),
 });
 
 const ClimateKeyframeSchema = BaseKeyframeSchema.merge(
   z.object({
-    caseStudy: z.literal("climate-monitoring"),
     data: z.array(ClimateDataSchema),
   }),
 );
 
-const DisasterKeyframeSchema = BaseKeyframeSchema.merge(
+const SentinelKeyframeSchema = BaseKeyframeSchema.merge(
   z.object({
-    caseStudy: z.literal("disaster-tracking"),
-    data: z.array(DisasterDataSchema),
+    data: z.array(SentinelDataSchema),
   }),
 );
 
-const KeyframeSchema = z.discriminatedUnion("caseStudy", [
-  ClimateKeyframeSchema,
-  DisasterKeyframeSchema,
-]);
+const BaseInfoSchema = z.object({
+  expirationTime: z.number().int().positive(),
+  imageKinds: z.array(z.string()),
+});
 
-export type TKeyframe = z.infer<typeof KeyframeSchema>;
+const ClimateInfoSchema = BaseInfoSchema.merge(
+  z.object({
+    caseStudy: z.literal("climate-monitoring"),
+    keyFrames: z.array(ClimateKeyframeSchema),
+  }),
+);
+
+const SentinelInfoSchema = BaseInfoSchema.merge(
+  z.object({
+    caseStudy: z.literal("sentinel-5p"),
+    keyFrames: z.array(SentinelKeyframeSchema),
+  }),
+);
+
+const InfoSchema = z.discriminatedUnion("caseStudy", [
+  ClimateInfoSchema,
+  SentinelInfoSchema,
+]);
+type TInfoSchema = z.infer<typeof InfoSchema>;
 
 export interface CaseStudyPageProps {
-  keyframes: TKeyframe[];
+  info: TInfoSchema;
   messages: TMessage[];
   onSendMessage?: (message: string) => void;
 }
 
 export const CaseStudyPage = ({
-  keyframes,
+  info,
   messages,
   onSendMessage,
 }: CaseStudyPageProps) => {
+  const keyframes = info.keyFrames;
   const timelineEnabled = keyframes.length > 1;
 
   const [selectedTimestampIndex, setSelectedTimestampIndex] =
@@ -87,19 +107,20 @@ export const CaseStudyPage = ({
   const currentFrame = keyframes[selectedTimestampIndex];
 
   const tablesForCaseStudies: Record<
-    TKeyframe["caseStudy"],
+    TInfoSchema["caseStudy"],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     CaseStudyTable<any>
   > = {
     "climate-monitoring": ClimateDataTable,
-    "disaster-tracking": DisasterDataTable,
+    "sentinel-5p": SentinelDataTable,
   };
 
-  const Table = tablesForCaseStudies[currentFrame.caseStudy];
+  const Table = tablesForCaseStudies[info.caseStudy];
 
-  const IMAGE_BLOCK_HEIGHT = 300;
   const getImageBlock = () => {
-    const commonClasses = `rounded-lg lg:flex-1 w-full max-h-[${IMAGE_BLOCK_HEIGHT}px] h-[${IMAGE_BLOCK_HEIGHT}px]`;
+    const commonClasses = "rounded-lg lg:flex-1 w-full max-h-[300px] h-[300px]";
+    const image = currentFrame.images[0];
+
     // A wrapper is required for skeleton display during image loading
     const imageContents = (
       <div className={cn(commonClasses, "relative border")}>
@@ -110,7 +131,7 @@ export const CaseStudyPage = ({
               commonClasses,
               "absolute inset-0 z-10 object-cover object-center",
             )}
-            src={currentFrame.image.signedUrl}
+            src={image.signedUrl}
           />
         </Zoom>
       </div>
@@ -124,7 +145,7 @@ export const CaseStudyPage = ({
           <Tooltip>
             <TooltipTrigger asChild>{imageContents}</TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{currentFrame.image.description}</p>
+              <p>{image.description}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -135,7 +156,7 @@ export const CaseStudyPage = ({
   return (
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow">
-        <div className={`relative h-[${IMAGE_BLOCK_HEIGHT}px]`}>
+        <div className="relative h-[300px]">
           {getImageBlock()}
           {timelineEnabled && (
             <DateSlider
