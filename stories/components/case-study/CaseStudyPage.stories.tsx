@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 const generateClimateDataFixture = (): TClimateData => {
   return {
-    timestamp: faker.date.anytime().getTime().toString(),
+    timestamp: (faker.date.anytime().getTime() / 1000).toString(),
     latitude: faker.number.float(),
     longitude: faker.number.float(),
     CarbonMonoxideLevel: faker.lorem.word(),
@@ -39,7 +39,7 @@ const generateClimateDataFixture = (): TClimateData => {
 
 const generateSentinelDataFixture = (): TSentinelData => {
   return {
-    timestamp: faker.date.anytime().getTime().toString(),
+    timestamp: (faker.date.anytime().getTime() / 1000).toString(),
     latitude: faker.number.float(),
     longitude: faker.number.float(),
     CarbonMonoxideLevel: faker.lorem.word(),
