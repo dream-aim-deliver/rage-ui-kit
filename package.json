@@ -101,6 +101,7 @@
     "vitest": "^1.2.2"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@heroicons/react": "^2.1.3",
     "@hookform/resolvers": "^3.4.2",
     "@radix-ui/react-avatar": "^1.1.0",
@@ -110,6 +111,8 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-navigation-menu": "^1.2.0",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-slider": "^1.2.1",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.2.1",
     "@tanstack/match-sorter-utils": "^8.15.1",

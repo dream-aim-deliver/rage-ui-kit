@@ -8,6 +8,12 @@
 @import 'ag-grid-theme-dark.css';
 @import 'ag-grid-theme-light.css';
 
+.ag-root-wrapper {
+    border-bottom-left-radius: 0!important;
+    border-bottom-right-radius: 0!important;
+    border-bottom: none!important;
+}
+
 .ag-root-wrapper, .ag-measurement-container, .ag-apply-theme-variables {
     --ag-background-color: var(--ag-inherited-background-color, #1E293B);
     --ag-foreground-color: var(--ag-inherited-foreground-color, #FFFFFF);
