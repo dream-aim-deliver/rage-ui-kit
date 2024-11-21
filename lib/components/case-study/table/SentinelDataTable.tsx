@@ -18,7 +18,7 @@ export const SentinelDataTable: CaseStudyTable<TSentinelData> = (props) => {
     {
       headerName: "Date & Time",
       valueFormatter: (params) => {
-        const currentDate = new Date(parseInt(params.data?.timestamp));
+        const currentDate = new Date(parseInt(params.data?.timestamp) * 1000);
         return (
           currentDate.toLocaleDateString() +
           " " +
