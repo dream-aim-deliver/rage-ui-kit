@@ -163,37 +163,50 @@ export const CaseStudyPage = ({
       });
     }
 
+    let errorMessage: string | undefined = undefined;
+
     if (!imageElement) {
-      return <span>Couldn't load</span>;
+      errorMessage = "Missing image of the selected type";
     }
 
     if (ErrorSchema.safeParse(imageElement).success) {
       const imageError = imageElement as TError;
-      return <span>{imageError.errorMessage}</span>;
+      errorMessage = imageError.errorMessage;
     }
-
-    const image = imageElement as TImage;
-
-    // A wrapper is required for skeleton display during image loading
-    const imageContents = (
-      <div className={cn(commonClasses, "relative border")}>
-        <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
-        <Zoom>
-          <img
-            loading="lazy"
-            className={cn(
-              commonClasses,
-              "absolute inset-0 z-10 object-cover object-center",
-            )}
-            src={image.signedUrl}
-          />
-        </Zoom>
-      </div>
-    );
 
     if (isLoading) {
       return <Skeleton className={commonClasses} />;
+    } else if (errorMessage) {
+      return (
+        <div
+          className={cn(
+            commonClasses,
+            "bg-neutral-100 flex items-center justify-center",
+          )}
+        >
+          <span>{errorMessage}</span>
+        </div>
+      );
     } else {
+      const image = imageElement as TImage;
+
+      // A wrapper is required for skeleton display during image loading
+      const imageContents = (
+        <div className={cn(commonClasses, "relative border")}>
+          <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
+          <Zoom>
+            <img
+              loading="lazy"
+              className={cn(
+                commonClasses,
+                "absolute inset-0 z-10 object-cover object-center",
+              )}
+              src={image.signedUrl}
+            />
+          </Zoom>
+        </div>
+      );
+
       return (
         <TooltipProvider delayDuration={250}>
           <Tooltip>
