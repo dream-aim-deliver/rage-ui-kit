@@ -5,7 +5,7 @@ export const generateTimestamps = (daysAgo: number): number[] => {
   for (let i = daysAgo; i >= 0; i--) {
     const date = new Date(now);
     date.setDate(now.getDate() - i);
-    timestamps.push(date.getTime());
+    timestamps.push(date.getTime() / 1000);
   }
 
   return timestamps;

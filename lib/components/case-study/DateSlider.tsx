@@ -16,7 +16,7 @@ const DateSlider = React.forwardRef<
   const sortedTimestamps = timestamps.toSorted();
   const selectedIndex = props.value ? props.value[0] : 0;
 
-  const currentDate = new Date(sortedTimestamps[selectedIndex]);
+  const currentDate = new Date(sortedTimestamps[selectedIndex] * 1000);
   const dateString =
     currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
 
