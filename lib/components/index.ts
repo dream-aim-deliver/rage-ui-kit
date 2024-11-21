@@ -10,3 +10,4 @@ export * from "./site-footer";
 export * from "./skeleton";
 export * from "./spinner";
 export * from "./table";
+export * from "./case-study";
