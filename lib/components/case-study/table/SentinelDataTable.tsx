@@ -16,6 +16,17 @@ export type TSentinelData = z.infer<typeof SentinelDataSchema>;
 export const SentinelDataTable: CaseStudyTable<TSentinelData> = (props) => {
   const [columnDefs] = useState<ColDef[]>([
     {
+      headerName: "Date & Time",
+      valueFormatter: (params) => {
+        const currentDate = new Date(parseInt(params.data?.timestamp));
+        return (
+          currentDate.toLocaleDateString() +
+          " " +
+          currentDate.toLocaleTimeString()
+        );
+      },
+    },
+    {
       headerName: "Latitude",
       field: "latitude",
     },
