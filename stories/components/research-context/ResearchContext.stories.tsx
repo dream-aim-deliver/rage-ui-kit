@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ResearchContextCard } from "@/components/research-context/research-context-card";
 import { ListResearchContextCard } from "@/components/research-context/list-research-context-layout";
+import { faker } from "@faker-js/faker";
 
 const handleNavigateToSourcesPage = (id: number) => {
   alert(`Navigate to sources for item ${id}`);
@@ -79,6 +80,36 @@ const listOfCardsProps = [
   },
 ];
 
+const longDescriptionCardsProps = [
+  {
+    id: 1,
+    title: "Research Context 1",
+    description: faker.string.alphanumeric(100),
+    callbacks: {
+      onNavigateToSourcesPage: handleNavigateToSourcesPage,
+      onNavigateToListConversationPage: handleNavigateToListConversationPage,
+    },
+  },
+  {
+    id: 2,
+    title: "Research Context 2",
+    description: faker.lorem.paragraph(10),
+    callbacks: {
+      onNavigateToSourcesPage: handleNavigateToSourcesPage,
+      onNavigateToListConversationPage: handleNavigateToListConversationPage,
+    },
+  },
+  {
+    id: 3,
+    title: "Research Context 3",
+    description: faker.lorem.paragraph(10),
+    callbacks: {
+      onNavigateToSourcesPage: handleNavigateToSourcesPage,
+      onNavigateToListConversationPage: handleNavigateToListConversationPage,
+    },
+  },
+];
+
 const meta = {
   title: "Components/ResearchContextCard",
   component: ResearchContextCard,
@@ -94,4 +125,8 @@ export const SingleCard: Story = {
 
 export const ListOfCards = {
   render: () => <ListResearchContextCard items={listOfCardsProps} />,
+};
+
+export const LongDescriptionCards = {
+  render: () => <ListResearchContextCard items={longDescriptionCardsProps} />,
 };
