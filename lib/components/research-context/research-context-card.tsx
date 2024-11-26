@@ -31,8 +31,7 @@ export const ResearchContextCard = ({
       <CardContent
         className={cn(
           "flex flex-col items-center justify-between gap-medium",
-          "sm:max-w-md",
-          "w-full",
+          "w-full h-full overflow-hidden",
           "p-6",
           "px-7",
           "bg-neutral-100 dark:bg-neutral-800",
