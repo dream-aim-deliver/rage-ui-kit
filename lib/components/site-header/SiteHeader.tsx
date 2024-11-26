@@ -18,7 +18,7 @@ export const Header = (props: HeaderProps) => {
   return (
     <header
       className={cn(
-        "sticky top-0 bg-neutral-100 text-neutral-800 dark:bg-neutral-800 shadow-lg",
+        "sticky z-[100] top-0 bg-neutral-100 text-neutral-800 dark:bg-neutral-800 shadow-lg",
       )}
     >
       <div
