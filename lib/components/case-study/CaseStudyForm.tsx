@@ -1,6 +1,5 @@
-import { Input } from "@/ui/input.tsx";
 import { Button } from "@/ui/button.tsx";
-import React, { useState } from "react";
+import React, { SetStateAction, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -10,35 +9,58 @@ import {
 } from "@/ui/select.tsx";
 
 export type CaseStudyParameters = {
-  caseStudy: string;
-  tracerId: string;
-  jobId: number;
+  caseStudy?: string;
+  tracerId?: string;
+  jobId?: number;
 };
 
 type CaseStudyFormProps = {
+  parameters: CaseStudyParameters;
+  setParameters: React.Dispatch<SetStateAction<CaseStudyParameters>>;
   caseStudies: Record<string, string>;
-  onSubmit: (parameters: CaseStudyParameters) => void;
+  tracerIds?: string[];
+  jobIds?: number[];
+  onSubmit: () => void;
 };
 
 export const CaseStudyForm = ({
   caseStudies,
   onSubmit,
+  setParameters,
+  parameters,
+  tracerIds,
+  jobIds,
 }: CaseStudyFormProps) => {
-  const [caseStudy, setCaseStudy] = useState<string>("");
-  const [tracerId, setTracerId] = useState<string>("");
-  const [jobId, setJobId] = useState<string>("");
+  useEffect(() => {
+    setParameters((prevState) => ({
+      caseStudy: prevState.caseStudy,
+      jobId: undefined,
+      tracerId: prevState.tracerId,
+    }));
+  }, [setParameters, jobIds]);
+
+  useEffect(() => {
+    setParameters((prevState) => ({
+      caseStudy: prevState.caseStudy,
+      jobId: undefined,
+      tracerId: undefined,
+    }));
+  }, [setParameters, tracerIds]);
+
+  useEffect(() => {
+    setParameters({
+      caseStudy: undefined,
+      jobId: undefined,
+      tracerId: undefined,
+    });
+  }, [setParameters, caseStudies]);
 
   const onClick = () => {
-    const parameters: CaseStudyParameters = {
-      caseStudy,
-      tracerId,
-      jobId: parseInt(jobId),
-    };
     // Any validity checks should be on the side of the client
-    onSubmit(parameters);
+    onSubmit();
   };
 
-  const getSelectItems = () => {
+  const getCaseStudySelectItems = () => {
     const items = [];
     for (const [key, value] of Object.entries(caseStudies)) {
       items.push(<SelectItem value={key}>{value}</SelectItem>);
@@ -46,36 +68,88 @@ export const CaseStudyForm = ({
     return <>{items}</>;
   };
 
-  const onTracerIdChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setTracerId(event.target.value);
+  const getJobIdSelectItems = () => {
+    if (!jobIds) return <></>;
+    return jobIds.map((jobId) => (
+      <SelectItem key={`jobId-${jobId}`} value={jobId.toString()}>
+        {jobId}
+      </SelectItem>
+    ));
   };
 
-  const onJobIdChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setJobId(event.target.value);
+  const getTracerIdSelectItems = () => {
+    if (!tracerIds) return <></>;
+    return tracerIds.map((tracerId) => (
+      <SelectItem key={`tracerId-${tracerId}`} value={tracerId}>
+        {tracerId}
+      </SelectItem>
+    ));
+  };
+
+  const onCaseStudyChanged = (value: string) => {
+    setParameters((prevState) => ({
+      caseStudy: value,
+      jobId: prevState.jobId,
+      tracerId: prevState.tracerId,
+    }));
+  };
+
+  const getJobIdPlaceholder = () => {
+    if (!jobIds) return "Select a case study and tracer ID first";
+    if (jobIds.length === 0) return "No job IDs found";
+    return "Select a job ID";
+  };
+
+  const getTracerIdPlaceholder = () => {
+    if (!tracerIds) return "Select a case study first";
+    if (tracerIds.length === 0) return "No tracer IDs found";
+    return "Select a tracer ID";
+  };
+
+  const onJobIdChanged = (value: string) => {
+    setParameters((prevState) => ({
+      caseStudy: prevState.caseStudy,
+      jobId: parseInt(value),
+      tracerId: prevState.tracerId,
+    }));
+  };
+
+  const onTracerIdChanged = (value: string) => {
+    setParameters((prevState) => ({
+      caseStudy: prevState.caseStudy,
+      jobId: prevState.jobId,
+      tracerId: value,
+    }));
   };
 
   return (
     <div className="flex flex-col grow space-y-4 max-w-xl">
-      <Select value={caseStudy} onValueChange={setCaseStudy}>
+      <Select value={parameters.caseStudy} onValueChange={onCaseStudyChanged}>
         <SelectTrigger>
           <SelectValue placeholder="Select a case study" />
         </SelectTrigger>
-        <SelectContent>{getSelectItems()}</SelectContent>
+        <SelectContent>{getCaseStudySelectItems()}</SelectContent>
       </Select>
-      <Input
-        placeholder="Tracer ID"
-        value={tracerId}
-        onChange={onTracerIdChanged}
-      />
-      <Input
-        type="number"
-        min="0"
-        placeholder="Job ID"
-        value={jobId}
-        onChange={onJobIdChanged}
-      />
+      <Select
+        disabled={tracerIds === undefined || tracerIds.length === 0}
+        value={parameters.tracerId?.toString()}
+        onValueChange={onTracerIdChanged}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder={getTracerIdPlaceholder()} />
+        </SelectTrigger>
+        <SelectContent>{getTracerIdSelectItems()}</SelectContent>
+      </Select>
+      <Select
+        disabled={jobIds === undefined || jobIds.length === 0}
+        value={parameters.jobId?.toString()}
+        onValueChange={onJobIdChanged}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder={getJobIdPlaceholder()} />
+        </SelectTrigger>
+        <SelectContent>{getJobIdSelectItems()}</SelectContent>
+      </Select>
       <Button onClick={onClick}>Proceed</Button>
     </div>
   );
