@@ -273,6 +273,7 @@ export function BaseAGGrid<TRowData>({
           ref={gridRef}
           onGridReady={onGridReady}
           onPaginationChanged={onPaginationChanged}
+          enableCellTextSelection={true}
           {...props}
         />
       </div>
