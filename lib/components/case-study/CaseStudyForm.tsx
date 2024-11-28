@@ -1,5 +1,5 @@
 import { Button } from "@/ui/button.tsx";
-import React, { SetStateAction, useEffect } from "react";
+import React, { SetStateAction, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -31,29 +31,9 @@ export const CaseStudyForm = ({
   tracerIds,
   jobIds,
 }: CaseStudyFormProps) => {
-  useEffect(() => {
-    setParameters((prevState) => ({
-      caseStudy: prevState.caseStudy,
-      jobId: undefined,
-      tracerId: prevState.tracerId,
-    }));
-  }, [setParameters, jobIds]);
-
-  useEffect(() => {
-    setParameters((prevState) => ({
-      caseStudy: prevState.caseStudy,
-      jobId: undefined,
-      tracerId: undefined,
-    }));
-  }, [setParameters, tracerIds]);
-
-  useEffect(() => {
-    setParameters({
-      caseStudy: undefined,
-      jobId: undefined,
-      tracerId: undefined,
-    });
-  }, [setParameters, caseStudies]);
+  // These are required to reset values of the dropdowns
+  const [tracerIdKey, setTracerIdKey] = useState<React.Key>(+Date());
+  const [jobIdKey, setJobIdKey] = useState<React.Key>(+Date() + 1);
 
   const onClick = () => {
     // Any validity checks should be on the side of the client
@@ -87,11 +67,13 @@ export const CaseStudyForm = ({
   };
 
   const onCaseStudyChanged = (value: string) => {
-    setParameters((prevState) => ({
+    setParameters({
       caseStudy: value,
-      jobId: prevState.jobId,
-      tracerId: prevState.tracerId,
-    }));
+      jobId: undefined,
+      tracerId: undefined,
+    });
+    setTracerIdKey(+new Date());
+    setJobIdKey(+new Date() + 1);
   };
 
   const getJobIdPlaceholder = () => {
@@ -117,9 +99,10 @@ export const CaseStudyForm = ({
   const onTracerIdChanged = (value: string) => {
     setParameters((prevState) => ({
       caseStudy: prevState.caseStudy,
-      jobId: prevState.jobId,
+      jobId: undefined,
       tracerId: value,
     }));
+    setJobIdKey(+new Date() + 1);
   };
 
   return (
@@ -134,6 +117,7 @@ export const CaseStudyForm = ({
         disabled={tracerIds === undefined || tracerIds.length === 0}
         value={parameters.tracerId?.toString()}
         onValueChange={onTracerIdChanged}
+        key={tracerIdKey}
       >
         <SelectTrigger>
           <SelectValue placeholder={getTracerIdPlaceholder()} />
@@ -144,6 +128,7 @@ export const CaseStudyForm = ({
         disabled={jobIds === undefined || jobIds.length === 0}
         value={parameters.jobId?.toString()}
         onValueChange={onJobIdChanged}
+        key={jobIdKey}
       >
         <SelectTrigger>
           <SelectValue placeholder={getJobIdPlaceholder()} />
