@@ -1,5 +1,5 @@
 import { Button } from "@/ui/button.tsx";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction } from "react";
 import {
   Select,
   SelectContent,
@@ -31,10 +31,6 @@ export const CaseStudyForm = ({
   tracerIds,
   jobIds,
 }: CaseStudyFormProps) => {
-  // These are required to reset values of the dropdowns
-  const [tracerIdKey, setTracerIdKey] = useState<React.Key>(+Date());
-  const [jobIdKey, setJobIdKey] = useState<React.Key>(+Date() + 1);
-
   const onClick = () => {
     // Any validity checks should be on the side of the client
     onSubmit();
@@ -72,8 +68,6 @@ export const CaseStudyForm = ({
       jobId: undefined,
       tracerId: undefined,
     });
-    setTracerIdKey(+new Date());
-    setJobIdKey(+new Date() + 1);
   };
 
   const getJobIdPlaceholder = () => {
@@ -102,7 +96,6 @@ export const CaseStudyForm = ({
       jobId: undefined,
       tracerId: value,
     }));
-    setJobIdKey(+new Date() + 1);
   };
 
   return (
@@ -117,7 +110,7 @@ export const CaseStudyForm = ({
         disabled={tracerIds === undefined || tracerIds.length === 0}
         value={parameters.tracerId?.toString()}
         onValueChange={onTracerIdChanged}
-        key={tracerIdKey}
+        key={parameters.caseStudy}
       >
         <SelectTrigger>
           <SelectValue placeholder={getTracerIdPlaceholder()} />
@@ -128,7 +121,7 @@ export const CaseStudyForm = ({
         disabled={jobIds === undefined || jobIds.length === 0}
         value={parameters.jobId?.toString()}
         onValueChange={onJobIdChanged}
-        key={jobIdKey}
+        key={(parameters.caseStudy ?? "") + (parameters.tracerId ?? "")}
       >
         <SelectTrigger>
           <SelectValue placeholder={getJobIdPlaceholder()} />
