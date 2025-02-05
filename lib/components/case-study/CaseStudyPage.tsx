@@ -122,10 +122,13 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
   const [imageKind, setImageKind] = useState<string>(info.imageKinds[0] ?? "");
 
   const getImageKindSelector = () => {
+    if (info.imageKinds.length === 0) {
+      return <></>;
+    }
     return (
       <Select value={imageKind} onValueChange={setImageKind}>
         <SelectTrigger className="mb-3">
-          <SelectValue placeholder="Select a case study" />
+          <SelectValue placeholder="Select an image kind" />
         </SelectTrigger>
         <SelectContent>
           {info.imageKinds.map((kind) => {
@@ -197,7 +200,7 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
     let errorMessage: string | undefined = undefined;
 
     if (!imageElement) {
-      errorMessage = "Missing image of the selected type";
+      errorMessage = "Missing an image";
     }
 
     if (ErrorSchema.safeParse(imageElement).success) {

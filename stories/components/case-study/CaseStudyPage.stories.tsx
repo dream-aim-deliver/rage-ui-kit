@@ -184,3 +184,17 @@ export const Sentinel: Story = {
     sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
   },
 };
+
+export const NoImageKinds: Story = {
+  args: {
+    info: {
+      caseStudy: "sentinel-5p",
+      keyframes: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeSentinel(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: [],
+    },
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
+  },
+};
