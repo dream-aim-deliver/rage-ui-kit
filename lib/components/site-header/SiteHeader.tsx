@@ -21,9 +21,7 @@ export const Header = (props: HeaderProps) => {
         "sticky z-[100] top-0 bg-neutral-100 text-neutral-800 dark:bg-neutral-800 shadow-lg",
       )}
     >
-      <div
-        className={cn("w-screen px-4 flex items-center justify-between py-4")}
-      >
+      <div className={cn("w-full px-4 flex items-center justify-between py-4")}>
         <div className="flex items-center gap-2">
           <SatelliteIcon
             className={cn("text-neutral-800 size-10 dark:text-white")}

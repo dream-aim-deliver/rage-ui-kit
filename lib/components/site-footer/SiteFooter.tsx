@@ -18,7 +18,7 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({
         "bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white shadow-lg mt-auto",
       )}
     >
-      <div className="w-screen px-4 py-6 flex flex-col lg:flex-row justify-between items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-6">
+      <div className="w-full px-4 py-6 flex flex-col lg:flex-row justify-between items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-6">
         {/* Brand Section */}
         <div className="flex items-center gap-2">
           <SatelliteIcon
