@@ -21,6 +21,10 @@ import {
 } from "@/ui/select.tsx";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { XIcon } from "lucide-react";
+import {
+  SwissGridDataSchema,
+  SwissGridDataTable,
+} from "@/components/case-study/table/SwissGridDataTable.tsx";
 
 const ErrorSchema = z.object({
   errorName: z.string(),
@@ -54,6 +58,12 @@ const SentinelKeyframeSchema = BaseKeyframeSchema.merge(
   }),
 );
 
+const SwissGridKeyframeSchema = BaseKeyframeSchema.merge(
+  z.object({
+    data: z.array(SwissGridDataSchema.or(ErrorSchema)),
+  }),
+);
+
 const BaseInfoSchema = z.object({
   expirationTime: z.number().int().positive(),
   imageKinds: z.array(z.string()),
@@ -73,9 +83,17 @@ const SentinelInfoSchema = BaseInfoSchema.merge(
   }),
 );
 
+const SwissGridInfoSchema = BaseInfoSchema.merge(
+  z.object({
+    caseStudy: z.literal("swiss-grid"),
+    keyframes: z.array(SwissGridKeyframeSchema),
+  }),
+);
+
 const InfoSchema = z.discriminatedUnion("caseStudy", [
   ClimateInfoSchema,
   SentinelInfoSchema,
+  SwissGridInfoSchema,
 ]);
 type TInfoSchema = z.infer<typeof InfoSchema>;
 
@@ -116,6 +134,7 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
   > = {
     "climate-monitoring": ClimateDataTable,
     "sentinel-5p": SentinelDataTable,
+    "swiss-grid": SwissGridDataTable,
   };
 
   const Table = tablesForCaseStudies[info.caseStudy];

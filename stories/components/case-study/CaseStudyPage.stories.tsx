@@ -5,6 +5,7 @@ import { faker } from "@faker-js/faker";
 import { TClimateData } from "@/components/case-study/table/ClimateDataTable.tsx";
 import { TSentinelData } from "@/components/case-study/table/SentinelDataTable.tsx";
 import { ChatPage } from "@/lib/components";
+import { TSwissGridData } from "@/components/case-study/table/SwissGridDataTable.tsx";
 
 const meta = {
   title: "Pages/CaseStudy",
@@ -43,6 +44,14 @@ const generateSentinelDataFixture = (): TSentinelData => {
     latitude: faker.number.float(),
     longitude: faker.number.float(),
     CarbonMonoxideLevel: faker.lorem.word(),
+  };
+};
+
+const generateSwissGridDataFixture = (): TSwissGridData => {
+  return {
+    timestamp: (faker.date.anytime().getTime() / 1000).toString(),
+    prediction_unified: "ON",
+    prediction_benzau: "OFF",
   };
 };
 
@@ -98,6 +107,33 @@ const generateFixtureKeyframeSentinel = (timestamp: string) => {
   return {
     ...baseFrame,
     data: Array.from({ length: length }, generateSentinelDataFixture),
+  };
+};
+
+const generateFixtureKeyframeSwissGrid = (timestamp: string) => {
+  const baseFrame = {
+    timestamp,
+    images: [
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description:
+          "dataset: SENTINEL2-L1C | coords_wgs84: (-156.708984, 20.955027, -156.299744, 20.759645) | details: A Sentinel-2 image highlighting areas of interest based on water, vegetation, and spectral thresholds in true color. Bands: B04, B03, B02, B08, B11, B12",
+        kind: "webcam",
+      },
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description: faker.lorem.sentence(),
+        kind: "satellite",
+      },
+    ],
+    dataDescription: faker.lorem.sentence(),
+  };
+
+  return {
+    ...baseFrame,
+    data: Array.from({ length: 45 }, generateSwissGridDataFixture),
   };
 };
 
@@ -191,6 +227,20 @@ export const NoImageKinds: Story = {
       caseStudy: "sentinel-5p",
       keyframes: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeSentinel(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: [],
+    },
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
+  },
+};
+
+export const SwissGrid: Story = {
+  args: {
+    info: {
+      caseStudy: "swiss-grid",
+      keyframes: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeSwissGrid(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: [],
