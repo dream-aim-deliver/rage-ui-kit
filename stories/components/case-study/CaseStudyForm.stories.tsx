@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CaseStudyForm } from "@/components/case-study/CaseStudyForm.tsx";
+import {
+  CaseStudyForm,
+  CaseStudyParameters,
+} from "@/components/case-study/CaseStudyForm.tsx";
+import { useState } from "react";
 
 const meta = {
   title: "Pages/CaseStudyForm",
@@ -65,4 +69,53 @@ export const JobID: Story = {
     },
     onSubmit: () => alert("Submit clicked"),
   },
+};
+
+export const Interactive = () => {
+  const [parameters, setParameters] = useState<CaseStudyParameters>({
+    caseStudy: undefined,
+    jobId: undefined,
+    tracerId: undefined,
+  });
+  const caseStudies = {
+    "test-1": "Test 1",
+    "test-2": "Test 2",
+    "test-3": "Test 3",
+  };
+
+  const tracerIds: Record<string, string[]> = {
+    "test-1": ["tracer-1", "tracer-3"],
+    "test-2": ["tracer-1", "tracer-2"],
+    "test-3": [],
+  };
+
+  const jobIds: Record<string, Record<string, number[]>> = {
+    "test-1": {
+      "tracer-1": [1, 2],
+      "tracer-3": [3, 4],
+    },
+    "test-2": {
+      "tracer-1": [],
+      "tracer-2": [3, 4],
+    },
+  };
+
+  return (
+    <CaseStudyForm
+      parameters={parameters}
+      setParameters={setParameters}
+      caseStudies={caseStudies}
+      onSubmit={() => {
+        alert(parameters);
+      }}
+      tracerIds={
+        parameters.caseStudy ? tracerIds[parameters.caseStudy] : undefined
+      }
+      jobIds={
+        parameters.caseStudy && parameters.tracerId
+          ? jobIds[parameters.caseStudy][parameters.tracerId]
+          : undefined
+      }
+    />
+  );
 };
