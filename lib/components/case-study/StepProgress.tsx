@@ -8,7 +8,11 @@ export const StepProgress = ({
   currentStep,
 }: StepProgressProps) => {
   const step = Math.min(currentStep, totalSteps);
-  const progress = (step / totalSteps) * 100;
+  let progress = (step / totalSteps) * 100;
+
+  if (progress > 100) {
+    progress = 100;
+  }
 
   return (
     <div className="w-full max-w-md">
