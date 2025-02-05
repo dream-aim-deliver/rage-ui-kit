@@ -187,7 +187,7 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
   };
 
   const getImageBlock = () => {
-    const commonClasses = "rounded-lg lg:flex-1 w-full max-h-[300px] h-[300px]";
+    const commonClasses = "rounded-lg lg:flex-1 w-full max-h-[250px] h-[250px]";
     let imageElement;
     if (info.imageKinds.length === 0) {
       imageElement = currentFrame.images[0];
@@ -248,7 +248,7 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
     <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
       <div className="flex flex-1 flex-col grow">
         {getImageKindSelector()}
-        <div className="relative h-[300px]">
+        <div className="relative h-[250px]">
           {getImageBlock()}
           {timelineEnabled && (
             <DateSlider
