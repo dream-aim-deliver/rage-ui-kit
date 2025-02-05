@@ -39,7 +39,11 @@ export const CaseStudyForm = ({
   const getCaseStudySelectItems = () => {
     const items = [];
     for (const [key, value] of Object.entries(caseStudies)) {
-      items.push(<SelectItem value={key}>{value}</SelectItem>);
+      items.push(
+        <SelectItem key={`caseStudy-${key}`} value={key}>
+          {value}
+        </SelectItem>,
+      );
     }
     return <>{items}</>;
   };
@@ -110,7 +114,7 @@ export const CaseStudyForm = ({
         disabled={tracerIds === undefined || tracerIds.length === 0}
         value={parameters.tracerId?.toString()}
         onValueChange={onTracerIdChanged}
-        key={parameters.caseStudy}
+        key={`select-tracerId-${parameters.caseStudy}`}
       >
         <SelectTrigger>
           <SelectValue placeholder={getTracerIdPlaceholder()} />
@@ -121,7 +125,7 @@ export const CaseStudyForm = ({
         disabled={jobIds === undefined || jobIds.length === 0}
         value={parameters.jobId?.toString()}
         onValueChange={onJobIdChanged}
-        key={(parameters.caseStudy ?? "") + (parameters.tracerId ?? "")}
+        key={`select-jobId-${parameters.caseStudy ?? ""}-${parameters.tracerId ?? ""}`}
       >
         <SelectTrigger>
           <SelectValue placeholder={getJobIdPlaceholder()} />
