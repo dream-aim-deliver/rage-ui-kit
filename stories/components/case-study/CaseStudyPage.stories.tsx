@@ -49,9 +49,9 @@ const generateSentinelDataFixture = (): TSentinelData => {
 
 const generateSwissGridDataFixture = (): TSwissGridData => {
   return {
-    timestamp: (faker.date.anytime().getTime() / 1000).toString(),
-    prediction_unified: "ON",
-    prediction_benzau: "OFF",
+    confidence: faker.number.float(),
+    label: faker.lorem.word() + "_" + faker.lorem.word(),
+    prediction: "ON",
   };
 };
 

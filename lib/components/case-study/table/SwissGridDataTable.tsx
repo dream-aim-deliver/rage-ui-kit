@@ -5,9 +5,9 @@ import { ColDef } from "ag-grid-community";
 import { CaseStudyTable } from "@/components/case-study/table/CaseStudyTable.tsx";
 
 export const SwissGridDataSchema = z.object({
-  timestamp: z.string(),
-  prediction_unified: z.string(),
-  prediction_benzau: z.string(),
+  label: z.string(),
+  prediction: z.string(),
+  confidence: z.number(),
 });
 
 export type TSwissGridData = z.infer<typeof SwissGridDataSchema>;
@@ -15,23 +15,30 @@ export type TSwissGridData = z.infer<typeof SwissGridDataSchema>;
 export const SwissGridDataTable: CaseStudyTable<TSwissGridData> = (props) => {
   const [columnDefs] = useState<ColDef[]>([
     {
-      headerName: "Date & Time",
+      headerName: "Label",
+      field: "label",
       valueFormatter: (params) => {
-        const currentDate = new Date(parseInt(params.data?.timestamp) * 1000);
-        return (
-          currentDate.toLocaleDateString() +
-          " " +
-          currentDate.toLocaleTimeString()
-        );
+        if (!params.value) return "";
+        return params.value
+          .split("_")
+          .map(
+            (word: string) =>
+              word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+          )
+          .join(" ");
       },
     },
     {
-      headerName: "Unified Prediction",
-      field: "prediction_unified",
+      headerName: "Prediction",
+      field: "prediction",
     },
     {
-      headerName: "Benzau Prediction",
-      field: "prediction_benzau",
+      headerName: "Confidence",
+      field: "confidence",
+      valueFormatter: (params) => {
+        if (typeof params.value !== "number") return "";
+        return params.value.toFixed(5);
+      },
     },
   ]);
 
