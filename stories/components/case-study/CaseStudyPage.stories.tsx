@@ -238,7 +238,7 @@ export const NoImageKinds: Story = {
 export const SwissGrid: Story = {
   args: {
     info: {
-      caseStudy: "swiss-grid",
+      caseStudy: "swissgrid",
       keyframes: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeSwissGrid(timestamp.toString()),
       ),
