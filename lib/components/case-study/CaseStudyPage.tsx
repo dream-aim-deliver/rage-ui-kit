@@ -85,7 +85,7 @@ const SentinelInfoSchema = BaseInfoSchema.merge(
 
 const SwissGridInfoSchema = BaseInfoSchema.merge(
   z.object({
-    caseStudy: z.literal("swiss-grid"),
+    caseStudy: z.literal("swissgrid"),
     keyframes: z.array(SwissGridKeyframeSchema),
   }),
 );
@@ -134,7 +134,7 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
   > = {
     "climate-monitoring": ClimateDataTable,
     "sentinel-5p": SentinelDataTable,
-    "swiss-grid": SwissGridDataTable,
+    swissgrid: SwissGridDataTable,
   };
 
   const Table = tablesForCaseStudies[info.caseStudy];
