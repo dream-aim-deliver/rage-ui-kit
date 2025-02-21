@@ -55,9 +55,11 @@ export const SendMessageBox = ({
           "border rounded-md",
           "order-none",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 focus-visible:ring-neutral-500",
-          "m-2",
-          "p-2",
+          "m-1",
+          "p-1",
           "flex-grow",
+          "sm:w-full",
+          "w-full",
         )}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -68,7 +70,6 @@ export const SendMessageBox = ({
         action={"send"}
         onClick={message !== "" && onSendMessage ? sendMessage : undefined}
       />
-      <div className="w-1"></div>
     </form>
   );
 };

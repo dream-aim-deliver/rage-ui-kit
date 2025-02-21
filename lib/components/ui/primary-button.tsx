@@ -26,7 +26,8 @@ export const PrimaryButton = ({
           "font-bold",
           "py-2",
           "px-4",
-          "rounded-full border",
+          "rounded-full",
+          "text-sm py-1 px-2 sm:py-2 sm:px-4",
         )}
         onClick={onClick}
       >

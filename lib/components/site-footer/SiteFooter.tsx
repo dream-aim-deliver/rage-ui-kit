@@ -29,7 +29,7 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({
             SkyPulse
           </span>
           <span className="text-sm text-neutral-500 dark:text-neutral-400">
-            © 2024
+            © 2025
           </span>
         </div>
 
