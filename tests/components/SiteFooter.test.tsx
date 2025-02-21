@@ -18,7 +18,7 @@ describe("<SiteFooter />", () => {
 
     // Check if default branding is rendered
     expect(screen.getByText(/SkyPulse/i)).toBeInTheDocument();
-    expect(screen.getByText(/© 2024/i)).toBeInTheDocument();
+    expect(screen.getByText(/© 2025/i)).toBeInTheDocument();
 
     // Check if the mocked SatelliteIcon is rendered
     expect(screen.getByTestId("mock-satellite-icon")).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe("<SiteFooter />", () => {
 
     // Check if custom branding is rendered
     expect(screen.getByText(/SkyPulse/i)).toBeInTheDocument();
-    expect(screen.getByText(/© 2024/i)).toBeInTheDocument();
+    expect(screen.getByText(/© 2025/i)).toBeInTheDocument();
 
     // Check if custom links are rendered
     expect(screen.getByText(/About/i)).toBeInTheDocument();
