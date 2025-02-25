@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { generateTimestamps } from "../../utils.ts";
-import { CaseStudyPage } from "@/components/case-study/CaseStudyPage.tsx";
+import {
+  CaseStudyPage,
+  TError,
+} from "@/components/case-study/CaseStudyPage.tsx";
 import { faker } from "@faker-js/faker";
 import { TClimateData } from "@/components/case-study/table/ClimateDataTable.tsx";
 import { TSentinelData } from "@/components/case-study/table/SentinelDataTable.tsx";
@@ -52,6 +55,13 @@ const generateSwissGridDataFixture = (): TSwissGridData => {
     confidence: faker.number.float(),
     label: faker.lorem.word() + "_" + faker.lorem.word(),
     prediction: "ON",
+  };
+};
+
+const generateErrorFixture = (): TError => {
+  return {
+    errorName: faker.lorem.sentence(),
+    errorMessage: faker.lorem.sentence(),
   };
 };
 
@@ -134,6 +144,36 @@ const generateFixtureKeyframeSwissGrid = (timestamp: string) => {
   return {
     ...baseFrame,
     data: Array.from({ length: 45 }, generateSwissGridDataFixture),
+  };
+};
+
+const generateFixtureKeyframeSwissGridErrors = (timestamp: string) => {
+  const baseFrame = {
+    timestamp,
+    images: [
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description:
+          "dataset: SENTINEL2-L1C | coords_wgs84: (-156.708984, 20.955027, -156.299744, 20.759645) | details: A Sentinel-2 image highlighting areas of interest based on water, vegetation, and spectral thresholds in true color. Bands: B04, B03, B02, B08, B11, B12",
+        kind: "webcam",
+      },
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description: faker.lorem.sentence(),
+        kind: "satellite",
+      },
+    ],
+    dataDescription: faker.lorem.sentence(),
+  };
+
+  return {
+    ...baseFrame,
+    data: [
+      ...Array.from({ length: 45 }, generateErrorFixture),
+      ...Array.from({ length: 45 }, generateSwissGridDataFixture),
+    ],
   };
 };
 
@@ -241,6 +281,20 @@ export const SwissGrid: Story = {
       caseStudy: "swissgrid",
       keyframes: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeSwissGrid(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: [],
+    },
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
+  },
+};
+
+export const SwissGridErrors: Story = {
+  args: {
+    info: {
+      caseStudy: "swissgrid",
+      keyframes: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeSwissGridErrors(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: [],
