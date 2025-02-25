@@ -1,5 +1,5 @@
 import { z } from "zod";
-import React, { ReactNode, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { DateSlider } from "@/components/case-study/DateSlider.tsx";
 import { Skeleton } from "@/ui/skeleton.tsx";
 import { cn } from "@/utils/utils.ts";
@@ -25,12 +25,13 @@ import {
   SwissGridDataSchema,
   SwissGridDataTable,
 } from "@/components/case-study/table/SwissGridDataTable.tsx";
+import { useToast } from "@/ui/use-toast.tsx";
 
 const ErrorSchema = z.object({
   errorName: z.string(),
   errorMessage: z.string(),
 });
-type TError = z.infer<typeof ErrorSchema>;
+export type TError = z.infer<typeof ErrorSchema>;
 
 const ImageSchema = z.object({
   relativePath: z.string(),
@@ -103,6 +104,8 @@ export interface CaseStudyPageProps {
 }
 
 export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
+  const { toast } = useToast();
+
   const keyframes = info.keyframes;
   const timelineEnabled = keyframes.length > 1;
 
@@ -126,6 +129,34 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
   };
 
   const currentFrame = keyframes[selectedTimestampIndex];
+
+  useEffect(() => {
+    let hasError = false;
+    for (const row of currentFrame.data) {
+      const errorParseResult = ErrorSchema.safeParse(row);
+      if (errorParseResult.success) {
+        console.log(
+          "A keyframe row indicated an error:",
+          errorParseResult.data.errorMessage,
+        );
+        hasError = true;
+      }
+    }
+    if (!hasError) return;
+
+    const toasterTimer = setTimeout(() => {
+      toast({
+        title: "Error",
+        description:
+          "There were faulty rows in the keyframe. Please check the console for details.",
+        variant: "warning",
+      });
+    }, 500);
+
+    return () => {
+      clearTimeout(toasterTimer);
+    };
+  }, [currentFrame, toast]);
 
   const tablesForCaseStudies: Record<
     TInfoSchema["caseStudy"],
@@ -280,7 +311,13 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
         </div>
         <div className="flex flex-1 grow">
           <Table
-            rowData={isLoading ? [] : currentFrame.data}
+            rowData={
+              isLoading
+                ? []
+                : currentFrame.data.filter(
+                    (row) => !ErrorSchema.safeParse(row).success,
+                  )
+            }
             isLoading={isLoading}
           />
         </div>
