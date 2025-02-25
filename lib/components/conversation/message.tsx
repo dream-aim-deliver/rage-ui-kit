@@ -131,8 +131,7 @@ export const ConversationMessage = ({
   return (
     <div
       className={cn(
-        `flex space-x-2 p-1 bg-transparent rounded-xl ${sender_type === "user" ? "justify-end" : ""}`,
-        "max-w-full",
+        `flex space-x-4 p-4 bg-transparent rounded-xl ${sender_type === "user" ? "sm:justify-end" : ""}`,
       )}
     >
       {sender_type !== "user" && (
@@ -152,7 +151,7 @@ export const ConversationMessage = ({
         className={cn(
           "relative",
           "max-w-lg",
-          "rounded-xl p-4",
+          "rounded-xl border p-4",
           "transition-colors",
           sender_type === "user"
             ? statusMessageColors[status]
@@ -200,7 +199,7 @@ export const ConversationMessage = ({
         <div className={cn("self-end text-black")}>
           <Avatar
             className={cn(
-              `${avatarColor} text-white dark:bg-blue-500 flex items-center justify-center`,
+              `${avatarColor} text-white dark:bg-blue-500 flex items-center justify-center border`,
             )}
           >
             {avatarLetter}

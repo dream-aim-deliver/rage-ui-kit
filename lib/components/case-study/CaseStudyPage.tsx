@@ -306,7 +306,7 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
   };
 
   return (
-    <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0">
+    <div className="lg:flex lg:flex-row grow lg:space-x-4 lg:space-y-0 space-y-4 space-x-0 max-w-full">
       <div className="flex flex-1 flex-col grow">
         {getImageKindSelector()}
         <div className="relative h-[250px]">
