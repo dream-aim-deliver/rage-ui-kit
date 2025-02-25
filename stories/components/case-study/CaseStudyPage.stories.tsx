@@ -92,6 +92,20 @@ const generateFixtureKeyframeClimate = (timestamp: string) => {
   };
 };
 
+const generateFixtureKeyframeClimateSingleImageError = (timestamp: string) => {
+  const length = 30;
+  const baseFrame = {
+    timestamp,
+    images: [generateErrorFixture()],
+    dataDescription: faker.lorem.sentence(),
+  };
+
+  return {
+    ...baseFrame,
+    data: Array.from({ length: length }, generateClimateDataFixture),
+  };
+};
+
 const generateFixtureKeyframeSentinel = (timestamp: string) => {
   const length = 45;
   const baseFrame = {
@@ -147,7 +161,7 @@ const generateFixtureKeyframeSwissGrid = (timestamp: string) => {
   };
 };
 
-const generateFixtureKeyframeSwissGridErrors = (timestamp: string) => {
+const generateFixtureKeyframeSwissGridRowErrors = (timestamp: string) => {
   const baseFrame = {
     timestamp,
     images: [
@@ -174,6 +188,27 @@ const generateFixtureKeyframeSwissGridErrors = (timestamp: string) => {
       ...Array.from({ length: 45 }, generateErrorFixture),
       ...Array.from({ length: 45 }, generateSwissGridDataFixture),
     ],
+  };
+};
+
+const generateFixtureKeyframeSwissGridImageErrors = (timestamp: string) => {
+  const baseFrame = {
+    timestamp,
+    images: [
+      generateErrorFixture(),
+      {
+        relativePath: faker.lorem.sentence(),
+        signedUrl: faker.image.url({ width: 640, height: 480 }),
+        description: faker.lorem.sentence(),
+        kind: "satellite",
+      },
+    ],
+    dataDescription: faker.lorem.sentence(),
+  };
+
+  return {
+    ...baseFrame,
+    data: [...Array.from({ length: 45 }, generateSwissGridDataFixture)],
   };
 };
 
@@ -247,6 +282,20 @@ export const ClimateErrors: Story = {
   },
 };
 
+export const ClimateSingleImageError: Story = {
+  args: {
+    info: {
+      caseStudy: "climate-monitoring",
+      keyframes: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeClimateSingleImageError(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: [],
+    },
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
+  },
+};
+
 export const Sentinel: Story = {
   args: {
     info: {
@@ -289,15 +338,29 @@ export const SwissGrid: Story = {
   },
 };
 
-export const SwissGridErrors: Story = {
+export const SwissGridRowErrors: Story = {
   args: {
     info: {
       caseStudy: "swissgrid",
       keyframes: generateTimestamps(30).map((timestamp) =>
-        generateFixtureKeyframeSwissGridErrors(timestamp.toString()),
+        generateFixtureKeyframeSwissGridRowErrors(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: [],
+    },
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
+  },
+};
+
+export const SwissGridImageErrors: Story = {
+  args: {
+    info: {
+      caseStudy: "swissgrid",
+      keyframes: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeSwissGridImageErrors(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: ["satellite"],
     },
     sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
   },

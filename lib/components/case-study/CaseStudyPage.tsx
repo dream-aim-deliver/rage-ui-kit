@@ -142,13 +142,24 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
         hasError = true;
       }
     }
+    for (const image of currentFrame.images) {
+      const errorParseResult = ErrorSchema.safeParse(image);
+      if (errorParseResult.success) {
+        console.log(
+          "A keyframe image indicated an error:",
+          errorParseResult.data.errorMessage,
+        );
+        hasError = true;
+      }
+    }
+
     if (!hasError) return;
 
     const toasterTimer = setTimeout(() => {
       toast({
         title: "Error",
         description:
-          "There were faulty rows in the keyframe. Please check the console for details.",
+          "There were faulty entries in the keyframe. Please check the console for details.",
         variant: "warning",
       });
     }, 500);
