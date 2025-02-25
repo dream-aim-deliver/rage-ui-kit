@@ -9,9 +9,8 @@ export const MermaidMessageContent = ({
   diagram: ReactNode;
   className?: string;
 }) => {
-  const baseClasses = "mermaid bg-blue-900 p-4 rounded-xl w-screen";
+  const baseClasses = "mermaid overflow-x-auto bg-blue-900 p-4 rounded-xl";
   const classes = className ? `baseClasses ${className}` : baseClasses;
-
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: true,
@@ -24,11 +23,7 @@ export const MermaidMessageContent = ({
       },
     });
     mermaid.contentLoaded();
-  }, []);
+  });
 
-  return (
-    <pre className={classes} style={{ width: "100%", whiteSpace: "normal" }}>
-      {diagram}
-    </pre>
-  );
+  return <pre className={classes}>{diagram}</pre>;
 };
