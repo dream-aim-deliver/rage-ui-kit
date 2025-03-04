@@ -5,7 +5,8 @@ import { ColDef } from "ag-grid-community";
 import { CaseStudyTable } from "@/components/case-study/table/CaseStudyTable.tsx";
 
 export const SwissGridDataSchema = z.object({
-  label: z.string(),
+  model: z.string(),
+  timestamp: z.string(),
   prediction: z.string(),
   confidence: z.number(),
 });
@@ -15,8 +16,19 @@ export type TSwissGridData = z.infer<typeof SwissGridDataSchema>;
 export const SwissGridDataTable: CaseStudyTable<TSwissGridData> = (props) => {
   const [columnDefs] = useState<ColDef[]>([
     {
-      headerName: "Label",
-      field: "label",
+      headerName: "Date & Time",
+      valueFormatter: (params) => {
+        const currentDate = new Date(parseInt(params.data?.timestamp) * 1000);
+        return (
+          currentDate.toLocaleDateString() +
+          " " +
+          currentDate.toLocaleTimeString()
+        );
+      },
+    },
+    {
+      headerName: "Model",
+      field: "model",
       valueFormatter: (params) => {
         if (!params.value) return "";
         return params.value
