@@ -53,7 +53,8 @@ const generateSentinelDataFixture = (): TSentinelData => {
 const generateSwissGridDataFixture = (): TSwissGridData => {
   return {
     confidence: faker.number.float(),
-    label: faker.lorem.word() + "_" + faker.lorem.word(),
+    timestamp: (faker.date.anytime().getTime() / 1000).toString(),
+    model: faker.lorem.word() + "_" + faker.lorem.word(),
     prediction: "ON",
   };
 };
