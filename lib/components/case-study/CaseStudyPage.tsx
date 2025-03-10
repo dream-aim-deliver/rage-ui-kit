@@ -35,7 +35,6 @@ export type TError = z.infer<typeof ErrorSchema>;
 
 const ImageSchema = z.object({
   relativePath: z.string(),
-  signedUrl: z.string().url(),
   description: z.string(),
   kind: z.string(),
 });
@@ -101,9 +100,124 @@ type TInfoSchema = z.infer<typeof InfoSchema>;
 export interface CaseStudyPageProps {
   info: TInfoSchema;
   sideComponent: ReactNode;
+  useSignedImageUrl: (relativePath: string) => {
+    data: string | undefined;
+    isLoading: boolean;
+    error: Error | null;
+  };
 }
 
-export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
+const IMAGE_COMMON_CLASSES =
+  "rounded-lg lg:flex-1 w-full max-h-[250px] h-[250px]";
+
+interface ImageDisplayProps {
+  relativePath: string;
+  description: string;
+  useSignedImageUrl: (relativePath: string) => {
+    data: string | undefined;
+    isLoading: boolean;
+    error: Error | null;
+  };
+}
+
+export const ImageDisplayComponent = ({
+  relativePath,
+  description,
+  useSignedImageUrl,
+}: ImageDisplayProps) => {
+  const {
+    data: signedUrl,
+    isLoading: isUrlLoading,
+    error: urlError,
+  } = useSignedImageUrl(relativePath);
+
+  const [popupVisible, setPopupVisible] = useState<boolean>(false);
+
+  const switchPopupVisible = () => {
+    setPopupVisible((prevState) => !prevState);
+  };
+
+  const getImagePopup = () => {
+    const visibilityClass = popupVisible ? "visible" : "hidden";
+    const formattedDescription = description.replaceAll(" | ", "\n");
+
+    return (
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center ${visibilityClass} z-50 cursor-zoom-out`}
+        onClick={() => switchPopupVisible()}
+      >
+        <div
+          className="relative max-w-screen-lg space-y-2 w-full p-4 bg-white rounded-lg cursor-default overflow-y-auto max-h-screen"
+          onClick={(event) => {
+            // Don't propagate the clicks to the parent
+            event.stopPropagation();
+          }}
+        >
+          <XIcon
+            onClick={() => switchPopupVisible()}
+            className="cursor-pointer"
+          />
+          <div className="flex w-full justify-center mb-2">
+            <TransformWrapper>
+              <TransformComponent>
+                <img
+                  src={signedUrl}
+                  alt="full image"
+                  className="w-full h-auto object-cover"
+                />
+              </TransformComponent>
+            </TransformWrapper>
+          </div>
+          <p className="whitespace-pre-wrap">{formattedDescription}</p>
+        </div>
+      </div>
+    );
+  };
+
+  if (isUrlLoading) {
+    return <Skeleton className={IMAGE_COMMON_CLASSES} />;
+  } else if (urlError && !signedUrl) {
+    return (
+      <div
+        className={cn(
+          IMAGE_COMMON_CLASSES,
+          "bg-neutral-100 flex items-center justify-center",
+        )}
+      >
+        <span>Failed to fetch the image</span>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {getImagePopup()}
+      <div className={cn(IMAGE_COMMON_CLASSES, "relative border")}>
+        <Skeleton
+          className={cn(IMAGE_COMMON_CLASSES, "absolute inset-0 z-0")}
+        />
+        {!isUrlLoading && !urlError && (
+          <img
+            loading="lazy"
+            className={cn(
+              IMAGE_COMMON_CLASSES,
+              "absolute inset-0 z-10 object-cover object-center cursor-zoom-in",
+            )}
+            src={signedUrl}
+            onClick={() => switchPopupVisible()}
+            alt="collapsed image"
+          />
+        )}
+      </div>
+    </>
+  );
+};
+
+export const CaseStudyPage = ({
+  info,
+  sideComponent,
+  useSignedImageUrl,
+}: CaseStudyPageProps) => {
   const { toast } = useToast();
 
   const keyframes = info.keyframes;
@@ -204,49 +318,6 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
     );
   };
 
-  const [popupVisible, setPopupVisible] = useState<boolean>(false);
-
-  const switchPopupVisible = () => {
-    setPopupVisible((prevState) => !prevState);
-  };
-
-  const getImagePopup = (image: TImage) => {
-    const visibilityClass = popupVisible ? "visible" : "hidden";
-    const formattedDescription = image.description.replaceAll(" | ", "\n");
-
-    return (
-      <div
-        className={`fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center ${visibilityClass} z-50 cursor-zoom-out`}
-        onClick={() => switchPopupVisible()}
-      >
-        <div
-          className="relative max-w-screen-lg space-y-2 w-full p-4 bg-white rounded-lg cursor-default overflow-y-auto max-h-screen"
-          onClick={(event) => {
-            // Don't propagate the clicks to the parent
-            event.stopPropagation();
-          }}
-        >
-          <XIcon
-            onClick={() => switchPopupVisible()}
-            className="cursor-pointer"
-          />
-          <div className="flex w-full justify-center mb-2">
-            <TransformWrapper>
-              <TransformComponent>
-                <img
-                  src={image.signedUrl}
-                  alt="full image"
-                  className="w-full h-auto object-cover"
-                />
-              </TransformComponent>
-            </TransformWrapper>
-          </div>
-          <p className="whitespace-pre-wrap">{formattedDescription}</p>
-        </div>
-      </div>
-    );
-  };
-
   const getImageBlock = () => {
     const commonClasses = "rounded-lg lg:flex-1 w-full max-h-[250px] h-[250px]";
     let imageElement;
@@ -285,24 +356,21 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
     } else {
       const image = imageElement as TImage;
       return (
-        <>
-          {getImagePopup(image)}
-          <div className={cn(commonClasses, "relative border")}>
-            <Skeleton className={cn(commonClasses, "absolute inset-0 z-0")} />;
-            <img
-              loading="lazy"
-              className={cn(
-                commonClasses,
-                "absolute inset-0 z-10 object-cover object-center cursor-zoom-in",
-              )}
-              src={image.signedUrl}
-              onClick={() => switchPopupVisible()}
-              alt="collapsed image"
-            />
-          </div>
-        </>
+        <ImageDisplayComponent
+          useSignedImageUrl={useSignedImageUrl}
+          {...image}
+        />
       );
     }
+  };
+
+  const getRowData = () => {
+    if (isLoading) {
+      return [];
+    }
+    return currentFrame.data.filter(
+      (row) => !ErrorSchema.safeParse(row).success,
+    );
   };
 
   return (
@@ -321,16 +389,7 @@ export const CaseStudyPage = ({ info, sideComponent }: CaseStudyPageProps) => {
           )}
         </div>
         <div className="flex flex-1 grow">
-          <Table
-            rowData={
-              isLoading
-                ? []
-                : currentFrame.data.filter(
-                    (row) => !ErrorSchema.safeParse(row).success,
-                  )
-            }
-            isLoading={isLoading}
-          />
+          <Table rowData={getRowData()} isLoading={isLoading} />
         </div>
       </div>
       <div className="flex lg:flex-1 grow lg:h-auto h-[600px]">

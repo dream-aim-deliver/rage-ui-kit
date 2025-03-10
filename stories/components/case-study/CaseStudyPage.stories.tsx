@@ -73,13 +73,11 @@ const generateFixtureKeyframeClimate = (timestamp: string) => {
     images: [
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description: faker.lorem.paragraph(50),
         kind: "webcam",
       },
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description: faker.lorem.sentence(),
         kind: "satellite",
       },
@@ -114,14 +112,12 @@ const generateFixtureKeyframeSentinel = (timestamp: string) => {
     images: [
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description:
           "dataset: SENTINEL2-L1C | coords_wgs84: (-156.708984, 20.955027, -156.299744, 20.759645) | details: A Sentinel-2 image highlighting areas of interest based on water, vegetation, and spectral thresholds in true color. Bands: B04, B03, B02, B08, B11, B12",
         kind: "webcam",
       },
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description: faker.lorem.sentence(),
         kind: "satellite",
       },
@@ -141,14 +137,12 @@ const generateFixtureKeyframeSwissGrid = (timestamp: string) => {
     images: [
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description:
           "dataset: SENTINEL2-L1C | coords_wgs84: (-156.708984, 20.955027, -156.299744, 20.759645) | details: A Sentinel-2 image highlighting areas of interest based on water, vegetation, and spectral thresholds in true color. Bands: B04, B03, B02, B08, B11, B12",
         kind: "webcam",
       },
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description: faker.lorem.sentence(),
         kind: "satellite",
       },
@@ -168,14 +162,12 @@ const generateFixtureKeyframeSwissGridRowErrors = (timestamp: string) => {
     images: [
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description:
           "dataset: SENTINEL2-L1C | coords_wgs84: (-156.708984, 20.955027, -156.299744, 20.759645) | details: A Sentinel-2 image highlighting areas of interest based on water, vegetation, and spectral thresholds in true color. Bands: B04, B03, B02, B08, B11, B12",
         kind: "webcam",
       },
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description: faker.lorem.sentence(),
         kind: "satellite",
       },
@@ -199,7 +191,6 @@ const generateFixtureKeyframeSwissGridImageErrors = (timestamp: string) => {
       generateErrorFixture(),
       {
         relativePath: faker.lorem.sentence(),
-        signedUrl: faker.image.url({ width: 640, height: 480 }),
         description: faker.lorem.sentence(),
         kind: "satellite",
       },
@@ -213,8 +204,17 @@ const generateFixtureKeyframeSwissGridImageErrors = (timestamp: string) => {
   };
 };
 
+const defaultUseSignedImageUrl = () => {
+  return {
+    data: faker.image.url({ width: 640, height: 480 }),
+    isLoading: false,
+    error: null,
+  };
+};
+
 export const ClimateMessages: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "climate-monitoring",
       keyframes: generateTimestamps(30).map((timestamp) =>
@@ -271,6 +271,7 @@ export const ClimateMessages: Story = {
 
 export const ClimateErrors: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "climate-monitoring",
       keyframes: generateTimestamps(30).map((timestamp) =>
@@ -285,6 +286,7 @@ export const ClimateErrors: Story = {
 
 export const ClimateSingleImageError: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "climate-monitoring",
       keyframes: generateTimestamps(30).map((timestamp) =>
@@ -299,6 +301,7 @@ export const ClimateSingleImageError: Story = {
 
 export const Sentinel: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "sentinel-5p",
       keyframes: generateTimestamps(30).map((timestamp) =>
@@ -313,6 +316,7 @@ export const Sentinel: Story = {
 
 export const NoImageKinds: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "sentinel-5p",
       keyframes: generateTimestamps(30).map((timestamp) =>
@@ -327,6 +331,7 @@ export const NoImageKinds: Story = {
 
 export const SwissGrid: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "swissgrid",
       keyframes: generateTimestamps(30).map((timestamp) =>
@@ -341,6 +346,7 @@ export const SwissGrid: Story = {
 
 export const SwissGridRowErrors: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "swissgrid",
       keyframes: generateTimestamps(30).map((timestamp) =>
@@ -355,6 +361,7 @@ export const SwissGridRowErrors: Story = {
 
 export const SwissGridImageErrors: Story = {
   args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
     info: {
       caseStudy: "swissgrid",
       keyframes: generateTimestamps(30).map((timestamp) =>
