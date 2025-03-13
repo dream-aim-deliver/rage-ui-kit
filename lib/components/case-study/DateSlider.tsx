@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { cn } from "@/utils/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DateSliderProps {
   timestamps: number[]; // Timestamps in milliseconds
@@ -19,6 +20,18 @@ const DateSlider = React.forwardRef<
   const currentDate = new Date(sortedTimestamps[selectedIndex] * 1000);
   const dateString =
     currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
+
+  const handlePrevious = () => {
+    if (selectedIndex > 0 && props.onValueChange) {
+      props.onValueChange([selectedIndex - 1]);
+    }
+  };
+
+  const handleNext = () => {
+    if (selectedIndex < sortedTimestamps.length - 1 && props.onValueChange) {
+      props.onValueChange([selectedIndex + 1]);
+    }
+  };
 
   return (
     <div
@@ -38,7 +51,23 @@ const DateSlider = React.forwardRef<
         </SliderPrimitive.Track>
         <SliderPrimitive.Thumb className="block h-3 w-3 rounded-full bg-neutral-50 focus-visible:outline-none" />
       </SliderPrimitive.Root>
-      <span className="text-neutral-50">{dateString}</span>
+      <div className="flex items-center justify-center space-x-4">
+        <button
+          onClick={handlePrevious}
+          disabled={selectedIndex === 0}
+          className="p-1 rounded-full text-neutral-50 hover:bg-neutral-700 hover:bg-opacity-30 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ChevronLeft size={24} />
+        </button>
+        <span className="text-neutral-50">{dateString}</span>
+        <button
+          onClick={handleNext}
+          disabled={selectedIndex === sortedTimestamps.length - 1}
+          className="p-1 rounded-full text-neutral-50 hover:bg-neutral-700 hover:bg-opacity-30 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ChevronRight size={24} />
+        </button>
+      </div>
     </div>
   );
 });
