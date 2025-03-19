@@ -64,6 +64,11 @@ const SwissGridKeyframeSchema = BaseKeyframeSchema.merge(
   }),
 );
 
+const KeyframeSchema = ClimateKeyframeSchema.or(SentinelKeyframeSchema).or(
+  SwissGridKeyframeSchema,
+);
+type TKeyframeSchema = z.infer<typeof KeyframeSchema>;
+
 const BaseInfoSchema = z.object({
   expirationTime: z.number().int().positive(),
   imageKinds: z.array(z.string()),
@@ -213,6 +218,47 @@ export const ImageDisplayComponent = ({
   );
 };
 
+const logKeyframeError = (timestamp: string, errorMessage: string) => {
+  const currentDate = new Date(parseInt(timestamp) * 1000);
+  const dateString =
+    currentDate.toLocaleDateString() + " " + currentDate.toLocaleTimeString();
+  console.log(`Keyframe ${dateString} - ${errorMessage}`);
+};
+
+const filterValidKeyframes = (info: TInfoSchema): TKeyframeSchema[] => {
+  return info.keyframes.filter((keyframe) => {
+    const allDataAreErrors =
+      keyframe.data.length > 0 &&
+      keyframe.data.every((item) => {
+        const parseResult = ErrorSchema.safeParse(item);
+        if (!parseResult.success) return false;
+        logKeyframeError(
+          keyframe.timestamp,
+          "a row indicated an error: " + parseResult.data.errorMessage,
+        );
+        return true;
+      });
+
+    const allImagesAreErrors =
+      keyframe.images.length > 0 &&
+      keyframe.images.every((image) => {
+        const parseResult = ErrorSchema.safeParse(image);
+        if (!parseResult.success) return false;
+        logKeyframeError(
+          keyframe.timestamp,
+          "an image indicated an error: " + parseResult.data.errorMessage,
+        );
+        return true;
+      });
+
+    const isKeyframeValid = !(allDataAreErrors && allImagesAreErrors);
+    if (!isKeyframeValid) {
+      logKeyframeError(keyframe.timestamp, "deemed invalid");
+    }
+    return isKeyframeValid;
+  });
+};
+
 export const CaseStudyPage = ({
   info,
   sideComponent,
@@ -220,8 +266,11 @@ export const CaseStudyPage = ({
 }: CaseStudyPageProps) => {
   const { toast } = useToast();
 
-  const keyframes = info.keyframes;
-  const timelineEnabled = keyframes.length > 1;
+  const filteredKeyframes = React.useMemo(
+    () => filterValidKeyframes(info),
+    [info],
+  );
+  const timelineEnabled = filteredKeyframes.length > 1;
 
   const [selectedTimestampIndex, setSelectedTimestampIndex] =
     useState<number>(0);
@@ -242,46 +291,22 @@ export const CaseStudyPage = ({
     }
   };
 
-  const currentFrame = keyframes[selectedTimestampIndex];
+  const currentFrame = filteredKeyframes[selectedTimestampIndex];
 
   useEffect(() => {
-    let hasError = false;
-    for (const row of currentFrame.data) {
-      const errorParseResult = ErrorSchema.safeParse(row);
-      if (errorParseResult.success) {
-        console.log(
-          "A keyframe row indicated an error:",
-          errorParseResult.data.errorMessage,
-        );
-        hasError = true;
-      }
-    }
-    for (const image of currentFrame.images) {
-      const errorParseResult = ErrorSchema.safeParse(image);
-      if (errorParseResult.success) {
-        console.log(
-          "A keyframe image indicated an error:",
-          errorParseResult.data.errorMessage,
-        );
-        hasError = true;
-      }
-    }
-
-    if (!hasError) return;
-
     const toasterTimer = setTimeout(() => {
       toast({
-        title: "Error",
+        title: "Hint",
         description:
-          "There were faulty entries in the keyframe. Please check the console for details.",
-        variant: "warning",
+          "Please check the console for details of keyframe validation.",
+        variant: "info",
       });
     }, 500);
 
     return () => {
       clearTimeout(toasterTimer);
     };
-  }, [currentFrame, toast]);
+  }, [toast]);
 
   const tablesForCaseStudies: Record<
     TInfoSchema["caseStudy"],
@@ -320,6 +345,11 @@ export const CaseStudyPage = ({
 
   const getImageBlock = () => {
     const commonClasses = "rounded-lg lg:flex-1 w-full max-h-[250px] h-[250px]";
+
+    if (!currentFrame) {
+      return <Skeleton className={commonClasses} />;
+    }
+
     let imageElement;
     if (info.imageKinds.length === 0) {
       imageElement = currentFrame.images[0];
@@ -365,7 +395,7 @@ export const CaseStudyPage = ({
   };
 
   const getRowData = () => {
-    if (isLoading) {
+    if (isLoading || !currentFrame) {
       return [];
     }
     return currentFrame.data.filter(
@@ -382,7 +412,9 @@ export const CaseStudyPage = ({
           {timelineEnabled && (
             <DateSlider
               className="absolute inset-0 self-end p-4 z-20 bg-neutral-900 bg-opacity-40 rounded-b-lg"
-              timestamps={keyframes.map((frame) => parseInt(frame.timestamp))}
+              timestamps={filteredKeyframes.map((frame) =>
+                parseInt(frame.timestamp),
+              )}
               value={[selectedTimestampIndex]}
               onValueChange={onTimestampChange}
             />
