@@ -204,6 +204,19 @@ const generateFixtureKeyframeSwissGridImageErrors = (timestamp: string) => {
   };
 };
 
+const generateFixtureKeyframeSwissGridFullErrors = (timestamp: string) => {
+  const baseFrame = {
+    timestamp,
+    images: [generateErrorFixture()],
+    dataDescription: faker.lorem.sentence(),
+  };
+
+  return {
+    ...baseFrame,
+    data: [...Array.from({ length: 45 }, generateErrorFixture)],
+  };
+};
+
 const defaultUseSignedImageUrl = () => {
   return {
     data: faker.image.url({ width: 640, height: 480 }),
@@ -366,6 +379,21 @@ export const SwissGridImageErrors: Story = {
       caseStudy: "swissgrid",
       keyframes: generateTimestamps(30).map((timestamp) =>
         generateFixtureKeyframeSwissGridImageErrors(timestamp.toString()),
+      ),
+      expirationTime: faker.date.anytime().getTime(),
+      imageKinds: ["satellite"],
+    },
+    sideComponent: <ChatPage messages={[]} className="border rounded-lg" />,
+  },
+};
+
+export const SwissGridFullErrors: Story = {
+  args: {
+    useSignedImageUrl: defaultUseSignedImageUrl,
+    info: {
+      caseStudy: "swissgrid",
+      keyframes: generateTimestamps(30).map((timestamp) =>
+        generateFixtureKeyframeSwissGridFullErrors(timestamp.toString()),
       ),
       expirationTime: faker.date.anytime().getTime(),
       imageKinds: ["satellite"],
