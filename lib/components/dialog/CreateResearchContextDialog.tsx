@@ -96,6 +96,13 @@ export const CreateResearchContextDialog = (
               Icon={PlusCircle}
             />
           }
+          className={cn(
+            "fixed",
+            "bottom-8 right-8",
+            "z-50",
+            "rounded-full p-4",
+            "shadow-xl",
+          )}
         />
       </DialogTrigger>
 

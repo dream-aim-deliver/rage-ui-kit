@@ -12,12 +12,14 @@ export interface ListResearchContextCardProps {
 
 const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
   return (
-    <Input
-      type="text"
-      placeholder="Search"
-      onChange={(e) => onSearch(e.target.value)}
-      className="w-full"
-    />
+    <div className="sticky top-16 z-10 bg-neutral-50 dark:bg-neutral-900 shadow-md p-4">
+      <Input
+        type="text"
+        placeholder="Search"
+        onChange={(e) => onSearch(e.target.value)}
+        className="w-full"
+      />
+    </div>
   );
 };
 
@@ -33,6 +35,7 @@ export const ListResearchContextLayout = (props: {
         sm:grid-cols-2    
         lg:grid-cols-3    
         w-full
+        mt-6
       "
     >
       {props.children}
