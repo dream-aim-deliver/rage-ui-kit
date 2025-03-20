@@ -2,6 +2,7 @@
 import { Button } from "@/components/button/index";
 import { Input as ShadcnInput } from "@/ui/input";
 import { cn } from "@/utils/utils";
+import { Textarea } from "@/ui/textarea";
 
 import {
   Form as ShadcnForm,
@@ -102,18 +103,25 @@ export const CreateResearchContextForm = ({
             control={form.control}
             name="researchContextDescription"
             render={({ field }) => (
-              <FormItem className={cn("xl:ml-9")}>
+              <FormItem className={cn("xl:ml-9", "flex flex-col")}>
                 <FormLabel>Description *</FormLabel>
                 <FormControl>
-                  <ShadcnInput
+                  <Textarea
                     className={cn(
-                      "text-neutral-900 ",
+                      "text-neutral-900",
                       "lg:w-80",
+                      "px-3 py-2 text-sm",
                       "md:w-80",
-
+                      "min-h-sm",
+                      "max-h-lg",
+                      "rounded-md",
+                      "overflow-y-auto",
+                      "ring-offset-background",
+                      "border",
                       form.formState.errors.researchContextDescription
                         ? "border-error-500"
                         : "border-neutral-300",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 focus-visible:ring-neutral-500",
                     )}
                     placeholder="Enter a description for the research context"
                     {...field}

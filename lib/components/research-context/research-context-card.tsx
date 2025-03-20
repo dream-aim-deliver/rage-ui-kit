@@ -27,7 +27,7 @@ export const ResearchContextCard = ({
   ...props
 }: ResearchContextCardProps) => {
   return (
-    <ShadcnCard {...props}>
+    <ShadcnCard {...props} className="max-w-sm">
       <CardContent
         className={cn(
           "flex flex-col items-center justify-between gap-medium",

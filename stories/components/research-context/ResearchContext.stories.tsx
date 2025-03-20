@@ -84,7 +84,7 @@ const longDescriptionCardsProps = [
   {
     id: 1,
     title: "Research Context 1",
-    description: faker.string.alphanumeric(100),
+    description: faker.lorem.paragraph(10),
     callbacks: {
       onNavigateToSourcesPage: handleNavigateToSourcesPage,
       onNavigateToListConversationPage: handleNavigateToListConversationPage,
